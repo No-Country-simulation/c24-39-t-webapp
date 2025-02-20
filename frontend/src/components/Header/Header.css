@@ -1,0 +1,12 @@
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    height: 100px;
+    background-color: white;
+    border-bottom: 1px solid;
+    border-color: #ece7e7;
+    color: black
+}

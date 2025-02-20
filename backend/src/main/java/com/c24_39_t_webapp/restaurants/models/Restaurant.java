@@ -18,25 +18,33 @@ public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "rst_id")
+    private Long rst_id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "rst_usuario_id", nullable = false)
+    private UserEntity userEntity;
 
-    private String address;
-
-    private String description;
-
+    @Column(name = "rst_nombre", nullable = false)
     private String name;
 
+    @Column(name = "rst_descripcion", nullable = false)
+    private String description;
+
+    @Column(name = "rst_telefono", nullable = false)
     private String phone;
 
+    @Column(name = "rst_direccion", nullable = false)
+    private String address;
+
+    @Column(name = "rst_logo")
     private String logo;
 
+    @Column(name = "rst_fecha_registro", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(name = "rst_fecha_actualizacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

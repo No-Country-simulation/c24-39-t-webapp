@@ -14,43 +14,40 @@ import java.time.LocalDateTime;
 @Setter
 @Data
 @Entity
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="usr_id")
-    private Long id;
+    @Column(name = "usr_id")
+    private Long usr_id;
 
-    @Column(name="usr_nombre")
+    @Column(name = "usr_nombre")
     private String name;
 
-    @Column(name="usr_email")
+    @Column(name = "usr_email")
     private String email;
 
-    @Column(name="usr_contrasena")
+    @Column(name = "usr_contrasena")
     private String password;
 
-    @Column(name="usr_telefono")
+    @Column(name = "usr_telefono")
     private String phone;
 
-    @Column(name="usr_direccion")
+    @Column(name = "usr_direccion")
     private String address;
 
-    @Column(name="usr_tipo")
+    @Column(name = "usr_tipo")
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Column(name="usr_fecha_registro")
+    @Column(name = "usr_fecha_registro", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @CreationTimestamp
     private LocalDateTime createdAt;
-
+    @Column(name = "usr_fecha_actualizacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-//Comprobar esto
     public enum UserRole {
-        CLIENT,
-        RESTAURANT
+        cliente,
+        restaurante
     }
-
-
 }

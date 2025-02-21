@@ -15,7 +15,7 @@ public class Pedido {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pdd_cliente_id", nullable = false)
-    private User cliente;
+    private UserEntity cliente;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pdd_restaurante_id", nullable = false)

@@ -1,4 +1,4 @@
-# Instrucciones de instalación local
+# Instrucciones de instalación local de dependencias
 
 Ejecuta en la terminal:
 

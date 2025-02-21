@@ -2,6 +2,8 @@ package com.c24_39_t_webapp.restaurants.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -11,7 +13,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ctg_id")
-    private Long id;
+    private Long ctg_id;
 
     @Column(name = "ctg_nombre", nullable = false)
     private String name;
@@ -19,6 +21,11 @@ public class Category {
     @Column(name = "ctg_descripcion")
     private String description;
 
-    @Column(name = "ctg_fecha_alta", nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "ctg_fecha_alta", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @UpdateTimestamp
+    private LocalDateTime createdAt;
+
+    @Column(name="ctg_fecha_actualizacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

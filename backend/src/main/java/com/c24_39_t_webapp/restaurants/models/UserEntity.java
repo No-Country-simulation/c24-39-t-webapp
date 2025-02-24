@@ -17,39 +17,28 @@ import java.time.LocalDateTime;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usr_id")
     private Long id;
 
-    @Column(name="nombre")
+    @Column(name = "usr_nombre")
     private String name;
 
-    @Column(unique = true)
+    @Column(name = "usr_email", unique = true)
     private String email;
 
+    @Column(name = "usr_contrasena")
     private String password;
 
-    @Column(name="rol")
+    @Column(name = "usr_tipo")
     private String role;
 
-//
-//    @Column(name="usr_telefono")
-//    private String phone;
-//
-//    @Column(name="usr_direccion")
-//    private String address;
-//
-//
-//    @Column(name="usr_fecha_registro")
-//    @CreationTimestamp
-//    private LocalDateTime createdAt;
-//
-//    @UpdateTimestamp
-//    private LocalDateTime updatedAt;
+    @Column(name="usr_telefono")
+    private String phone;
 
-//Comprobar esto
-//    public enum UserRole {
-//        CLIENT,
-//        RESTAURANT
-//    }
+    @Column(name="usr_direccion")
+    private String address;
 
-
+    @Column(name="usr_fecha_registro")
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

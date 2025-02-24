@@ -1,4 +1,4 @@
-package com.c24_39_t_webapp.restaurants.security;
+package com.c24_39_t_webapp.restaurants.repository;
 
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

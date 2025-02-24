@@ -1,5 +1,9 @@
-package com.c24_39_t_webapp.restaurants.security;
+package com.c24_39_t_webapp.restaurants.controllers;
 
+import com.c24_39_t_webapp.restaurants.dtos.request.LoginRequest;
+import com.c24_39_t_webapp.restaurants.dtos.request.RegisterRequest;
+import com.c24_39_t_webapp.restaurants.dtos.response.AuthResponse;
+import com.c24_39_t_webapp.restaurants.services.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

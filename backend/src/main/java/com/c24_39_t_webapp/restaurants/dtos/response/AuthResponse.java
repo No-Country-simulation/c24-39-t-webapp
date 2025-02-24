@@ -1,4 +1,4 @@
-package com.c24_39_t_webapp.restaurants.security;
+package com.c24_39_t_webapp.restaurants.dtos.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

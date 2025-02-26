@@ -1,5 +1,6 @@
 .app {
     display: flex;
     flex-direction: column;
-    row-gap: 24px;
+    gap: 1.5rem;
+    box-sizing: border-box;
 }

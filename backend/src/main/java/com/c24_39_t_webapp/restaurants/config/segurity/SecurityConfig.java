@@ -1,5 +1,6 @@
-package com.c24_39_t_webapp.restaurants.security;
+package com.c24_39_t_webapp.restaurants.config.segurity;
 
+import com.c24_39_t_webapp.restaurants.services.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

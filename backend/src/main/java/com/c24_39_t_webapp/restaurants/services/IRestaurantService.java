@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IRestaurantService {
     List<RestaurantResponseDto> findAll();
+
+    RestaurantResponseDto findById(Long id);
 }

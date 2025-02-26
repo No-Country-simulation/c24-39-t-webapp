@@ -59,19 +59,21 @@ public class RestaurantController {
             List<RestaurantResponseDto> restaurants = restaurantService.findAll();
 
             // Convertir la lista de restaurantes a DTOs
-            List<RestaurantResponseDto> responseDto = restaurants.stream()
-                    .map(restaurant -> new RestaurantResponseDto(
-                            restaurant.getRst_id(),
-                            restaurant.getName(),
-                            restaurant.getDescription(),
-                            restaurant.getPhone(),
-                            restaurant.getAddress(),
-                            restaurant.getLogo()
-                    ))
-                    .collect(Collectors.toList());
+//            List<RestaurantResponseDto> responseDto = restaurants.stream()
+//                    .map(restaurant -> new RestaurantResponseDto(
+//                            restaurant.getRst_id(),
+//                            restaurant.getName(),
+//                            restaurant.getDescription(),
+//                            restaurant.getPhone(),
+//                            restaurant.getAddress(),
+//                            restaurant.getLogo()
+//                    ))
+//                    .collect(Collectors.toList());
 
-            log.info("Se recuperaron {} restaurantes exitosamente.", responseDto.size());
-            return ResponseEntity.ok(responseDto);
+//            log.info("Se recuperaron {} restaurantes exitosamente.", responseDto.size());
+//            return ResponseEntity.ok(responseDto);
+            log.info("Se recuperaron {} restaurantes exitosamente.", restaurants.size());
+            return ResponseEntity.ok(restaurants);
 
         } catch (RestaurantNotFoundException e) {
             log.error("Error: No se encontraron restaurantes", e);
@@ -81,5 +83,30 @@ public class RestaurantController {
             throw new RuntimeException("Error al obtener los restaurantes", e);
         }
     }
-}
 
+    /**
+     * Endpoint to query a single restaurant based on the provided ID.
+     * Delegates the query logic to {@link IRestaurantService#findById(Long)}.
+     *
+     * @param rst_id The ID of the restaurant to query.
+     * @return The {@code RestaurantResponseDto} object representing the queried restaurant.
+     */
+    @GetMapping("/{rst_id}")
+    public ResponseEntity<RestaurantResponseDto> findRestaurantById(@PathVariable Long rst_id) {
+
+        try {
+            log.info("Solicitud recibida para obtener un restaurante usando un id.");
+            RestaurantResponseDto restaurant = restaurantService.findById(rst_id);
+
+            log.info("Se recuperaró el restaurante exitosamente.");
+            return ResponseEntity.ok(restaurant);
+
+        } catch (RestaurantNotFoundException e) {
+            log.error("Error: No se encontró el restaurante con ID: {}", rst_id, e);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error al obtener el restaurante con ID: {}", rst_id, e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+}

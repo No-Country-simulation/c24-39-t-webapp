@@ -2,7 +2,6 @@ package com.c24_39_t_webapp.restaurants.controllers;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
-//import lombok.AllArgsConstructor;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.services.IRestaurantService;
 import jakarta.validation.Valid;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -58,20 +56,6 @@ public class RestaurantController {
             log.info("Solicitud recibida para obtener todos los restaurantes.");
             List<RestaurantResponseDto> restaurants = restaurantService.findAll();
 
-            // Convertir la lista de restaurantes a DTOs
-//            List<RestaurantResponseDto> responseDto = restaurants.stream()
-//                    .map(restaurant -> new RestaurantResponseDto(
-//                            restaurant.getRst_id(),
-//                            restaurant.getName(),
-//                            restaurant.getDescription(),
-//                            restaurant.getPhone(),
-//                            restaurant.getAddress(),
-//                            restaurant.getLogo()
-//                    ))
-//                    .collect(Collectors.toList());
-
-//            log.info("Se recuperaron {} restaurantes exitosamente.", responseDto.size());
-//            return ResponseEntity.ok(responseDto);
             log.info("Se recuperaron {} restaurantes exitosamente.", restaurants.size());
             return ResponseEntity.ok(restaurants);
 
@@ -110,11 +94,6 @@ public class RestaurantController {
             throw new RuntimeException("Error al obtener el restaurante con ID", e);
         }
     }
-
-//    @PostMapping(value = "/add")
-//    public int addRestaurant(@RequestBody RestaurantResponseDto restaurantResponseDto) {
-//        return restaurantService.insertRestaurant(restaurantResponseDto);
-//    }
 
     /**
      * Endpoint to update an existing restaurant in the system using the provided {@link RestaurantRequestDto}.

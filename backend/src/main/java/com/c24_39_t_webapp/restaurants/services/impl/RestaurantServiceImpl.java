@@ -1,5 +1,6 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
+import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -60,5 +61,29 @@ public class RestaurantServiceImpl implements IRestaurantService {
                     log.warn("No se encontro un gasto con el ID: {}", id);
                     return new RestaurantNotFoundException("No se encontro un restaurante con ese ID: " + id);
                 });
+    }
+
+    @Override
+    public RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto updateDto) {
+//        if (!restaurantRepository.existsById(id)) {
+//            throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
+//        }
+        log.info("Actualizando el restaurante con ID: {}", id);
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> {
+                log.warn("No se encontró un restaurante con ese ID para editar: {}", id);
+                return new RestaurantNotFoundException(("No se encontró un restaurante con ese ID para editar: " + id));
+                });
+//        Category category = new Category();
+//        category.setName(expenseRequestDto.getCategoryName());
+        restaurant.setName(updateDto.getName());
+        restaurant.setDescription(updateDto.getDescription());
+        restaurant.setPhone(updateDto.getPhone());
+        restaurant.setAddress(updateDto.getAddress());
+        restaurant.setLogo(updateDto.getLogo());
+
+        Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
+        log.info("Restaurante actualizado exitosamente: {}", updatedRestaurant);
+        return new RestaurantResponseDto(updatedRestaurant);
     }
 }

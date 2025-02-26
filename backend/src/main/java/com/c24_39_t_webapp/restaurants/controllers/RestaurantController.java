@@ -1,9 +1,11 @@
 package com.c24_39_t_webapp.restaurants.controllers;
 
+import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 //import lombok.AllArgsConstructor;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.services.IRestaurantService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -103,10 +105,48 @@ public class RestaurantController {
 
         } catch (RestaurantNotFoundException e) {
             log.error("Error: No se encontró el restaurante con ID: {}", rst_id, e);
-            return ResponseEntity.notFound().build();
+            throw e;
         } catch (Exception e) {
             log.error("Error al obtener el restaurante con ID: {}", rst_id, e);
-            return ResponseEntity.internalServerError().build();
+//            return ResponseEntity.internalServerError().build();
+            throw new RuntimeException("Error al obtener el restaurante con ID", e);
         }
     }
+
+//    @PostMapping(value = "/add")
+//    public int addRestaurant(@RequestBody RestaurantResponseDto restaurantResponseDto) {
+//        return restaurantService.insertRestaurant(restaurantResponseDto);
+//    }
+
+    /**
+     * Endpoint to update an existing restaurant in the system using the provided {@link RestaurantRequestDto}.
+     * Delegates the update logic to {@link IRestaurantService#updateRestaurant(Long, RestaurantRequestDto)}.
+     *
+     * @param rst_id The ID of the restaurant to update.
+     * @param restaurantRequestDto The {@link RestaurantRequestDto} object containing the updated details of the restaurant.
+     * @return The {@code RestaurantResponseDto} object representing the updated restaurant.
+     */
+    //    @PutMapping("/{rst_id}")
+    @PatchMapping("/{rst_id}")
+//    public int updateRestaurant(@RequestBody RestaurantResponseDto restaurantResponseDto) {
+    public ResponseEntity<RestaurantResponseDto> updateRestaurant(
+            @PathVariable Long rst_id,
+            @RequestBody @Valid RestaurantRequestDto restaurantRequestDto
+    ) {
+        try {
+            log.info("Solicitud recibida para actualizar el restaurante con ID: {}", rst_id);
+            RestaurantResponseDto updatedRestaurant = restaurantService.updateRestaurant(rst_id, restaurantRequestDto);
+            log.info("Restaurante con ID: {} actualizado exitosamente", rst_id);
+            return ResponseEntity.ok(updatedRestaurant);
+        } catch (RestaurantNotFoundException e) {
+            log.error("Restaurante no encontrado con ID: {}", rst_id);
+//            return ResponseEntity.notFound().build();
+            throw e;
+        } catch (Exception e) {
+            log.error("Error al actualizar el restaurante con ID {}: {}", rst_id, e.getMessage());
+//            return ResponseEntity.internalServerError().build();
+            throw new RuntimeException("Error al actualizar el restaurante", e);
+        }
+    }
+
 }

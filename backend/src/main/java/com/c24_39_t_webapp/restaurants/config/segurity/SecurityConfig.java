@@ -29,9 +29,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/public/**", "/auth/**", "/h2-console").permitAll()
-//                        .requestMatchers("/api/restaurant/**").hasRole("RESTAURANT")
-                        .requestMatchers("/api/restaurant/**").permitAll()
+                        .requestMatchers("/api/public/**", "/auth/**", "/h2-console",
+                                "/api/restaurant/testMethod", "/api/restaurant/testPostMethod").permitAll()
+                        .requestMatchers("/api/restaurant/**").hasRole("RESTAURANT")
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

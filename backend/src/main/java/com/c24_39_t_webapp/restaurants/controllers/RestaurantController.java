@@ -17,8 +17,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/api/restaurant")
-//@RequestMapping("/api/v1/restaurantes")
-//@AllArgsConstructor
 public class RestaurantController {
     @Autowired
     private IRestaurantService restaurantService;
@@ -30,7 +28,7 @@ public class RestaurantController {
      * @param name The name parameter received in the request body.
      * @return A string indicating that the controller works and including the received name.
      */
-    @PostMapping
+    @PostMapping(value = "/testPostMethod")
     public String testControllerPost(@RequestBody String name) {
         return "El metodo POST del controller de Restaurants funciona ok, " + name + "!";
     }

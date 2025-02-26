@@ -122,7 +122,7 @@ public class RestaurantController {
      * Endpoint to update an existing restaurant in the system using the provided {@link RestaurantRequestDto}.
      * Delegates the update logic to {@link IRestaurantService#updateRestaurant(Long, RestaurantRequestDto)}.
      *
-     * @param rst_id The ID of the restaurant to update.
+     * @param rst_id               The ID of the restaurant to update.
      * @param restaurantRequestDto The {@link RestaurantRequestDto} object containing the updated details of the restaurant.
      * @return The {@code RestaurantResponseDto} object representing the updated restaurant.
      */
@@ -149,4 +149,19 @@ public class RestaurantController {
         }
     }
 
+    @DeleteMapping("/{rst_id}")
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long rst_id) {
+        try {
+            log.info("Solicitud recibida para eliminar el restaurante con ID: {}", rst_id);
+            restaurantService.deleteById(rst_id);
+            log.info("Restaurante con ID: {} eliminado exitosamente", rst_id);
+            return ResponseEntity.noContent().build();
+        } catch (RestaurantNotFoundException e) {
+            log.error("No se encontró el restaurante con ID: {} para eliminar", rst_id);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error al eliminar el restaurante con ID {}: {}", rst_id, e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 }

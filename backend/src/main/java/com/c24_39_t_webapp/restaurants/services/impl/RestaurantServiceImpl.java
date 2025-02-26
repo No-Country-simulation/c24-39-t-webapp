@@ -86,4 +86,12 @@ public class RestaurantServiceImpl implements IRestaurantService {
         log.info("Restaurante actualizado exitosamente: {}", updatedRestaurant);
         return new RestaurantResponseDto(updatedRestaurant);
     }
+    @Override
+    public RestaurantResponseDto deleteById(Long id) {
+        if (!restaurantRepository.existsById(id)) {
+            throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
+        }
+        restaurantRepository.deleteById(id);
+        return null;
+    }
 }

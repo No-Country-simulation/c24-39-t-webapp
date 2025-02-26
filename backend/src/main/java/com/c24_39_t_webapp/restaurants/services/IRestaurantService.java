@@ -11,4 +11,6 @@ public interface IRestaurantService {
     RestaurantResponseDto findById(Long id);
 
     RestaurantResponseDto updateRestaurant(Long id, RestaurantRequestDto updateDto);
+
+    RestaurantResponseDto deleteById(Long id);
 }

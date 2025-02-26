@@ -33,6 +33,8 @@ public class AuthService {
                 .email(request.email())
                 .password(passwordEncoder.encode(request.password()))
                 .name(request.name())
+                .phone(request.phone())
+                .address(request.address())
                 .role(request.role().toUpperCase())
                 .build();
         userRepository.save(newUser);

@@ -88,7 +88,9 @@ export default function LoginPage(){
         <div className="mb-2 block">
           <Label className="dark:text-white" htmlFor="password1" value="Tu contraseña" />
         </div>
-        <TextInput onChange={(e)=>setPassword(e.target.value)}  name="password" id="password1" type="password" rightIcon={HiMail} placeholder="********"  required />
+        <TextInput onChange={(e)=>setPassword(e.target.value)}  
+		name="password" 
+		id="password1" type="password" rightIcon={HiMail} placeholder="********"  required />
         {
           errors?.password && <p className="text-red-500">{errors.password}</p>
         }

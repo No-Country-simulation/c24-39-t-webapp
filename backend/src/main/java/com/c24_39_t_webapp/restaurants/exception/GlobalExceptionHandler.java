@@ -10,18 +10,30 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RestaurantNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleRestaurantNotFoundException(RestaurantNotFoundException e) {
-        ErrorResponse error = new ErrorResponse("Restaurante no encontrado", e.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundException(NotFoundException e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", e.getResourceName() + " no encontrado");
+        response.put("message", e.getMessage());
+        response.put("timestamp", new Date());
+        response.put("status", HttpStatus.NOT_FOUND.value());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Error interno del servidor: " + e.getMessage());
+    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("error", "Error interno del servidor");
+        response.put("message", e.getMessage());
+        response.put("timestamp", new Date());
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @ExceptionHandler(ResponseStatusException.class)

@@ -3,13 +3,19 @@ package com.c24_39_t_webapp.restaurants.controllers;
 import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
+import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.services.IRestaurantService;
+import com.c24_39_t_webapp.restaurants.services.impl.UserDetailsImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Slf4j
@@ -18,6 +24,32 @@ import java.util.List;
 public class RestaurantController {
     @Autowired
     private IRestaurantService restaurantService;
+
+    /**
+     * Endpoint to register a restaurant.
+     * Responds with the status for the new restaurant request.
+     * @param restaurantRequestDto get the necessary information to create the request.
+     * @param userDetails Request to the token the user details, avoiding to the user enter again their information.
+     *                    (did not allow to the user enter any other wrong information)
+     * @return a response entity with the new restaurant uri
+     */
+
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('RESTAURANT')")
+    public ResponseEntity<?> registerRestaurant(@RequestBody @Valid final RestaurantRequestDto restaurantRequestDto,
+                                                @AuthenticationPrincipal final UserDetailsImpl userDetails) {
+        Restaurant restaurant = restaurantService.
+                registerRestaurant(restaurantRequestDto, userDetails.getUsername());
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/restaurant/{rst_id}")
+                .buildAndExpand(restaurant.getRst_id())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
+
 
     /**
      * Test endpoint to verify that the controller handles POST requests correctly.
@@ -49,7 +81,7 @@ public class RestaurantController {
      *
      * @return A list of {@code ContactDTO} objects representing all contacts.
      */
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants() {
 
         try {

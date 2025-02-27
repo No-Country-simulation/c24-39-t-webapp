@@ -4,11 +4,15 @@ import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
+import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
+import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.services.IRestaurantService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +23,26 @@ import java.util.stream.Collectors;
 public class RestaurantServiceImpl implements IRestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
+
+    public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto, String email) {
+        log.info("Intentando crear un restaurante para el usuario con email: {}", email);
+        UserEntity user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    log.warn("Intento fallido: Usuario con email {} no encontrado", email);
+                    return new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario no registrado");
+                });
+        if (!user.getRole().equals("RESTAURANT")) {
+            log.warn("Intento fallido: Usuario con el Rol {} no esta autorizado", user.getRole());
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para crear un Restaurante");
+        }
+
+        Restaurant restaurant = new Restaurant(restaurantRequestDto);
+        restaurant.setUserEntity(user);
+
+        return restaurantRepository.save(restaurant);
+    }
+
 
     @Override
     public List<RestaurantResponseDto> findAll() {
@@ -76,11 +100,11 @@ public class RestaurantServiceImpl implements IRestaurantService {
                 });
 //        Category category = new Category();
 //        category.setName(expenseRequestDto.getCategoryName());
-        restaurant.setName(updateDto.getName());
-        restaurant.setDescription(updateDto.getDescription());
-        restaurant.setPhone(updateDto.getPhone());
-        restaurant.setAddress(updateDto.getAddress());
-        restaurant.setLogo(updateDto.getLogo());
+        restaurant.setName(updateDto.name());
+        restaurant.setDescription(updateDto.description());
+        restaurant.setPhone(updateDto.phone());
+        restaurant.setAddress(updateDto.address());
+        restaurant.setLogo(updateDto.logo());
 
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         log.info("Restaurante actualizado exitosamente: {}", updatedRestaurant);

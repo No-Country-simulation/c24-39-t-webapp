@@ -6,12 +6,12 @@ import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import java.util.List;
 
 public interface ICategoryService {
+    CategoryResponseDto addCategory(CategoryRequestDto categoryRequestDto);
+    List<CategoryResponseDto> findAllCategories();
 
-    List<CategoryResponseDto> findAllCategorys();
-
-    CategoryResponseDto findCategoryById(Long id);
-
-    CategoryResponseDto updateCategory(Long id, CategoryRequestDto updateDto);
-
-    CategoryResponseDto deleteCategory(Long id);
+//    CategoryResponseDto findCategoryById(Long id);
+//
+//    CategoryResponseDto updateCategory(Long id, CategoryRequestDto updateDto);
+//
+//    CategoryResponseDto deleteCategory(Long id);
 }

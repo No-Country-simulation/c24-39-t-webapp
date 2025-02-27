@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/public/**", "/auth/**", "/h2-console",
                                 "/api/restaurant/testMethod", "/api/restaurant/testPostMethod").permitAll()
                         .requestMatchers("/api/restaurant/**").hasRole("RESTAURANT")
+                        .requestMatchers("/api/category/**").permitAll()
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

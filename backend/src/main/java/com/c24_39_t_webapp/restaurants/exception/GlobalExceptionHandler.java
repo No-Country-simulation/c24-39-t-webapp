@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(RestaurantNotFoundException.class)
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException e) {
+        ErrorResponse error = new ErrorResponse("Categoria no encontrada", e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    } @ExceptionHandler(RestaurantNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleRestaurantNotFoundException(RestaurantNotFoundException e) {
         ErrorResponse error = new ErrorResponse("Restaurante no encontrado", e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);

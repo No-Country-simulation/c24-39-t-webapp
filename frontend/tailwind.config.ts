@@ -1,14 +1,16 @@
 import type { Config } from "tailwindcss";
-import flowbite from "flowbite-react/tailwind";
+//import flowbiteReact from "flowbite-react/tailwind";
+const flowbite = require("flowbite-react/tailwind");
 
 export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    flowbite.content(),
+    flowbite.content()
   ],
   theme: {
+    darkMode: 'class',
     extend: {
       colors: {
         background: "var(--background)",
@@ -17,6 +19,6 @@ export default {
     },
   },
   plugins: [
-	flowbite.plugin(),
+	  flowbite.plugin(),
 	],
 } satisfies Config;

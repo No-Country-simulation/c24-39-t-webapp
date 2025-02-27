@@ -54,19 +54,11 @@ public class CategoryController {
      */
     @PostMapping
     public ResponseEntity<CategoryResponseDto> addCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
-        try {
             log.info("Solicitud recibida para agregar una nueva categoria: {}", categoryRequestDto);
             CategoryResponseDto category = categoryService.addCategory(categoryRequestDto);
-
             log.info("Categoria agregada exitosamente: {}", category);
             return ResponseEntity.ok(category);
-
-        } catch (Exception e) {
-            log.error("Error al agregar la categoria: {}", e.getMessage(), e);
-            throw new RuntimeException("Error al agregar la categoria, ", e);
-        }
     }
-
 
     /**
      * Endpoint to retrieve a list of all {@link ResponseEntity} objects stored in the system.
@@ -76,38 +68,33 @@ public class CategoryController {
      */
     @GetMapping
     public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-
-        try {
             log.info("Solicitud recibida para obtener todos las categorias.");
             List<CategoryResponseDto> categories = categoryService.findAllCategories();
-
             log.info("Se recuperaron {} categorias exitosamente.", categories.size());
             return ResponseEntity.ok(categories);
+    }
 
-        } catch (CategoryNotFoundException e) {
-            log.error("Error: No se encontraron categorias, ", e);
-            throw e;
-        } catch (Exception e) {
-            log.error("Error al obtener las categorias: {}", e.getMessage(), e);
-            throw new RuntimeException("Error al obtener las categorias, ", e);
-        }
-
+    /**
+     * Endpoint to query a single category based on the provided {@link CategoryResponseDto}.
+     * Delegates the query logic to {@link ICategoryService#findCategoryById(Long)}.
+     *
+     * @param ctg_id The {@link CategoryResponseDto} object containing the criteria for the query.
+     * @return The {@code CategoryResponseDto} object representing the queried category.
+     */
+    @GetMapping("/{ctg_id}")
+    public ResponseEntity<CategoryResponseDto> findCategoryById(@PathVariable Long ctg_id) {
+        log.info("Solicitud recibida para obtener una categoría usando el ID {}.", ctg_id);
+        CategoryResponseDto category = categoryService.findCategoryById(ctg_id);
+        log.info("Se recuperó la categoría con ID {} exitosamente.", ctg_id);
+        return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{ctg_id}")
-    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long ctg_id) {
-        try {
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long ctg_id) {
             log.info("Solicitud recibida para eliminar la categoria con ID: {}", ctg_id);
             categoryService.deleteCategory(ctg_id);
             log.info("Categoria con ID: {} eliminado exitosamente", ctg_id);
             return ResponseEntity.noContent().build();
-        } catch (RestaurantNotFoundException e) {
-            log.error("No se encontró la categoria con ID: {} para eliminar", ctg_id);
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            log.error("Error al eliminar la categoria con ID {}: {}", ctg_id, e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
     }
 
 }

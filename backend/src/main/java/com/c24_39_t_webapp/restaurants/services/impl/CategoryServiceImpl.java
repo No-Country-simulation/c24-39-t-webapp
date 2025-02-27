@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
+import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
@@ -56,9 +57,28 @@ public class CategoryServiceImpl implements ICategoryService {
                 .collect(Collectors.toList());
     }
     @Override
+    public CategoryResponseDto findCategoryById(Long ctg_id) {
+        log.info("Buscando categoria con ID: {}", ctg_id);
+//        Restaurant restaurant = restaurantRepository.findById(id)
+        if (ctg_id == null || ctg_id <= 0) {
+            log.warn("El ID de la categoria proporcionada es invalido: {}", ctg_id);
+            throw new CategoryNotFoundException("El ID de la categoria no es válido " + ctg_id);
+        }
+        return categoryRepository.findById(ctg_id)
+                .map(category -> new CategoryResponseDto(
+                        category.getCtg_id(),
+                        category.getName(),
+                        category.getDescription()
+                ))
+                .orElseThrow(() -> {
+                    log.warn("No se encontro un gasto con el ID: {}", ctg_id);
+                    throw new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
+                });
+    }
+    @Override
     public CategoryResponseDto deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {
-            throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
+            throw new CategoryNotFoundException("Restaurante no encontrado con id: " + id);
         }
         categoryRepository.deleteById(id);
         return null;

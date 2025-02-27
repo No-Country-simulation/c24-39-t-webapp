@@ -2,6 +2,8 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
+import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 import com.c24_39_t_webapp.restaurants.services.ICategoryService;
@@ -52,5 +54,13 @@ public class CategoryServiceImpl implements ICategoryService {
                         category.getDescription()
                 ))
                 .collect(Collectors.toList());
+    }
+    @Override
+    public CategoryResponseDto deleteCategory(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
+        }
+        categoryRepository.deleteById(id);
+        return null;
     }
 }

@@ -91,7 +91,23 @@ public class CategoryController {
             log.error("Error al obtener las categorias: {}", e.getMessage(), e);
             throw new RuntimeException("Error al obtener las categorias, ", e);
         }
+
     }
 
+    @DeleteMapping("/{ctg_id}")
+    public ResponseEntity<Void> deleteRestaurant(@PathVariable Long ctg_id) {
+        try {
+            log.info("Solicitud recibida para eliminar la categoria con ID: {}", ctg_id);
+            categoryService.deleteCategory(ctg_id);
+            log.info("Categoria con ID: {} eliminado exitosamente", ctg_id);
+            return ResponseEntity.noContent().build();
+        } catch (RestaurantNotFoundException e) {
+            log.error("No se encontró la categoria con ID: {} para eliminar", ctg_id);
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error("Error al eliminar la categoria con ID {}: {}", ctg_id, e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 
 }

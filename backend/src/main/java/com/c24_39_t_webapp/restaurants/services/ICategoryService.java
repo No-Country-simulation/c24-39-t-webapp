@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface ICategoryService {
     CategoryResponseDto addCategory(CategoryRequestDto categoryRequestDto);
+
     List<CategoryResponseDto> findAllCategories();
+
     CategoryResponseDto findCategoryById(Long id);
 
-//    CategoryResponseDto updateCategory(Long id, CategoryRequestDto updateDto);
+    CategoryResponseDto updateCategory(Long id, CategoryRequestDto updateDto);
+
     CategoryResponseDto deleteCategory(Long id);
 }

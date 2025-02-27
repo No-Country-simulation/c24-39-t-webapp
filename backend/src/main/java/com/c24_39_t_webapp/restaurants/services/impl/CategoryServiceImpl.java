@@ -1,11 +1,13 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
+import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 import com.c24_39_t_webapp.restaurants.services.ICategoryService;
 import lombok.AllArgsConstructor;
@@ -56,6 +58,7 @@ public class CategoryServiceImpl implements ICategoryService {
                 ))
                 .collect(Collectors.toList());
     }
+
     @Override
     public CategoryResponseDto findCategoryById(Long ctg_id) {
         log.info("Buscando categoria con ID: {}", ctg_id);
@@ -75,6 +78,23 @@ public class CategoryServiceImpl implements ICategoryService {
                     throw new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
                 });
     }
+
+    @Override
+    public CategoryResponseDto updateCategory(Long ctg_id, CategoryRequestDto updateDto) {
+        log.info("Actualizando la categoria con ID {}", ctg_id);
+        Category category = categoryRepository.findById(ctg_id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontró una categoria con ese ID para editar: {}", ctg_id);
+                    return new CategoryNotFoundException(("No se encontró una categoria con ese ID para editar: " + ctg_id));
+                });
+        category.setName(updateDto.getName());
+        category.setDescription(updateDto.getDescription());
+
+        Category updatedCategory = categoryRepository.save(category);
+        log.info("Categoria actualizado exitosamente: {}", updatedCategory);
+        return new CategoryResponseDto(updatedCategory);
+    }
+
     @Override
     public CategoryResponseDto deleteCategory(Long id) {
         if (!categoryRepository.existsById(id)) {

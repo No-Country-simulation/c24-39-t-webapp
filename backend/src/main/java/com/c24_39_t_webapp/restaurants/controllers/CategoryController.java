@@ -89,6 +89,29 @@ public class CategoryController {
         return ResponseEntity.ok(category);
     }
 
+    /**
+     * Endpoint to update an existing category in the system using the provided {@link CategoryRequestDto}.
+     * Delegates the update logic to {@link ICategoryService#updateCategory(Long, CategoryRequestDto)}.
+     *
+     * @param ctg_id The ID of the category to update.
+     * @param updateDto The {@link CategoryRequestDto} object containing the details of the updated category.
+     * @return The {@code CategoryResponseDto} object representing the updated category.
+     */
+    @PatchMapping("/{ctg_id}")
+    public ResponseEntity<CategoryResponseDto> updateCategory(@PathVariable Long ctg_id, @RequestBody CategoryRequestDto updateDto) {
+            log.info("Solicitud recibida para actualizar la categoria con ID: {}", ctg_id);
+            CategoryResponseDto updatedCategory = categoryService.updateCategory(ctg_id, updateDto);
+            log.info("Categoria con ID: {} actualizado exitosamente", ctg_id);
+            return ResponseEntity.ok(updatedCategory);
+    }
+
+    /**
+     * Endpoint to delete a category from the system using the provided {@link CategoryResponseDto}.
+     * Delegates the deletion logic to {@link ICategoryService#deleteCategory(Long)}.
+     *
+     * @param ctg_id The {@link CategoryResponseDto} object identifying the category to be deleted.
+     * @return The number of rows deleted by the operation.
+     */
     @DeleteMapping("/{ctg_id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long ctg_id) {
             log.info("Solicitud recibida para eliminar la categoria con ID: {}", ctg_id);

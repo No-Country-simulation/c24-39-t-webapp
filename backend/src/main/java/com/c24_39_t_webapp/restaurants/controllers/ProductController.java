@@ -2,17 +2,18 @@ package com.c24_39_t_webapp.restaurants.controllers;
 
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
-@RequestMapping("/products")
+@Slf4j
+@RestController
+@RequestMapping("api/product")
 public class ProductController {
 
     @Autowired
@@ -23,8 +24,11 @@ public class ProductController {
 //    }
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto, String username, Long restaurantId) {
-        ProductResponseDto responseDto = productService.addProduct(requestDto, username, restaurantId);
+    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto, @RequestParam String email, @RequestParam Long restaurantId) {
+        log.info("Recibida solicitud para añadir producto. Email: {}, RestaurantId: {}", email, restaurantId);
+        log.info("Datos del producto: {}", requestDto);
+        ProductResponseDto responseDto = productService.addProduct(requestDto, email, restaurantId);
+        log.info("Producto agregado exitosamente: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
 //

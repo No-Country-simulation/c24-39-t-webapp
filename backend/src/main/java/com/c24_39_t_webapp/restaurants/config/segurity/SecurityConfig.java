@@ -32,9 +32,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/public/**", "/auth/**", "/h2-console",
                                 "/api/restaurant/testMethod", "/api/restaurant/testPostMethod").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**", "/api/product/**").permitAll()
                         .requestMatchers("/api/restaurant/**").hasRole("RESTAURANT")
                         .requestMatchers("/api/category/**").hasRole("RESTAURANT")
+                        .requestMatchers("/api/product/**").permitAll()
                         .requestMatchers("/api/user/**").hasRole("USER")
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);

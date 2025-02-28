@@ -2,8 +2,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
-import com.c24_39_t_webapp.restaurants.exception.NotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.ResourceNotFoundException;
+import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -13,11 +12,10 @@ import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
 import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 
+import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @Service
@@ -34,17 +32,17 @@ public class ProductServiceImpl implements IProductService {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     log.warn("Intento fallido: Usuario con email {} no encontrado", email);
-                    return new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario no registrado");
+                    return new UserNotFoundException("No se encontro un usuario con este email: " + email);
                 });
-        if (!user.getRole().equals("RESTAURANT")) {
+        if (!user.getRole().equals("restaurante")) {
             log.warn("Intento fallido: Usuario con el Rol {} no está autorizado", user.getRole());
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para crear un Producto");
+            throw new UnauthorizedAccessException("No tienes permisos para crear un Producto");
         }
 
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new ResourceNotFoundException("Restaurante", "id", restaurantId.toString()));
+                .orElseThrow(() -> new RestaurantNotFoundException("No se ha encontrado el restaurante"));
         Category category = categoryRepository.findById(productRequestDto.categoryId())
-                .orElseThrow(() -> new ResourceNotFoundException("Categoria", "id", productRequestDto.categoryId().toString()));
+                .orElseThrow(() -> new CategoryNotFoundException("No se ha encontrado la categoria"));
 
         Product product = new Product();
         product.setRestaurant(restaurant);

@@ -1,13 +1,9 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
-import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
-import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 import com.c24_39_t_webapp.restaurants.services.ICategoryService;
 import lombok.AllArgsConstructor;
@@ -47,7 +43,7 @@ public class CategoryServiceImpl implements ICategoryService {
         List<Category> categories = categoryRepository.findAll();
 
         if (categories.isEmpty()) {
-            throw new RuntimeException("No se encontraron categorías.");
+            throw new CategoryNotFoundException("No se encontraron categorias.");
         }
 
         return categories.stream()

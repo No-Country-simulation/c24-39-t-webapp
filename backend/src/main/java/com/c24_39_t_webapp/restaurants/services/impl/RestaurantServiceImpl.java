@@ -25,7 +25,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
-    public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto, String email) {
+    public RestaurantResponseDto registerRestaurant(RestaurantRequestDto restaurantRequestDto, String email) {
         log.info("Intentando crear un restaurante para el usuario con email: {}", email);
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
@@ -39,8 +39,9 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
         Restaurant restaurant = new Restaurant(restaurantRequestDto);
         restaurant.setUserEntity(user);
-
-        return restaurantRepository.save(restaurant);
+        restaurantRepository.save(restaurant);
+        log.info("¡Restaurante creado Exitosamente!");
+        return new RestaurantResponseDto(restaurant);
     }
 
 

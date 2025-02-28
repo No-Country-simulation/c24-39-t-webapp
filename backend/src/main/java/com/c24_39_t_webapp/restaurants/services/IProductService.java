@@ -1,10 +1,10 @@
 package com.c24_39_t_webapp.restaurants.services;
 
-import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 
 public interface IProductService {
-    ProductResponseDto addProduct(RestaurantRequestDto restaurantRequestDto, String username);
+    ProductResponseDto addProduct(ProductRequestDto productRequestDto, String username, Long restaurantId);
 //    List<ProductResponseDto> findAllProducts();
 //
 //    ProductResponseDto findProductById(Long id);

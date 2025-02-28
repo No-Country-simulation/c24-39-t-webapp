@@ -3,8 +3,11 @@ package com.c24_39_t_webapp.restaurants.dtos.request;
 import jakarta.validation.constraints.NotBlank;
 
 public record ProductRequestDto(
+        @NotBlank(message = "El ID del restaurante no puede estar vacío.")
+        Long restaurantId,
+
         @NotBlank(message = "La categoria del producto no puede estar vacío.")
-        Integer category,
+        Long categoryId,
         @NotBlank(message = "El nombre del producto no puede estar vacío.")
         String name,
 

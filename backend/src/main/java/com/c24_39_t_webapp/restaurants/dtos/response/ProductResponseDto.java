@@ -2,8 +2,8 @@ package com.c24_39_t_webapp.restaurants.dtos.response;
 
 public record ProductResponseDto(
         Long prd_id,
-        Long restaurant,
-        Integer category,
+        Long restaurantId,
+        Long categoryId,
         String name,
         String description,
         Integer price,

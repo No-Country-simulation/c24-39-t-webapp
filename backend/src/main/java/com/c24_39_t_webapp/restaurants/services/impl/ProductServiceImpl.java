@@ -1,6 +1,8 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
+import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.Category;
@@ -16,6 +18,9 @@ import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -68,5 +73,29 @@ public class ProductServiceImpl implements IProductService {
                 product.getQuantity()
         );
     }
+    @Override
+    public List<ProductResponseDto> findAllProducts() {
+
+        List<Product> products = productRepository.findAll();
+
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No se encontraron productos.");
+        }
+
+        return products.stream()
+                .map(product -> new ProductResponseDto(
+                        product.getPrd_id(),
+                        product.getRestaurant().getRst_id(),
+                        product.getCategory().getCtg_id(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getImage(),
+                        product.getIsActive(),
+                        product.getQuantity()
+                ))
+                .collect(Collectors.toList());
+    }
+
 }
 

@@ -1,15 +1,19 @@
 package com.c24_39_t_webapp.restaurants.controllers;
 
 
+import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.services.ICategoryService;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,7 +26,15 @@ public class ProductController {
 //    public ProductController(IProductService productService) {
 //        this.productService = productService;
 //    }
-
+    /**
+     * Endpoint to add a new {@link ResponseEntity} object to the system.
+     * Delegates the addition logic to {@link IProductService#addProduct(ProductRequestDto, String, Long)}.
+     *
+     * @param requestDto The {@code CategoryRequestDto} object to add.
+     * @param email The email of the user adding the category.
+     * @pram restaurantId The ID of the restaurant to which the category will be added.
+     * @return The {@code CategoryResponseDto} object representing the added category.
+     */
     @PostMapping
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto, @RequestParam String email, @RequestParam Long restaurantId) {
         log.info("Recibida solicitud para añadir producto. Email: {}, RestaurantId: {}", email, restaurantId);
@@ -31,13 +43,20 @@ public class ProductController {
         log.info("Producto agregado exitosamente: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
-//
-//
-//    @GetMapping
-//    public ResponseEntity<List<ProductResponse>> getAllProducts() {
-//        List<ProductResponse> products = productService.getAllProducts();
-//        return ResponseEntity.ok(products);
-//    }
+
+    /**
+     * Endpoint to retrieve all {@link ProductResponseDto} objects from the system.
+     * Delegates the retrieval logic to {@link IProductService#findAllProducts()}.
+     *
+     * @return A list of {@code ProductResponseDto} objects representing all products in the system.
+     */
+    @GetMapping
+    public ResponseEntity<List<ProductResponseDto>> getAllProducts() {
+        log.info("Solicitud recibida para obtener todos los productos.");
+        List<ProductResponseDto> products = productService.findAllProducts();
+        log.info("Se recuperaron {} productos exitosamente.", products.size());
+        return ResponseEntity.ok(products);
+    }
 //
 //
 //    @GetMapping("/{id}")

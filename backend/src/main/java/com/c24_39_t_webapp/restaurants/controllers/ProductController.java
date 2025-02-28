@@ -57,13 +57,21 @@ public class ProductController {
         log.info("Se recuperaron {} productos exitosamente.", products.size());
         return ResponseEntity.ok(products);
     }
-//
-//
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ProductResponse> findByProduct(@PathVariable Long id) {
-//        ProductResponse product = productService.findByProduct(id);
-//        return ResponseEntity.ok(product);
-//    }
+
+    /**
+     * Endpoint to retrieve a single {@link ProductResponseDto} object from the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductById(Long)}.
+     *
+     * @param prd_id The ID of the product to retrieve.
+     * @return The {@code ProductResponseDto} object representing the requested product.
+     */
+    @GetMapping("/{prd_id}")
+    public ResponseEntity<ProductResponseDto> findProductById(@PathVariable Long prd_id) {
+        log.info("Solicitud recibida para obtener una producto usando el ID {}.", prd_id);
+        ProductResponseDto product = productService.findProductById(prd_id);
+        log.info("Se recuperó el producto con ID {} exitosamente.", prd_id);
+        return ResponseEntity.ok(product);
+    }
 //
 //
 //    @GetMapping("/filter")

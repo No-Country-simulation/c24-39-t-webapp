@@ -70,8 +70,8 @@ public class CategoryServiceImpl implements ICategoryService {
                         category.getDescription()
                 ))
                 .orElseThrow(() -> {
-                    log.warn("No se encontro un gasto con el ID: {}", ctg_id);
-                    throw new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
+                    log.warn("No se encontro una categoria con el ID: {}", ctg_id);
+                    return new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
                 });
     }
 

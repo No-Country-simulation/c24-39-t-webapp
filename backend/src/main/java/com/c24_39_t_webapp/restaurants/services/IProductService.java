@@ -7,12 +7,13 @@ import java.util.List;
 
 public interface IProductService {
     ProductResponseDto addProduct(ProductRequestDto productRequestDto, String username, Long restaurantId);
+
     List<ProductResponseDto> findAllProducts();
+
+    ProductResponseDto findProductById(Long prd_id);
 //
-//    ProductResponseDto findProductById(Long id);
+//    ProductResponseDto updateProduct(Long prd_id, RestaurantRequestDto updateDto);
 //
-//    ProductResponseDto updateProduct(Long id, RestaurantRequestDto updateDto);
-//
-//    ProductResponseDto deleteProduct(Long id);
+//    ProductResponseDto deleteProduct(Long prd_id);
 
 }

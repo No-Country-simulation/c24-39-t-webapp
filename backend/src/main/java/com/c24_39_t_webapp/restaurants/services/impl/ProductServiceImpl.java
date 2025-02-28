@@ -96,6 +96,30 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
+    @Override
+    public ProductResponseDto findProductById(Long prd_id) {
+        log.info("Buscando el product con ID: {}", prd_id);
+        if (prd_id == null || prd_id <= 0) {
+            log.warn("El ID del producto proporcionado es invalido: {}", prd_id);
+            throw new ProductNotFoundException("El ID del producto no es válido " + prd_id);
+        }
+        return productRepository.findById(prd_id)
+                .map(product -> new ProductResponseDto(
+                        product.getPrd_id(),
+                        product.getRestaurant().getRst_id(),
+                        product.getCategory().getCtg_id(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getPrice(),
+                        product.getImage(),
+                        product.getIsActive(),
+                        product.getQuantity()
+                ))
+                .orElseThrow(() -> {
+                    log.warn("No se encontro un producto con el ID: {}", prd_id);
+                    return new ProductNotFoundException("No se encontro una producto con ese ID: " + prd_id);
+                });
+    }
 
 }
 

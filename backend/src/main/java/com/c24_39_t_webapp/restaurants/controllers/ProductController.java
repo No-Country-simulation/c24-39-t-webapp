@@ -72,20 +72,14 @@ public class ProductController {
         log.info("Se recuperó el producto con ID {} exitosamente.", prd_id);
         return ResponseEntity.ok(product);
     }
-//
-//
-//    @GetMapping("/filter")
-//    public ResponseEntity<List<ProductResponse>> filterByCategory(@RequestParam String category) {
-//        List<ProductResponse> products = productService.filterByCategory(category);
-//        return ResponseEntity.ok(products);
-//    }
-//
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest request) {
-//        ProductResponse updatedProduct = productService.updateProduct(id, request);
-//        return ResponseEntity.ok(updatedProduct);
-//    }
+
+    @PatchMapping("/{prd_id}")
+    public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
+        log.info("Solicitud recibida para actualizar la categoria con ID: {}", prd_id);
+        ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
+        log.info("Categoria con ID: {} actualizado exitosamente", prd_id);
+        return ResponseEntity.ok(updatedProduct);
+    }
 //
 //
 //    @DeleteMapping("/{id}")

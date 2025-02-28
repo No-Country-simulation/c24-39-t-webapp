@@ -11,8 +11,8 @@ public interface IProductService {
     List<ProductResponseDto> findAllProducts();
 
     ProductResponseDto findProductById(Long prd_id);
-//
-//    ProductResponseDto updateProduct(Long prd_id, RestaurantRequestDto updateDto);
+
+    ProductResponseDto updateProduct(Long prd_id, ProductRequestDto updateDto);
 //
 //    ProductResponseDto deleteProduct(Long prd_id);
 

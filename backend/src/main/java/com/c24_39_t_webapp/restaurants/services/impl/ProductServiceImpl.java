@@ -15,8 +15,12 @@ import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 
 import com.c24_39_t_webapp.restaurants.services.IProductService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,20 +34,16 @@ public class ProductServiceImpl implements IProductService {
     private final UserRepository userRepository;
     private final RestaurantRepository restaurantRepository;
     private final CategoryRepository categoryRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @PreAuthorize("hasAuthority('restaurante')")
     @Override
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto, String email, Long restaurantId) {
         log.info("Intentando crear un producto para el usuario con email: {}", email);
-        UserEntity user = userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    log.warn("Intento fallido: Usuario con email {} no encontrado", email);
-                    return new UserNotFoundException("No se encontro un usuario con este email: " + email);
-                });
-        if (!user.getRole().equals("restaurante")) {
-            log.warn("Intento fallido: Usuario con el Rol {} no está autorizado", user.getRole());
-            throw new UnauthorizedAccessException("No tienes permisos para crear un Producto");
+        if (restaurantId == null || restaurantId <= 0) {
+            throw new IllegalArgumentException("El ID del restaurante no es válido");
         }
-
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new RestaurantNotFoundException("No se ha encontrado el restaurante"));
         Category category = categoryRepository.findById(productRequestDto.categoryId())
@@ -60,6 +60,7 @@ public class ProductServiceImpl implements IProductService {
         product.setQuantity(productRequestDto.quantity());
         log.info("Producto creado con éxito");
 
+
         product = productRepository.save(product);
         return new ProductResponseDto(
                 product.getPrd_id(),
@@ -73,6 +74,7 @@ public class ProductServiceImpl implements IProductService {
                 product.getQuantity()
         );
     }
+
     @Override
     public List<ProductResponseDto> findAllProducts() {
 
@@ -96,6 +98,7 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
+
     @Override
     public ProductResponseDto findProductById(Long prd_id) {
         log.info("Buscando el product con ID: {}", prd_id);
@@ -121,5 +124,44 @@ public class ProductServiceImpl implements IProductService {
                 });
     }
 
+    @PreAuthorize("hasAuthority('restaurante')")
+    @Transactional
+    @Override
+    public ProductResponseDto updateProduct(Long prd_id, ProductRequestDto updateDto) {
+        log.info("Actualizando el producto con ID {}", prd_id);
+        Product product = productRepository.findById(prd_id)
+                .orElseThrow(() -> {
+                    log.warn("El ID del producto proporcionado es invalido: {}", prd_id);
+                    return new ProductNotFoundException("No se ha encontrado el producto con el ID " + prd_id);
+                });
+        Category category = categoryRepository.findById(updateDto.categoryId())
+                .orElseThrow(() -> {
+                    log.warn("El ID de la categoria proporcionada es invalido: {}", updateDto.categoryId());
+                    return new CategoryNotFoundException("No se ha encontrado la categoria con el ID " + updateDto.categoryId());
+                });
+        product.setCategory(category);
+        product.setName(updateDto.name());
+        product.setDescription(updateDto.description());
+        product.setPrice(updateDto.price());
+        product.setImage(updateDto.image());
+        product.setIsActive(updateDto.isActive());
+        product.setQuantity(updateDto.quantity());
+
+        Product updatedProduct = productRepository.saveAndFlush(product);
+        log.info("Producto con ID {} ha sido actualizado con éxito", prd_id);
+        return new ProductResponseDto(
+                updatedProduct.getPrd_id(),
+                updatedProduct.getRestaurant().getRst_id(),
+                updatedProduct.getCategory().getCtg_id(),
+                updatedProduct.getName(),
+                updatedProduct.getDescription(),
+                updatedProduct.getPrice(),
+                updatedProduct.getImage(),
+                updatedProduct.getIsActive(),
+                updatedProduct.getQuantity()
+        );
+    }
 }
+
+
 

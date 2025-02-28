@@ -24,8 +24,8 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryResponseDto addCategory(CategoryRequestDto categoryRequestDto) {
         Category newCategory = new Category();
 
-        newCategory.setName(categoryRequestDto.getName());
-        newCategory.setDescription(categoryRequestDto.getDescription());
+        newCategory.setName(categoryRequestDto.name());
+        newCategory.setDescription(categoryRequestDto.description());
 
         Category savedCategory = categoryRepository.save(newCategory);
 
@@ -83,8 +83,8 @@ public class CategoryServiceImpl implements ICategoryService {
                     log.warn("No se encontró una categoria con ese ID para editar: {}", ctg_id);
                     return new CategoryNotFoundException(("No se encontró una categoria con ese ID para editar: " + ctg_id));
                 });
-        category.setName(updateDto.getName());
-        category.setDescription(updateDto.getDescription());
+        category.setName(updateDto.name());
+        category.setDescription(updateDto.description());
 
         Category updatedCategory = categoryRepository.save(category);
         log.info("Categoria actualizado exitosamente: {}", updatedCategory);

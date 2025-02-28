@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RestaurantResponseDto {
 
+
     private Long rst_id;
     private String name;
     private String description;

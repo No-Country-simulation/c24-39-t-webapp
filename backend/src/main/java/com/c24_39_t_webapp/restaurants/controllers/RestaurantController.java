@@ -38,7 +38,7 @@ public class RestaurantController {
     @PreAuthorize("hasRole('RESTAURANT')")
     public ResponseEntity<?> registerRestaurant(@RequestBody @Valid final RestaurantRequestDto restaurantRequestDto,
                                                 @AuthenticationPrincipal final UserDetailsImpl userDetails) {
-        Restaurant restaurant = restaurantService.
+        RestaurantResponseDto restaurant = restaurantService.
                 registerRestaurant(restaurantRequestDto, userDetails.getUsername());
 
         URI uri = ServletUriComponentsBuilder

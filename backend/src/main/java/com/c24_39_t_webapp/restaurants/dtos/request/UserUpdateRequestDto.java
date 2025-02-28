@@ -1,6 +1,6 @@
 package com.c24_39_t_webapp.restaurants.dtos.request;
 
-public record UserUpRequestDto(
+public record UserUpdateRequestDto(
         String email,
         String password,
         String name,

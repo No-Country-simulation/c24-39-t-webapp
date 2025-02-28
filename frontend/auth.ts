@@ -3,12 +3,12 @@ import Credentials from "next-auth/providers/credentials";
 
 declare module "next-auth" {
   interface JWT {
-    accessToken?: string;
+    access_token?: string;
     message: string;
   }
 
   interface Session {
-    accessToken?: string | undefined;
+    access_token?: string | undefined;
     user?: {
       id?: string;
       email?: string;
@@ -17,13 +17,13 @@ declare module "next-auth" {
   }
 
   interface User extends BackendUser {
-    accessToken?: string;
+    access_token?: string;
     message: string;
   }
 }
 
 type BackendUser = {
-  accessToken?: string;
+  access_token?: string;
   message: string;
 };
 
@@ -46,8 +46,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         const user: BackendUser = await res.json();
+	// console.log("USUARIOOOO:", user)
 
-        if (res.ok && user.accessToken) {
+        if (res.ok && user.access_token) {
           return user;
         } else {
           return null;
@@ -56,17 +57,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   pages: {
-    signIn: "http://localhost:3000/login",
+    signIn: "/login",
   },
   callbacks: {
     async jwt({ user, token }) {
       if (user) {
-        token.accessToken = user.accessToken;
+        token.access_token = user.access_token;
+      	// aca agregar al token los demas datos del usuario
       }
       return token;
     },
     async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
+      session.access_token = token.access_token as string;
+	// aca agregar a la session los demas dato del usuario
       return session;
     },
   },

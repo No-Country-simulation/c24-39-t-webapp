@@ -3,16 +3,17 @@ import { HiUser, HiMail, HiIdentification } from "react-icons/hi";
 
 import { z } from "zod";
 import { signIn } from "../../../auth";
+import {redirect} from "next/navigation"
 
 const LoginSchema = z.object({
   email: z.string().min(1, "El email es requerido").email("Formato de email inválido"),
   password: z.string().min(1, "La contraseña es requerida").min(6, "La contraseña debe tener al menos 6 caracteres"),
 });
 
-type FormErrors = {
+/** type FormErrors = {
   email?: string;
   password?: string;
-};
+};*/
 
 export default function LoginPage() {
   return (
@@ -20,12 +21,17 @@ export default function LoginPage() {
       <form
         action={async (formdata: FormData) => {
           "use server";
-          try {
-            await signIn("credentials", { email: formdata.get("email"), password: formdata.get("password") });
-          } catch (error) {
-            console.log(error);
-            throw error;
-          }
+	  console.log("Entro login")
+           try{
+	    await signIn("credentials", {
+	      email: formdata.get("email"),
+	      password: formdata.get("password"),
+	      redirect: false,	
+	    })
+		redirect("/")
+	   }
+	   catch(err){console.log("error completo:", err)}
+          
         }}
         className="flex md:max-w-lg w-[300px] flex-col gap-4"
       >

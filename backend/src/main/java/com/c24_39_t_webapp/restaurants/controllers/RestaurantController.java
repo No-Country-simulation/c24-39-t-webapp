@@ -26,6 +26,29 @@ public class RestaurantController {
     private IRestaurantService restaurantService;
 
     /**
+     * Test endpoint to verify that the controller handles POST requests correctly.
+     * Responds with a message including the received name parameter.
+     *
+     * @param name The name parameter received in the request body.
+     * @return A string indicating that the controller works and including the received name.
+     */
+    @PostMapping(value = "/testPostMethod")
+    public String testControllerPost(@RequestBody String name) {
+        return "El metodo POST del controller de Restaurants funciona ok, " + name + "!";
+    }
+
+    /**
+     * Another test endpoint demonstrating GET request handling.
+     * Responds with a custom message.
+     *
+     * @return A string indicating that the GET method works.
+     */
+    @GetMapping(value = "/testMethod")
+    public String testControllerGet() {
+        return "El metodo GET del controller de Restaurants funciona ok!";
+    }
+
+    /**
      * Endpoint to register a restaurant.
      * Responds with the status for the new restaurant request.
      * @param restaurantRequestDto get the necessary information to create the request.

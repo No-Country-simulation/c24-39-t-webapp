@@ -67,7 +67,7 @@ public class RestaurantController {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path("/api/restaurant/{rst_id}")
-                .buildAndExpand(restaurant.getRst_id())
+                .buildAndExpand(restaurant.rst_id())
                 .toUri();
 
         return ResponseEntity.created(uri).build();

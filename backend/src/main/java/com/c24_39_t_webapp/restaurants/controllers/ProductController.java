@@ -4,6 +4,8 @@ package com.c24_39_t_webapp.restaurants.controllers;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
+import com.c24_39_t_webapp.restaurants.models.Restaurant;
+import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,11 +109,18 @@ public class ProductController {
      * @param categoryId The ID of the category to retrieve products for.
      * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
      */
-    @GetMapping(value = "/byCategory/{categoryId}")
-    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
-        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);
-        List<ProductSummaryResponseDto> products = productService.findProductsByCategory(categoryId);
-        log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), categoryId);
+//    @GetMapping(value = "/byCategory/{categoryId}")
+//    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
+//        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);
+//        List<ProductSummaryResponseDto> products = productService.findProductsByCategory(categoryId);
+//        log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), categoryId);
+//        return ResponseEntity.ok(products);
+//    }
+    @GetMapping(value = "/byCategory/{category}")
+    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Category category) {
+        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", category);
+        List<ProductSummaryResponseDto> products = productService.findProductsByCategory(category);
+        log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), category);
         return ResponseEntity.ok(products);
     }
     /**
@@ -126,6 +135,21 @@ public class ProductController {
         log.info("Solicitud recibida para obtener productos por categoria con ID: {}", name);
         List<ProductSummaryResponseDto> products = productService.findProductsByName(name);
         log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), name);
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByRestaurant(Restaurant)}.
+     *
+     * @param restaurant The restaurant to retrieve products for.
+     * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified restaurant.
+     */
+    @GetMapping(value = "/byRestaurant/{restaurant}")
+    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByRestaurant(@PathVariable Restaurant restaurant) {
+        log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
+        List<ProductSummaryResponseDto> products = productService.findProductsByRestaurant(restaurant);
+        log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
         return ResponseEntity.ok(products);
     }
 }

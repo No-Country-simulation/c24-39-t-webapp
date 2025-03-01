@@ -9,15 +9,4 @@ public record RestaurantResponseDto(
         String phone,
         String address,
         String logo
-) {
-    public RestaurantResponseDto(Restaurant restaurant) {
-        this(
-                restaurant.getRst_id(),
-                restaurant.getName(),
-                restaurant.getDescription(),
-                restaurant.getPhone(),
-                restaurant.getAddress(),
-                restaurant.getLogo()
-        );
-    }
-}
+) { }

@@ -173,12 +173,18 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductSummaryResponseDto> findProductsByCategory(Long ctg_Id) {
-        log.info("Recuperando los producto de la categoria con ID {}", ctg_Id);
-        List<Product> products = productRepository.findProductsByCategory(ctg_Id);
+//    public List<ProductSummaryResponseDto> findProductsByCategory(Long ctg_Id) {
+//        log.info("Recuperando los producto de la categoria con ID {}", ctg_Id);
+//        List<Product> products = productRepository.findProductsByCategory(ctg_Id);
+//
+//        if (products.isEmpty()) {
+//            throw new ProductNotFoundException("No se encontraron productos para la categoría con id: " + ctg_Id);
+    public List<ProductSummaryResponseDto> findProductsByCategory(Category category) {
+        log.info("Recuperando los producto de la categoria con ID {}", category);
+        List<Product> products = productRepository.findProductsByCategory(category);
 
         if (products.isEmpty()) {
-            throw new ProductNotFoundException("No se encontraron productos para la categoría con id: " + ctg_Id);
+            throw new ProductNotFoundException("No se encontraron productos para la categoría con id: " + category);
         }
 
         return products.stream()
@@ -217,6 +223,27 @@ public class ProductServiceImpl implements IProductService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant) {
+        log.info("Buscando productos del restaurante con ID: {}", restaurant.getRst_id());
+//        if (newRestaurant == null || newRestaurant <= 0) {
+//            log.warn("El ID del restaurante proporcionado es invalido: {}", restaurantId);
+//            throw new ProductNotFoundException("El ID del restaurante no es válido " + restaurantId);
+//        }
+//        Restaurant newRestaurant = restaurantRepository.findById(restaurant.rst_id());
+
+        List<Product> products = productRepository.findProductsByRestaurant(restaurant);
+        return products.stream()
+                .map(product -> new ProductSummaryResponseDto(
+                        product.getPrd_id(),
+                        product.getRestaurant().getRst_id(),
+                        product.getCategory().getCtg_id(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getImage()
+                ))
+                .collect(Collectors.toList());
+    }
 }
 
 

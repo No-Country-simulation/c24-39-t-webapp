@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.UserUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.UserResponseDto;
+import com.c24_39_t_webapp.restaurants.exception.user_implementations.UserNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.services.IUserService;
@@ -46,9 +47,13 @@ public class UserServiceImpl implements IUserService {
         }
         userRepository.save(user);
         log.info("Resource saved");
-        UserResponseDto userRes = new UserResponseDto(user.getId(), user.getName(), user.getEmail(), user.getRole(),
-                user.getPhone(), user.getAddress());
+        UserResponseDto userRes = new UserResponseDto(user);
         return userRes;
+    }
+
+    private UserEntity getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("El Usuario no Existe!"));
     }
 
 }

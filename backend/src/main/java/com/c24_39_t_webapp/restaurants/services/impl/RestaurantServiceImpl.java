@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
+import com.c24_39_t_webapp.restaurants.exception.user_implementations.ResourceNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
@@ -118,5 +119,9 @@ public class RestaurantServiceImpl implements IRestaurantService {
         }
         restaurantRepository.deleteById(id);
         return null;
+    }
+    private Restaurant getRestaurantById(Long id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El restaurante no existe!"));
     }
 }

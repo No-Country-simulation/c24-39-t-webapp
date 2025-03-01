@@ -111,11 +111,10 @@ public class RestaurantServiceImpl implements IRestaurantService {
         return new RestaurantResponseDto(updatedRestaurant);
     }
     @Override
-    public RestaurantResponseDto deleteById(Long id) {
+    public void deleteById(Long id) {
         if (!restaurantRepository.existsById(id)) {
             throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
         }
         restaurantRepository.deleteById(id);
-        return null;
     }
 }

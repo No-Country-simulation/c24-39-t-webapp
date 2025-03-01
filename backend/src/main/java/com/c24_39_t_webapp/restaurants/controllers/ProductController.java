@@ -73,18 +73,34 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
 
+    /**
+     * Endpoint to update an existing {@link ProductResponseDto} object in the system.
+     * Delegates the update logic to {@link IProductService#updateProduct(Long, ProductRequestDto)}.
+     *
+     * @param prd_id The ID of the product to update.
+     * @param updateDto The {@code ProductRequestDto} object containing the updated product details.
+     * @return The {@code ProductResponseDto} object representing the updated product.
+     */
     @PatchMapping("/{prd_id}")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
-        log.info("Solicitud recibida para actualizar la categoria con ID: {}", prd_id);
+        log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);
         ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
-        log.info("Categoria con ID: {} actualizado exitosamente", prd_id);
+        log.info("Producto con ID: {} actualizado exitosamente", prd_id);
         return ResponseEntity.ok(updatedProduct);
     }
-//
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-//        productService.deleteProduct(id);
-//        return ResponseEntity.noContent().build();
-//    }
+
+    /**
+     * Endpoint to delete an existing {@link ProductResponseDto} object from the system.
+     * Delegates the deletion logic to {@link IProductService#deleteProduct(Long)}.
+     *
+     * @param prd_id The ID of the product to delete.
+     * @return A {@link ResponseEntity} object with no content to indicate a successful deletion.
+     */
+    @DeleteMapping("/{prd_id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long prd_id) {
+        log.info("Solicitud recibida para eliminar el producto con ID: {}", prd_id);
+        productService.deleteProduct(prd_id);
+        log.info("Producto con ID: {} eliminado exitosamente", prd_id);
+        return ResponseEntity.noContent().build();
+    }
 }

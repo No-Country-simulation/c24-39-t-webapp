@@ -161,6 +161,15 @@ public class ProductServiceImpl implements IProductService {
                 updatedProduct.getQuantity()
         );
     }
+    @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('restaurante')")
+    public void deleteProduct(Long prd_id) {
+        if (!productRepository.existsById(prd_id)) {
+            throw new ProductNotFoundException("Product no encontrado con id: " + prd_id);
+        }
+        productRepository.deleteById(prd_id);
+    }
 }
 
 

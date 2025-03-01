@@ -92,11 +92,10 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryResponseDto deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new CategoryNotFoundException("Restaurante no encontrado con id: " + id);
+    public void deleteCategory(Long ctg_id) {
+        if (!categoryRepository.existsById(ctg_id)) {
+            throw new CategoryNotFoundException("Restaurante no encontrado con id: " + ctg_id);
         }
-        categoryRepository.deleteById(id);
-        return null;
+        categoryRepository.deleteById(ctg_id);
     }
 }

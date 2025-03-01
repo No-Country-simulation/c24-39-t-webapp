@@ -192,6 +192,30 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
+    @Override
+    public List<ProductSummaryResponseDto> findProductsByName(String name) {
+        log.info("Buscando el product con ID: {}", name);
+        if (name == null || name.trim().isEmpty()) {
+            log.warn("El nombre del producto proporcionado no es valido: {}", name);
+            throw new IllegalArgumentException("El nombre del producto no puede ser nulo o estar vacío");
+        }
+        name = name.trim();
+        if (name.length() < 2) {
+            log.warn("El nombre del producto es demasiado corto: {}", name);
+            throw new IllegalArgumentException("El nombre del producto debe tener al menos 2 caracteres");
+        }
+        return productRepository.findProductsByName(name)
+                .stream()
+                .map(product -> new ProductSummaryResponseDto(
+                        product.getPrd_id(),
+                        product.getRestaurant().getRst_id(),
+                        product.getCategory().getCtg_id(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getImage()
+                ))
+                .collect(Collectors.toList());
+    }
 }
 
 

@@ -114,4 +114,18 @@ public class ProductController {
         log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), categoryId);
         return ResponseEntity.ok(products);
     }
+    /**
+     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByName(String)}.
+     *
+     * @param name The name of the product to retrieve.
+     * @return A list of {@code ProductSummaryResponseDto} objects representing all products with the specified name.
+     */
+    @GetMapping(value = "/byName")
+    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByName(@RequestParam String name) {
+        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", name);
+        List<ProductSummaryResponseDto> products = productService.findProductsByName(name);
+        log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), name);
+        return ResponseEntity.ok(products);
+    }
 }

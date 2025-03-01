@@ -12,4 +12,8 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     // Aquí se pueden agregar métodos de consulta personalizados si es necesario
     @Query("SELECT p FROM Product p WHERE p.category.ctg_id = :categoryId")
     List<Product> findProductsByCategory(@Param("categoryId") Long categoryId);
+
+    //    @Query("SELECT p FROM Product p WHERE LOWER(p.name) = LOWER(:name)")
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Product> findProductsByName(@Param("name") String name);
 }

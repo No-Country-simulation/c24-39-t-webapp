@@ -1,7 +1,12 @@
 package com.c24_39_t_webapp.restaurants.exception;
 
-public class RestaurantNotFoundException extends RuntimeException {
+public class RestaurantNotFoundException extends NotFoundException {
     public RestaurantNotFoundException(String message) {
         super(message);
+    }
+
+    @Override
+    public String getResourceName() {
+        return "Restaurante";
     }
 }

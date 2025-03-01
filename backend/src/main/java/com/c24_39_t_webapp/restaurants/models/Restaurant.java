@@ -1,5 +1,6 @@
 package com.c24_39_t_webapp.restaurants.models;
 
+import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,4 +48,12 @@ public class Restaurant {
     @Column(name = "rst_fecha_actualizacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public Restaurant(RestaurantRequestDto restaurantRequestDto) {
+        this.name = restaurantRequestDto.name();
+        this.description = restaurantRequestDto.description();
+        this.phone = restaurantRequestDto.phone();
+        this.address = restaurantRequestDto.address();
+        this.logo = restaurantRequestDto.logo();
+    }
 }

@@ -1,16 +1,13 @@
 package com.c24_39_t_webapp.restaurants.controllers;
 
 
-import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
-import com.c24_39_t_webapp.restaurants.services.ICategoryService;
+import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -102,5 +99,19 @@ public class ProductController {
         productService.deleteProduct(prd_id);
         log.info("Producto con ID: {} eliminado exitosamente", prd_id);
         return ResponseEntity.noContent().build();
+    }
+    /**
+     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Long)}.
+     *
+     * @param categoryId The ID of the category to retrieve products for.
+     * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
+     */
+    @GetMapping(value = "/byCategory/{categoryId}")
+    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
+        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);
+        List<ProductSummaryResponseDto> products = productService.findProductsByCategory(categoryId);
+        log.info("Se recuperaron {} productos por categoria con ID: {} exitosamente.", products.size(), categoryId);
+        return ResponseEntity.ok(products);
     }
 }

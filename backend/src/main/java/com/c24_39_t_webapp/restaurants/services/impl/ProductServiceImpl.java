@@ -4,6 +4,7 @@ import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
@@ -77,13 +78,12 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductResponseDto> findAllProducts() {
-
+        log.info("Recuperando todos los productos.");
         List<Product> products = productRepository.findAll();
 
         if (products.isEmpty()) {
             throw new ProductNotFoundException("No se encontraron productos.");
         }
-
         return products.stream()
                 .map(product -> new ProductResponseDto(
                         product.getPrd_id(),
@@ -106,6 +106,7 @@ public class ProductServiceImpl implements IProductService {
             log.warn("El ID del producto proporcionado es invalido: {}", prd_id);
             throw new ProductNotFoundException("El ID del producto no es válido " + prd_id);
         }
+        log.info("Buscando el product con ID: {}", prd_id);
         return productRepository.findById(prd_id)
                 .map(product -> new ProductResponseDto(
                         product.getPrd_id(),
@@ -169,6 +170,27 @@ public class ProductServiceImpl implements IProductService {
             throw new ProductNotFoundException("Product no encontrado con id: " + prd_id);
         }
         productRepository.deleteById(prd_id);
+    }
+
+    @Override
+    public List<ProductSummaryResponseDto> findProductsByCategory(Long ctg_Id) {
+        log.info("Recuperando los producto de la categoria con ID {}", ctg_Id);
+        List<Product> products = productRepository.findProductsByCategory(ctg_Id);
+
+        if (products.isEmpty()) {
+            throw new ProductNotFoundException("No se encontraron productos para la categoría con id: " + ctg_Id);
+        }
+
+        return products.stream()
+                .map(product -> new ProductSummaryResponseDto(
+                        product.getPrd_id(),
+                        product.getRestaurant().getRst_id(),
+                        product.getCategory().getCtg_id(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getImage()
+                ))
+                .collect(Collectors.toList());
     }
 }
 

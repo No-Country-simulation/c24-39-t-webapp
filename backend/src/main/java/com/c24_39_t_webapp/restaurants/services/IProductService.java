@@ -18,5 +18,6 @@ public interface IProductService {
     void deleteProduct(Long prd_id);
 
     List<ProductSummaryResponseDto> findProductsByCategory(Long categoryId);
+
     List<ProductSummaryResponseDto> findProductsByName(String name);
 }

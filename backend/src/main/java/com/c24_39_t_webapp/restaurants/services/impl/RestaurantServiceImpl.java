@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
+import com.c24_39_t_webapp.restaurants.exception.user_implementations.ResourceNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
@@ -25,7 +26,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
-    public Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto, String email) {
+    public RestaurantResponseDto registerRestaurant(RestaurantRequestDto restaurantRequestDto, String email) {
         log.info("Intentando crear un restaurante para el usuario con email: {}", email);
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
@@ -39,8 +40,9 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
         Restaurant restaurant = new Restaurant(restaurantRequestDto);
         restaurant.setUserEntity(user);
-
-        return restaurantRepository.save(restaurant);
+        restaurantRepository.save(restaurant);
+        log.info("¡Restaurante creado Exitosamente!");
+        return new RestaurantResponseDto(restaurant);
     }
 
 
@@ -116,5 +118,9 @@ public class RestaurantServiceImpl implements IRestaurantService {
             throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
         }
         restaurantRepository.deleteById(id);
+    }
+    private Restaurant getRestaurantById(Long id) {
+        return restaurantRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("El restaurante no existe!"));
     }
 }

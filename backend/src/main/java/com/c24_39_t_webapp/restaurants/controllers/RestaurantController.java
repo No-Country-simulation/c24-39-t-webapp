@@ -26,32 +26,6 @@ public class RestaurantController {
     private IRestaurantService restaurantService;
 
     /**
-     * Endpoint to register a restaurant.
-     * Responds with the status for the new restaurant request.
-     * @param restaurantRequestDto get the necessary information to create the request.
-     * @param userDetails Request to the token the user details, avoiding to the user enter again their information.
-     *                    (did not allow to the user enter any other wrong information)
-     * @return a response entity with the new restaurant uri
-     */
-
-    @PostMapping("/create")
-    @PreAuthorize("hasRole('RESTAURANT')")
-    public ResponseEntity<?> registerRestaurant(@RequestBody @Valid final RestaurantRequestDto restaurantRequestDto,
-                                                @AuthenticationPrincipal final UserDetailsImpl userDetails) {
-        Restaurant restaurant = restaurantService.
-                registerRestaurant(restaurantRequestDto, userDetails.getUsername());
-
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentContextPath()
-                .path("/api/restaurant/{rst_id}")
-                .buildAndExpand(restaurant.getRst_id())
-                .toUri();
-
-        return ResponseEntity.created(uri).build();
-    }
-
-
-    /**
      * Test endpoint to verify that the controller handles POST requests correctly.
      * Responds with a message including the received name parameter.
      *
@@ -74,6 +48,30 @@ public class RestaurantController {
         return "El metodo GET del controller de Restaurants funciona ok!";
     }
 
+    /**
+     * Endpoint to register a restaurant.
+     * Responds with the status for the new restaurant request.
+     * @param restaurantRequestDto get the necessary information to create the request.
+     * @param userDetails Request to the token the user details, avoiding to the user enter again their information.
+     *                    (did not allow to the user enter any other wrong information)
+     * @return a response entity with the new restaurant uri
+     */
+
+    @PostMapping("/create")
+    @PreAuthorize("hasAuthority('restaurante')")
+    public ResponseEntity<?> registerRestaurant(@RequestBody @Valid final RestaurantRequestDto restaurantRequestDto,
+                                                @AuthenticationPrincipal final UserDetailsImpl userDetails) {
+        RestaurantResponseDto restaurant = restaurantService.
+                registerRestaurant(restaurantRequestDto, userDetails.getUsername());
+
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/api/restaurant/{rst_id}")
+                .buildAndExpand(restaurant.getRst_id())
+                .toUri();
+
+        return ResponseEntity.created(uri).build();
+    }
 
     /**
      * Endpoint to retrieve a list of all {@link ResponseEntity} objects stored in the system.

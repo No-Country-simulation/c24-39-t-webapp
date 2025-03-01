@@ -16,5 +16,5 @@ public interface IRestaurantService {
 
     void deleteById(Long id);
 
-    Restaurant registerRestaurant(RestaurantRequestDto restaurantRequestDto, String username);
+    RestaurantResponseDto registerRestaurant(RestaurantRequestDto restaurantRequestDto, String username);
 }

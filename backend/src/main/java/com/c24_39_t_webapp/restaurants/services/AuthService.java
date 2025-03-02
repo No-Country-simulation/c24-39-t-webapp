@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.services;
 import com.c24_39_t_webapp.restaurants.dtos.request.LoginRequest;
 import com.c24_39_t_webapp.restaurants.dtos.request.RegisterRequest;
 import com.c24_39_t_webapp.restaurants.dtos.response.AuthResponse;
+import com.c24_39_t_webapp.restaurants.dtos.response.UserResponseDto;
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.config.segurity.JwtUtil;
 import com.c24_39_t_webapp.restaurants.services.impl.UserDetailsImpl;
@@ -37,8 +38,11 @@ public class AuthService {
                 .address(request.address())
                 .role(request.role().toUpperCase())
                 .build();
-        userRepository.save(newUser);
-        return new AuthResponse("", "Usuario creado exitosamente");
+
+        var savedUser = userRepository.save(newUser);
+        UserResponseDto userResponse = new UserResponseDto(savedUser);
+
+        return new AuthResponse("", "Usuario creado exitosamente", userResponse);
     }
 
     public AuthResponse login(LoginRequest request){
@@ -48,7 +52,8 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         String token = jwtUtil.generateToken(request.email(), userDetails.getRole());
-        return new AuthResponse(token, "El usuario ha iniciado sesión correctamente");
+        UserResponseDto userResponse = new UserResponseDto(userDetails);
+        return new AuthResponse(token, "El usuario ha iniciado sesión correctamente",userResponse);
     }
 
 }

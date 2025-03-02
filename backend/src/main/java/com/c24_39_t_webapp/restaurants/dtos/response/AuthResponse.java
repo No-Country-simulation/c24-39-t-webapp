@@ -7,6 +7,8 @@ public record AuthResponse(
         String accessToken,
 
         @JsonProperty("message")
-        String message
+        String message,
+
+        UserResponseDto user
 ) {
 }

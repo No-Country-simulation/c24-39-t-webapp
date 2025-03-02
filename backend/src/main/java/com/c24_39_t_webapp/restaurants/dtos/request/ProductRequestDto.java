@@ -1,0 +1,34 @@
+package com.c24_39_t_webapp.restaurants.dtos.request;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+public record ProductRequestDto(
+        @NotNull(message = "El ID del restaurante no puede estar vacío.")
+        Long restaurantId,
+
+        @NotNull(message = "La categoria del producto no puede estar vacío.")
+        Long categoryId,
+        @NotBlank(message = "El nombre del producto no puede estar vacío.")
+        @Size(max = 60, message = "El nombre del producto no puede tener más de 40 caracteres.")
+        String name,
+
+        @NotBlank(message = "La descripción no puede estar vacía.")
+        @Size(max = 500, message = "El tamaño de la categoria no puede exceder de 500 caracteres.")
+        String description,
+
+        @NotNull(message = "El precio no puede estar vacío.")
+        Integer price,
+
+        @NotBlank(message = "La imagen no puede estar vacía.")
+        String image,
+
+        @NotNull(message = "El estado no puede ser nulo.")
+        Boolean isActive,
+
+        @NotNull(message = "La cantidad no puede estar vacío.")
+        Integer quantity
+) {
+}

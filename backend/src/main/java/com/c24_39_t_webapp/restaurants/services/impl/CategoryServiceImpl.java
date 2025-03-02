@@ -1,13 +1,9 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
-import com.c24_39_t_webapp.restaurants.dtos.request.RestaurantRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
-import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 import com.c24_39_t_webapp.restaurants.services.ICategoryService;
 import lombok.AllArgsConstructor;
@@ -28,8 +24,8 @@ public class CategoryServiceImpl implements ICategoryService {
     public CategoryResponseDto addCategory(CategoryRequestDto categoryRequestDto) {
         Category newCategory = new Category();
 
-        newCategory.setName(categoryRequestDto.getName());
-        newCategory.setDescription(categoryRequestDto.getDescription());
+        newCategory.setName(categoryRequestDto.name());
+        newCategory.setDescription(categoryRequestDto.description());
 
         Category savedCategory = categoryRepository.save(newCategory);
 
@@ -47,7 +43,7 @@ public class CategoryServiceImpl implements ICategoryService {
         List<Category> categories = categoryRepository.findAll();
 
         if (categories.isEmpty()) {
-            throw new RuntimeException("No se encontraron categorías.");
+            throw new CategoryNotFoundException("No se encontraron categorias.");
         }
 
         return categories.stream()
@@ -74,8 +70,8 @@ public class CategoryServiceImpl implements ICategoryService {
                         category.getDescription()
                 ))
                 .orElseThrow(() -> {
-                    log.warn("No se encontro un gasto con el ID: {}", ctg_id);
-                    throw new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
+                    log.warn("No se encontro una categoria con el ID: {}", ctg_id);
+                    return new CategoryNotFoundException("No se encontro una categoria con ese ID: " + ctg_id);
                 });
     }
 
@@ -87,8 +83,8 @@ public class CategoryServiceImpl implements ICategoryService {
                     log.warn("No se encontró una categoria con ese ID para editar: {}", ctg_id);
                     return new CategoryNotFoundException(("No se encontró una categoria con ese ID para editar: " + ctg_id));
                 });
-        category.setName(updateDto.getName());
-        category.setDescription(updateDto.getDescription());
+        category.setName(updateDto.name());
+        category.setDescription(updateDto.description());
 
         Category updatedCategory = categoryRepository.save(category);
         log.info("Categoria actualizado exitosamente: {}", updatedCategory);
@@ -96,11 +92,10 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public CategoryResponseDto deleteCategory(Long id) {
-        if (!categoryRepository.existsById(id)) {
-            throw new CategoryNotFoundException("Restaurante no encontrado con id: " + id);
+    public void deleteCategory(Long ctg_id) {
+        if (!categoryRepository.existsById(ctg_id)) {
+            throw new CategoryNotFoundException("Restaurante no encontrado con id: " + ctg_id);
         }
-        categoryRepository.deleteById(id);
-        return null;
+        categoryRepository.deleteById(ctg_id);
     }
 }

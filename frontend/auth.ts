@@ -1,30 +1,39 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { AdapterUser } from "next-auth/adapters";
+import { URL_BACKEND } from "@/utils/constants";
 
 declare module "next-auth" {
   interface JWT {
     access_token?: string;
-    message: string;
+    //message: string;
+    user: CustomUser
   }
 
   interface Session {
-    access_token?: string | undefined;
-    user?: {
-      id?: string;
-      email?: string;
-      role?: string;
-    };
+    access_token?: string;
+    user: CustomUser
   }
 
-  interface User extends BackendUser {
-    access_token?: string;
-    message: string;
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  interface User extends BackendUser {}
+}
+
+
+
+type CustomUser = AdapterUser & {
+  id: string | number;
+  email: string;
+  role: string;
+  phone: string;
+  name: string;
+  address: string;
 }
 
 type BackendUser = {
   access_token?: string;
   message: string;
+  user: CustomUser
 };
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -36,7 +45,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        const res = await fetch("https://c24-39-t-webapp.onrender.com/auth/login", {
+        const res = await fetch(`${URL_BACKEND}/auth/login`, {
           method: "POST",
           body: JSON.stringify({
             email: credentials.email,
@@ -46,7 +55,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
 
         const user: BackendUser = await res.json();
-	// console.log("USUARIOOOO:", user)
 
         if (res.ok && user.access_token) {
           return user;
@@ -63,13 +71,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ user, token }) {
       if (user) {
         token.access_token = user.access_token;
-      	// aca agregar al token los demas datos del usuario
+        token.user = user.user
       }
       return token;
     },
     async session({ session, token }) {
-      session.access_token = token.access_token as string;
-	// aca agregar a la session los demas dato del usuario
+      session.access_token = token.access_token as string
+      session.user = token.user as CustomUser
       return session;
     },
   },

@@ -9,8 +9,8 @@ import { loginAction } from "@/server/actions/login-action";
 
 type FormErrors = {
   _form?: string[];
-  email?: { _errors: string[] } | undefined;
-  password?: { _errors: string[] } | undefined;
+  email?: string[]| undefined;
+  password?:  string[]| undefined;
 };
 
 export default function LoginPage() {
@@ -23,6 +23,8 @@ export default function LoginPage() {
       const result = await loginAction(formData);
       if(result && !result.success){
         setErrors(result.errors)
+      } else {
+        setErrors(null)
       }
     })
   }
@@ -45,7 +47,7 @@ export default function LoginPage() {
             placeholder="name@text.com" 
             required disabled={isPending}
           />
-          {errors?.email?._errors && <ErrorMessage message={errors.email._errors[0]} />}
+          {errors?.email && <ErrorMessage message={errors.email[0]} />}
         </div>
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">
@@ -59,7 +61,7 @@ export default function LoginPage() {
             placeholder="********"
             required disabled={isPending}
           />
-          {errors?.password?._errors && <ErrorMessage message={errors.password._errors[0]} />}
+          {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
         {errors?._form && <ErrorMessage message={errors._form[0]} />} <br />
         <Button className="mt-2" disabled={isPending} color="blue" type="submit">

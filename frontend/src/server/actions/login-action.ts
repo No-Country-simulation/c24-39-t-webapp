@@ -11,8 +11,8 @@ const LoginSchema = z.object({
 
 export const loginAction = async (formdata: FormData) => {
     const rawData = {
-        email: formdata.get("email"),
-        password: formdata.get("password"),
+        email: formdata.get("email") as string,
+        password: formdata.get("password") as string,
     }
 
     const result = LoginSchema.safeParse(rawData)
@@ -20,7 +20,7 @@ export const loginAction = async (formdata: FormData) => {
     if(!result.success){
         return {
             success:false,
-            errors: result.error.format()
+            errors: result.error.flatten().fieldErrors
         }
     }
 
@@ -31,12 +31,20 @@ export const loginAction = async (formdata: FormData) => {
         redirect: false,
     })
 
-    if(loginResult?.ok){
-        redirect("/")
-    }else{
+    if(loginResult?.error){
         return {
             success: false,
             errors: {_form: ["Credenciales inválidas"]}
         }
     }
+
+    if(loginResult?.ok){
+        redirect("/")
+    }
+
+    return {
+        success: true,
+        errors: {_form: ["Error inesperado al iniciar sesión"]}
+    }
+    
 }

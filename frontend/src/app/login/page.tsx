@@ -1,47 +1,53 @@
-import { Button, Label, Spinner, TextInput } from "flowbite-react";
-import { HiUser, HiMail, HiIdentification } from "react-icons/hi";
+"use client"
 
-import { z } from "zod";
-import { signIn } from "../../../auth";
-import {redirect} from "next/navigation"
+import { useState, useTransition } from "react";
 
-const LoginSchema = z.object({
-  email: z.string().min(1, "El email es requerido").email("Formato de email inválido"),
-  password: z.string().min(1, "La contraseña es requerida").min(6, "La contraseña debe tener al menos 6 caracteres"),
-});
+import { Button, Label, TextInput } from "flowbite-react";
+import { HiClock, HiMail } from "react-icons/hi";
+import ErrorMessage from "@/components/error-message";
+import { loginAction } from "@/server/actions/login-action";
 
-/** type FormErrors = {
-  email?: string;
-  password?: string;
-};*/
+type FormErrors = {
+  _form?: string[];
+  email?: { _errors: string[] } | undefined;
+  password?: { _errors: string[] } | undefined;
+};
 
 export default function LoginPage() {
+
+   const [isPending, startTransition] = useTransition();
+  const [errors, setErrors] = useState<FormErrors|null>(null);
+
+  const handleSubmit = async (formData: FormData) => {
+    startTransition(async () => {
+      const result = await loginAction(formData);
+      if(result && !result.success){
+        setErrors(result.errors)
+      }
+    })
+  }
+
   return (
     <section className="container h-screen flex justify-center items-center">
       <form
-        action={async (formdata: FormData) => {
-          "use server";
-	  console.log("Entro login")
-           try{
-	    await signIn("credentials", {
-	      email: formdata.get("email"),
-	      password: formdata.get("password"),
-	      redirect: false,	
-	    })
-		redirect("/")
-	   }
-	   catch(err){console.log("error completo:", err)}
-          
-        }}
+        action={handleSubmit} noValidate
         className="flex md:max-w-lg w-[300px] flex-col gap-4"
       >
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="mb-2 block">
             <Label htmlFor="email1" value="Tu email" />
           </div>
-          <TextInput name="email" id="email1" type="email" rightIcon={HiUser} placeholder="name@text.com" required />
+          <TextInput 
+            name="email" 
+            id="email1" 
+            type="email" 
+            rightIcon={HiMail} 
+            placeholder="name@text.com" 
+            required disabled={isPending}
+          />
+          {errors?.email?._errors && <ErrorMessage message={errors.email._errors[0]} />}
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <div className="mb-2 block">
             <Label className="dark:text-white" htmlFor="password1" value="Tu contraseña" />
           </div>
@@ -49,13 +55,17 @@ export default function LoginPage() {
             name="password"
             id="password1"
             type="password"
-            rightIcon={HiMail}
+            rightIcon={HiClock}
             placeholder="********"
-            required
+            required disabled={isPending}
           />
+          {errors?.password?._errors && <ErrorMessage message={errors.password._errors[0]} />}
         </div>
-        <Button className="mt-2" color="blue" type="submit">
-          Iniciar sesión
+        {errors?._form && <ErrorMessage message={errors._form[0]} />} <br />
+        <Button className="mt-2" disabled={isPending} color="blue" type="submit">
+          {
+            isPending ? "Cargando..." : "Iniciar sesión"
+          }
         </Button>
       </form>
     </section>

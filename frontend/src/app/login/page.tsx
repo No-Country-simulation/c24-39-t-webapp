@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useTransition } from "react";
-import 'tailwindcss';
 
 import { Button, Label, TextInput } from "flowbite-react";
 import { HiClock, HiMail } from "react-icons/hi";
@@ -31,7 +30,7 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="w-full h-screen flex justify-center items-center gap-40">
+    <section className="w-full h-screen flex justify-center items-center gap-40 bg-gradient-to-r from-gray-700 via-gray-400 to-white">
       <h1 className="text-2x1 text-[#FFBA05] font-lobster">Foody</h1>
       <form
         action={handleSubmit} noValidate
@@ -66,7 +65,7 @@ export default function LoginPage() {
           {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
         {errors?._form && <ErrorMessage message={errors._form[0]} />} <br />
-        <Button className="mt-2 " disabled={isPending} color="blue" type="submit">
+        <Button className="mt-2 " disabled={isPending} type="submit">
           {
             isPending ? "Cargando..." : "Iniciar sesión"
           }

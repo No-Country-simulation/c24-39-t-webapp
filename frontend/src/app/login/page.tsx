@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react";
+import 'tailwindcss';
 
 import { Button, Label, TextInput } from "flowbite-react";
 import { HiClock, HiMail } from "react-icons/hi";
@@ -15,7 +16,7 @@ type FormErrors = {
 
 export default function LoginPage() {
 
-   const [isPending, startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   const [errors, setErrors] = useState<FormErrors|null>(null);
 
   const handleSubmit = async (formData: FormData) => {
@@ -30,14 +31,15 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="container h-screen flex justify-center items-center">
+    <section className="w-full h-screen flex justify-center items-center gap-40">
+      <h1 className="text-2x1 text-[#FFBA05] font-lobster">Foody</h1>
       <form
         action={handleSubmit} noValidate
-        className="flex md:max-w-lg w-[300px] flex-col gap-4"
+        className="flex flex-col gap-4 bg-[#FAFAF5] w-2/6 h-auto p-8 box-border overflow-hidden justify-between"
       >
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">
-            <Label htmlFor="email1" value="Tu email" />
+            <Label htmlFor="email1" value="Tu email"/>
           </div>
           <TextInput 
             name="email" 
@@ -51,7 +53,7 @@ export default function LoginPage() {
         </div>
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">
-            <Label className="dark:text-white" htmlFor="password1" value="Tu contraseña" />
+            <Label htmlFor="password1" value="Tu contraseña" />
           </div>
           <TextInput
             name="password"
@@ -64,7 +66,7 @@ export default function LoginPage() {
           {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
         {errors?._form && <ErrorMessage message={errors._form[0]} />} <br />
-        <Button className="mt-2" disabled={isPending} color="blue" type="submit">
+        <Button className="mt-2 " disabled={isPending} color="blue" type="submit">
           {
             isPending ? "Cargando..." : "Iniciar sesión"
           }

@@ -7,18 +7,17 @@ export default {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    flowbite.content()
+    flowbite.content(),
   ],
   theme: {
-    darkMode: 'class',
+    darkMode: "class",
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        primary: "#f97316",
+        secondary: "#f3f4f6",
+        accent: "#2563eb",
       },
     },
   },
-  plugins: [
-	  flowbite.plugin(),
-	],
+  plugins: [flowbite.plugin()],
 } satisfies Config;

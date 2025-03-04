@@ -1,6 +1,7 @@
 package com.c24_39_t_webapp.restaurants.controllers;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.request.OrderUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 import com.c24_39_t_webapp.restaurants.repository.OrderRepository;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
@@ -68,8 +69,24 @@ public class OrderController {
     }
 
     /**
+     * Endpoint to update an existing {@link ResponseEntity} Order object in the system.
+     * Delegates the update logic to {@link IOrderService#updateOrder(Long, OrderUpdateRequestDto)}.
+     *
+     * @param ord_id          The ID of the order to update.
+     * @param updateRequestDto The {@code OrderUpdateRequestDto} object containing the updated order details.
+     * @return The {@code OrderResponseDto} object representing the updated order.
+     */
+    @PatchMapping(value = "/{ord_id}")
+    public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long ord_id, @RequestBody OrderUpdateRequestDto updateRequestDto) {
+        log.info("Solicitud recibida para actualizar el pedido con id: {} con los siguientes datos: {}", ord_id, updateRequestDto);
+        OrderResponseDto order = orderService.updateOrder(ord_id, updateRequestDto);
+        log.info("Pedido actualizado exitosamente con los siguientes datos: {}", order);
+        return ResponseEntity.ok(order);
+    }
+
+    /**
      * Endpoint to delete an existing {@link ResponseEntity} Order object in the system.
-     * Delegates the delete logic to {@link IOrderService#deleteOrder(Long)}.
+     * Delegates the delete logic to {@link IOrderService#deleteOrder(Order)}.
      *
      * @param ord_id The ID of the order to delete.
      */

@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderDetailsRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.request.OrderUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderDetailsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.*;
@@ -11,6 +12,8 @@ import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,10 +30,10 @@ public class OrderServiceImpl implements IOrderService {
     private final ProductRepository productRepository;
     private final OrderDetailsRepository orderDetailsRepository;
 
-
     //    @PreAuthorize("hasAuthority('user')")
     @Override
     @Transactional
+    @PreAuthorize("hasAuthority('cliente')")
     public OrderResponseDto addOrder(OrderRequestDto orderRequestDto, String email) {
         log.info("Intentando crear un pedido para el usuario con email: {}", email);
 
@@ -108,12 +111,21 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
     @Override
+    @PreAuthorize("hasAuthority('restaurante')")
     public List<OrderResponseDto> findAllOrders() {
-        log.info("Recuperando todos los pedidos.");
-        List<Order> orders = orderRepository.findAll();
+        log.info("Recuperando todos los pedidos del restaurante atenticado.");
+        // Obtener el email del usuario autenticado
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Usuario autenticado: {}", userEmail);
 
+        // Buscar el restaurante asociado al usuario
+        Restaurant restaurant = restaurantRepository.findByUserEntityEmail(userEmail)
+                .orElseThrow(() -> new RestaurantNotFoundException("No se encontró un restaurante asociado al usuario"));
+
+        // Filtrar pedidos por restaurante
+        List<Order> orders = orderRepository.findByRestaurantId(restaurant);
         if (orders.isEmpty()) {
-            throw new OrderNotFoundException("No se encontraron productos.");
+            throw new OrderNotFoundException("No se encontraron pedidos para este restaurante.");
         }
         return orders.stream()
                 .map(order -> new OrderResponseDto(
@@ -135,15 +147,33 @@ public class OrderServiceImpl implements IOrderService {
                 .collect(Collectors.toList());
     }
     @Override
+    @PreAuthorize("hasAuthority('restaurante')")
     public OrderResponseDto findOrderById(Long ord_id) {
         log.info("Buscando el pedido con ID: {}", ord_id);
         if (ord_id == null || ord_id <= 0) {
             log.warn("El ID del pedido proporcionado es invalido: {}", ord_id);
             throw new OrderNotFoundException("El ID del pedido no es válido " + ord_id);
         }
-        log.info("Buscando el pedido con ID: {}", ord_id);
-        return orderRepository.findById(ord_id)
-                .map(order -> new OrderResponseDto(
+
+        // Buscar el pedido
+        Order order = orderRepository.findById(ord_id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontró el pedido con ID: {}", ord_id);
+                    return new OrderNotFoundException("Pedido no encontrado con ID: " + ord_id);
+                });
+
+        // Obtener el email del usuario autenticado (restaurante)
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Usuario autenticado: {}", userEmail);
+
+        // Validar que el pedido pertenece al restaurante del usuario autenticado
+        if (!order.getRestaurantId().getUserEntity().getEmail().equals(userEmail)) {
+            log.warn("Intento de acceso no autorizado al pedido {} por el usuario {}", ord_id, userEmail);
+            throw new SecurityException("No tienes permiso para acceder a este pedido");
+        }
+
+        log.info("Pedido con ID {} encontrado y autorizado para el restaurante", ord_id);
+        return new OrderResponseDto(
                         order.getOrd_id(),
                         order.getClientId().getId(),
                         order.getRestaurantId().getRst_id(),
@@ -158,19 +188,93 @@ public class OrderServiceImpl implements IOrderService {
                                         detail.getSubtotal()
                                 ))
                                 .collect(Collectors.toList())
-                ))
-                .orElseThrow(() -> {
-                    log.warn("No se encontro un pedido con el ID: {}", ord_id);
-                    return new OrderNotFoundException("No se encontro una pedido con el ID: " + ord_id);
-                });
+                );
+    }
+
+
+
+    @Override
+    @Transactional
+    @PreAuthorize("hasAuthority('restaurante')")
+    //posibles estados de pedido: ('pendiente', 'pagado', 'entregado', 'cancelado')
+    public OrderResponseDto updateOrder(Long ord_id, OrderUpdateRequestDto orderUpdateRequestDto) {
+        log.info("Intentando actualizar el pedido con ID: {}", ord_id);
+        if (ord_id == null || ord_id <= 0) {
+            throw new OrderNotFoundException("ID de pedido no válido: " + ord_id);
+        }
+        Order order = orderRepository.findById(ord_id)
+                .orElseThrow(() -> new OrderNotFoundException("Pedido no encontrado con ID: " + ord_id));
+
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Recuperando el email del usuario de la autenticacion: {}", userEmail);
+        log.info("Recuperando el email del usuario dueño del restaurante: {}", order.getRestaurantId().getUserEntity().getEmail());
+
+        if(!order.getRestaurantId().getUserEntity().getEmail().equals(userEmail)){
+            throw new SecurityException("No tienes permiso para editar pedidos de este restaurante");
+        }
+        log.info("El email del dueño del restuarente es válido: {}", userEmail);
+
+
+        if (orderUpdateRequestDto.estate() != null) {
+            order.setEstate(orderUpdateRequestDto.estate());
+        }
+        if (orderUpdateRequestDto.comments() != null) {
+            order.setComments(orderUpdateRequestDto.comments());
+        }
+
+
+//        orderDetailsRepository.saveAll(details);
+        order = orderRepository.save(order);
+        log.info("Pedido actualizado con éxito");
+
+
+        return new OrderResponseDto(
+                order.getOrd_id(),
+                order.getClientId().getId(),
+                order.getRestaurantId().getRst_id(),
+                order.getEstate(),
+                order.getTotal(),
+                order.getComments(),
+                order.getDetails().stream()
+                        .map(detail -> new OrderDetailsResponseDto(
+                                detail.getOdt_id(),
+                                detail.getProduct().getPrd_id(),
+                                detail.getQuantity(),
+                                detail.getSubtotal()
+                        ))
+                        .collect(Collectors.toList())
+        );
     }
     @Override
     @Transactional
-//    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasAuthority('restaurante')")
     public void deleteOrder(Long ord_id) {
-        if (!orderRepository.existsById(ord_id)) {
-            throw new OrderNotFoundException("Pedido no encontrado con id: " + ord_id);
+        log.info("Intentando eliminar el pedido con ID: {}", ord_id);
+        if (ord_id == null || ord_id <= 0) {
+            throw new OrderNotFoundException("ID de pedido no válido: " + ord_id);
         }
-        orderRepository.deleteById(ord_id); // Hibernate eliminará los OrderDetails automáticamente en cascada
+        // Buscar el pedido
+        Order order = orderRepository.findById(ord_id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontró el pedido con ID: {}", ord_id);
+                    return new OrderNotFoundException("Pedido no encontrado con ID: " + ord_id);
+                });
+
+        // Obtener el email del usuario autenticado (restaurante)
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Usuario autenticado: {}", userEmail);
+
+        // Validar que el pedido pertenece al restaurante del usuario autenticado
+        if (!order.getRestaurantId().getUserEntity().getEmail().equals(userEmail)) {
+            log.warn("Intento de acceso no autorizado al pedido {} por el usuario {}", ord_id, userEmail);
+            throw new SecurityException("No tienes permiso para eliminar este pedido");
+        }
+        // Validar el estado del pedido
+        if (order.getEstate() != OrderState.pendiente && order.getEstate() != OrderState.cancelado) {
+            log.warn("No se puede eliminar el pedido {} porque está en estado: {}", ord_id, order.getEstate());
+            throw new IllegalStateException("Solo se pueden eliminar pedidos en estado pendiente o cancelado");
+        }
+        orderRepository.delete(order); // Hibernate eliminará los OrderDetails automáticamente en cascada
+        log.info("Pedido con ID {} eliminado con éxito", ord_id);
     }
 }

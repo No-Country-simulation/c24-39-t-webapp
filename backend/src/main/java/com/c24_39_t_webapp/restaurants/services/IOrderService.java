@@ -9,10 +9,10 @@ public interface IOrderService {
     OrderResponseDto addOrder(OrderRequestDto orderRequestDto, String username);
 
     List<OrderResponseDto> findAllOrders();
+
+    OrderResponseDto findOrderById(Long ord_id);
 //
-//    ProductResponseDto findOrderById(Long ord_id);
-//
-//    ProductResponseDto updateOrder(Long ord_id, ProductOrderDto updateOrderDto); ¿¿¿???
+//    OrderResponseDto updateOrder(Long ord_id, ProductOrderDto updateOrderDto); ¿¿¿???
 //
 //    void deleteOrder(Long ord_id);
 

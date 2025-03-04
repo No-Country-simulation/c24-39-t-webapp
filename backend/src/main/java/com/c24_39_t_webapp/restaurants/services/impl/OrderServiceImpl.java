@@ -134,5 +134,35 @@ public class OrderServiceImpl implements IOrderService {
                 ))
                 .collect(Collectors.toList());
     }
+    @Override
+    public OrderResponseDto findOrderById(Long ord_id) {
+        log.info("Buscando el pedido con ID: {}", ord_id);
+        if (ord_id == null || ord_id <= 0) {
+            log.warn("El ID del pedido proporcionado es invalido: {}", ord_id);
+            throw new OrderNotFoundException("El ID del pedido no es válido " + ord_id);
+        }
+        log.info("Buscando el pedido con ID: {}", ord_id);
+        return orderRepository.findById(ord_id)
+                .map(order -> new OrderResponseDto(
+                        order.getOrd_id(),
+                        order.getClientId().getId(),
+                        order.getRestaurantId().getRst_id(),
+                        order.getEstate(),
+                        order.getTotal(),
+                        order.getComments(),
+                        order.getDetails().stream()
+                                .map(detail -> new OrderDetailsResponseDto(
+                                        detail.getOdt_id(),
+                                        detail.getProduct().getPrd_id(),
+                                        detail.getQuantity(),
+                                        detail.getSubtotal()
+                                ))
+                                .collect(Collectors.toList())
+                ))
+                .orElseThrow(() -> {
+                    log.warn("No se encontro un pedido con el ID: {}", ord_id);
+                    return new OrderNotFoundException("No se encontro una pedido con el ID: " + ord_id);
+                });
+    }
 
 }

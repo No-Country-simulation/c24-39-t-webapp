@@ -6,6 +6,7 @@ import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class OrderController {
      * @return The {@code OrderResponseDto} object representing the added order.
      */
     @PostMapping
+    @Transactional
     public ResponseEntity<OrderResponseDto> addOrder(@RequestBody OrderRequestDto requestDto, @RequestParam String email) {
         log.info("Recibida solicitud para añadir un pedido con los siguientes datos: {}", requestDto);
         OrderResponseDto responseDto = orderService.addOrder(requestDto, email);
@@ -48,5 +50,13 @@ public class OrderController {
         List<OrderResponseDto> orders = orderService.findAllOrders();
         log.info("Se recuperaron {} pedidos exitosamente.", orders.size());
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping(value = "/{ord_Id}")
+    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long ord_Id) {
+        log.info("Solicitud recibida para obtener el pedido con id: {}", ord_Id);
+        OrderResponseDto order = orderService.findOrderById(ord_Id);
+        log.info("Pedido recuperado exitosamente con los siguientes datos: {}", order);
+        return ResponseEntity.ok(order);
     }
 }

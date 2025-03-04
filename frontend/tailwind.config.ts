@@ -1,6 +1,5 @@
 import type { Config } from "tailwindcss";
-//import flowbiteReact from "flowbite-react/tailwind";
-const flowbite = require("flowbite-react/tailwind");
+import { plugin, content } from 'flowbite-react/tailwind';
 
 export default {
   content: [
@@ -16,6 +15,9 @@ export default {
         primary: "#f97316",
         secondary: "#f3f4f6",
         accent: "#2563eb",
+      },
+      fontFamily: {
+        lobster: ["Lobster", "sans-serif"],
       },
     },
   },

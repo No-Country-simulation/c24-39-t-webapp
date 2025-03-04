@@ -13,8 +13,12 @@ import {
 } from "flowbite-react";
 import Image from "next/image";
 import { auth } from "../../auth";
+import 'tailwindcss';
+import Header from "@/components/Header";
+import Head from "next/head";
 
 export default async function Home() {
+
   const session = await auth();
 
   const categories = [

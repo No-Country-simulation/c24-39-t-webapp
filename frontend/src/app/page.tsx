@@ -14,8 +14,8 @@ import {
 import Image from "next/image";
 import { auth } from "../../auth";
 import 'tailwindcss';
-import Header from "@/components/Header";
-import Head from "next/head";
+//import Header from "@/components/Header";
+//import Head from "next/head";
 
 export default async function Home() {
 
@@ -67,18 +67,18 @@ export default async function Home() {
     },
   ];
 
-  {
-    session?.access_token ?? "no autenticado";
-  }
+  
+    if(!session?.access_token) console.log("no autenticado");
+  
   return (
     <div className="bg-gray-300">
-      <Navbar fluid rounded className=" text-white bg-slate-500 w-full">
-        <NavbarBrand className="bg-slate-400" href="/">
+      <Navbar fluid rounded className=" text-white w-full">
+        <NavbarBrand className="" href="/">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Foody Logo" />
-          <span className="self-center whitespace-nowrap text-xl font-semibold">Foody</span>
+          <span className="self-center font-[var(--lobster)] whitespace-nowrap text-xl">Foody</span>
         </NavbarBrand>
-        <div className="flex bg-slate-700 md:order-2">
-          <Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img="/images/user.jpg" rounded />}>
+        <div className="flex md:order-2">
+          <Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img="/user.png" rounded />}>
             <DropdownHeader>
               <span className="block text-sm">Usuario</span>
               <span className="block truncate text-sm font-medium">user@example.com</span>
@@ -90,7 +90,7 @@ export default async function Home() {
           </Dropdown>
           <NavbarToggle />
         </div>
-        <NavbarCollapse className="bg-slate-500">
+        <NavbarCollapse className="text-3xl hover:text-accent font-bold">
           <NavbarLink href="#" active>
             Inicio
           </NavbarLink>
@@ -117,7 +117,7 @@ export default async function Home() {
         <h1 className="text-3xl text-primary font-bold text-center my-6">Restaurantes</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {restaurants.map((restaurant) => (
-            <Card key={restaurant.id} className="shadow-lg bg-primary text-gray-900">
+            <Card key={restaurant.id} className="shadow-lg bg-primary">
               <Image
                 src={restaurant.image}
                 width={300}
@@ -126,8 +126,8 @@ export default async function Home() {
                 className="rounded-t-lg  rounded-full"
               />
               <div className="p-4">
-                <h2 className="text-xl font-semibold text-center">{restaurant.name}</h2>
-                <p className="text-gray-600 text-center">{restaurant.category}</p>
+                <h2 className="text-xl text-white font-semibold text-center">{restaurant.name}</h2>
+                <p className="text-gray-300 text-center">{restaurant.category}</p>
               </div>
             </Card>
           ))}

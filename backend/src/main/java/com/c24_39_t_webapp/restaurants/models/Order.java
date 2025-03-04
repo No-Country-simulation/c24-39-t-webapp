@@ -47,7 +47,7 @@ public class Order {
     @UpdateTimestamp
      LocalDateTime updatedAt;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderDetails> details;
 }
 

@@ -12,6 +12,8 @@ import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements IOrderService {
     private final RestaurantRepository restaurantRepository;
     private final ProductRepository productRepository;
     private final OrderDetailsRepository orderDetailsRepository;
+
 
     //    @PreAuthorize("hasAuthority('user')")
     @Override
@@ -164,5 +167,13 @@ public class OrderServiceImpl implements IOrderService {
                     return new OrderNotFoundException("No se encontro una pedido con el ID: " + ord_id);
                 });
     }
-
+    @Override
+    @Transactional
+//    @PreAuthorize("hasAuthority('restaurante')")
+    public void deleteOrder(Long ord_id) {
+        if (!orderRepository.existsById(ord_id)) {
+            throw new OrderNotFoundException("Pedido no encontrado con id: " + ord_id);
+        }
+        orderRepository.deleteById(ord_id); // Hibernate eliminará los OrderDetails automáticamente en cascada
+    }
 }

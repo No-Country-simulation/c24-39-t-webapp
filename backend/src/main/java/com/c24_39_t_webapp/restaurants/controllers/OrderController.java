@@ -4,9 +4,13 @@ import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.exception.OrderNotFoundException;
+import com.c24_39_t_webapp.restaurants.exception.ProductNotFoundException;
+import com.c24_39_t_webapp.restaurants.repository.OrderRepository;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import com.c24_39_t_webapp.restaurants.services.IProductService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +21,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("api/order")
+@AllArgsConstructor
 public class OrderController {
 
-    @Autowired
     private IOrderService orderService;
+    private OrderRepository orderRepository;
 
     /**
      * Endpoint to add a new {@link ResponseEntity} Order object to the system.
@@ -38,6 +43,7 @@ public class OrderController {
         log.info("Pedido agregado exitosamente con los siguientes datos: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
+
     /**
      * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system.
      * Delegates the retrieval logic to {@link IOrderService#findAllOrders()}.
@@ -52,11 +58,32 @@ public class OrderController {
         return ResponseEntity.ok(orders);
     }
 
-    @GetMapping(value = "/{ord_Id}")
-    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long ord_Id) {
-        log.info("Solicitud recibida para obtener el pedido con id: {}", ord_Id);
-        OrderResponseDto order = orderService.findOrderById(ord_Id);
+    /**
+     * Endpoint to retrieve a single {@link ResponseEntity} Order object from the system.
+     * Delegates the retrieval logic to {@link IOrderService#findOrderById(Long)}.
+     *
+     * @param ord_id The ID of the order to retrieve.
+     * @return The {@code OrderResponseDto} object representing the retrieved order.
+     */
+    @GetMapping(value = "/{ord_id}")
+    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long ord_id) {
+        log.info("Solicitud recibida para obtener el pedido con id: {}", ord_id);
+        OrderResponseDto order = orderService.findOrderById(ord_id);
         log.info("Pedido recuperado exitosamente con los siguientes datos: {}", order);
         return ResponseEntity.ok(order);
+    }
+
+    /**
+     * Endpoint to delete an existing {@link ResponseEntity} Order object in the system.
+     * Delegates the delete logic to {@link IOrderService#deleteOrder(Long)}.
+     *
+     * @param ord_id The ID of the order to delete.
+     */
+    @DeleteMapping(value = "/{ord_id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long ord_id) {
+        log.info("Solicitud recibida para eliminar el pedido con id: {} junto a sus detalles de pedido", ord_id);
+        orderService.deleteOrder(ord_id); // Llama al servicio
+        log.info("Pedido con id {} eliminado exitosamente junto a los detalles de pedido.", ord_id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -14,6 +14,6 @@ public interface IOrderService {
 //
 //    OrderResponseDto updateOrder(Long ord_id, ProductOrderDto updateOrderDto); ¿¿¿???
 //
-//    void deleteOrder(Long ord_id);
+    void deleteOrder(Long ord_id);
 
  }

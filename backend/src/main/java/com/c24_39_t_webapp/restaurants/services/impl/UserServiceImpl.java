@@ -22,11 +22,11 @@ public class UserServiceImpl implements IUserService {
     private UserRepository userRepository;
 
     public UserResponseDto updateUser(UserUpdateRequestDto request, String username) {
-        log.info("Getting from db the needed resource with username: ", username);
+        log.info("Getting from db the needed resource with username: {}", username);
         UserEntity user =
                 userRepository
                         .findByEmail(username).orElseThrow(() -> {
-                            log.warn("User not found", username);
+                            log.warn("User not found: {}", username);
                             return new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Not found");
                         });

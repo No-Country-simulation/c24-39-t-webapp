@@ -3,7 +3,6 @@ package com.c24_39_t_webapp.restaurants.dtos.request;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
 
 public record ProductRequestDto(
         @NotNull(message = "El ID del restaurante no puede ser nulo.")

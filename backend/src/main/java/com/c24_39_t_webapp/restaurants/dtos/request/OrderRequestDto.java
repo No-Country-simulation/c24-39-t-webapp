@@ -1,7 +1,6 @@
 package com.c24_39_t_webapp.restaurants.dtos.request;
 
 import com.c24_39_t_webapp.restaurants.models.OrderState;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 

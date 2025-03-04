@@ -1,18 +1,12 @@
 package com.c24_39_t_webapp.restaurants.controllers;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
-import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
-import com.c24_39_t_webapp.restaurants.exception.OrderNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.ProductNotFoundException;
 import com.c24_39_t_webapp.restaurants.repository.OrderRepository;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
-import com.c24_39_t_webapp.restaurants.services.IProductService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

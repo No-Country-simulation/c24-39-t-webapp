@@ -4,7 +4,6 @@ import com.c24_39_t_webapp.restaurants.dtos.request.OrderDetailsRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderDetailsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.*;
 import com.c24_39_t_webapp.restaurants.repository.*;
@@ -12,8 +11,6 @@ import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 public record ProductRequestDto(
-        @NotNull(message = "El ID del restaurante no puede estar vacío.")
+        @NotNull(message = "El ID del restaurante no puede ser nulo.")
         Long restaurantId,
 
-        @NotNull(message = "La categoria del producto no puede estar vacío.")
+        @NotNull(message = "La categoria del producto no puede ser nulo.")
         Long categoryId,
         @NotBlank(message = "El nombre del producto no puede estar vacío.")
         @Size(max = 60, message = "El nombre del producto no puede tener más de 40 caracteres.")
@@ -19,7 +19,7 @@ public record ProductRequestDto(
         @Size(max = 500, message = "El tamaño de la categoria no puede exceder de 500 caracteres.")
         String description,
 
-        @NotNull(message = "El precio no puede estar vacío.")
+        @NotNull(message = "El precio no puede estar ser nulo.")
         Integer price,
 
         @NotBlank(message = "La imagen no puede estar vacía.")

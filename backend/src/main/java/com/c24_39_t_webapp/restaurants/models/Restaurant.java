@@ -9,12 +9,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+
 @Entity
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
+@Table(name = "restaurant")
 public class Restaurant {
 
     @Id

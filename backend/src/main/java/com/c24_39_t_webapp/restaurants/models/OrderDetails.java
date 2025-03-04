@@ -2,9 +2,11 @@ package com.c24_39_t_webapp.restaurants.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "detalles_pedido")
 public class OrderDetails {
     @Id

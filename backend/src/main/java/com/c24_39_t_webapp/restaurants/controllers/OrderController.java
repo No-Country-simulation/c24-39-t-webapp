@@ -86,7 +86,7 @@ public class OrderController {
 
     /**
      * Endpoint to delete an existing {@link ResponseEntity} Order object in the system.
-     * Delegates the delete logic to {@link IOrderService#deleteOrder(Order)}.
+     * Delegates the delete logic to {@link IOrderService#deleteOrder(Long)}.
      *
      * @param ord_id The ID of the order to delete.
      */

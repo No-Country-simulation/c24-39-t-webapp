@@ -8,7 +8,7 @@ import java.util.List;
 public interface IOrderService {
     OrderResponseDto addOrder(OrderRequestDto orderRequestDto, String username);
 
-//    List<ProductResponseDto> findAllOrders();
+    List<OrderResponseDto> findAllOrders();
 //
 //    ProductResponseDto findOrderById(Long ord_id);
 //

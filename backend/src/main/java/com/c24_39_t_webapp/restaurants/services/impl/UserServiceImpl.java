@@ -2,7 +2,7 @@ package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.UserUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.UserResponseDto;
-import com.c24_39_t_webapp.restaurants.exception.user_implementations.UserNotFoundException;
+import com.c24_39_t_webapp.restaurants.exception.UserNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.services.IUserService;

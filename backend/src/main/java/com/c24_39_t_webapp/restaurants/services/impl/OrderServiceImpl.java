@@ -4,10 +4,8 @@ import com.c24_39_t_webapp.restaurants.dtos.request.OrderDetailsRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderDetailsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
-import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.ProductNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
-import com.c24_39_t_webapp.restaurants.exception.UserNotFoundException;
+import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.*;
 import com.c24_39_t_webapp.restaurants.repository.*;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
@@ -109,4 +107,32 @@ public class OrderServiceImpl implements IOrderService {
             throw new IllegalArgumentException("El total del pedido no coincide con la suma de los subtotales");
         }
     }
+    @Override
+    public List<OrderResponseDto> findAllOrders() {
+        log.info("Recuperando todos los pedidos.");
+        List<Order> orders = orderRepository.findAll();
+
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException("No se encontraron productos.");
+        }
+        return orders.stream()
+                .map(order -> new OrderResponseDto(
+                        order.getOrd_id(),
+                        order.getClientId().getId(),
+                        order.getRestaurantId().getRst_id(),
+                        order.getEstate(),
+                        order.getTotal(),
+                        order.getComments(),
+                        order.getDetails().stream()
+                                .map(detail -> new OrderDetailsResponseDto(
+                                        detail.getOdt_id(),
+                                        detail.getProduct().getPrd_id(),
+                                        detail.getQuantity(),
+                                        detail.getSubtotal()
+                                ))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
 }

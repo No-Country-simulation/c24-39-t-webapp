@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("api/order")
@@ -18,10 +20,6 @@ public class OrderController {
 
     @Autowired
     private IOrderService orderService;
-
-//    public ProductController(IProductService productService) {
-//        this.productService = productService;
-//    }
 
     /**
      * Endpoint to add a new {@link ResponseEntity} Order object to the system.
@@ -37,5 +35,18 @@ public class OrderController {
         OrderResponseDto responseDto = orderService.addOrder(requestDto, email);
         log.info("Pedido agregado exitosamente con los siguientes datos: {}", responseDto);
         return ResponseEntity.ok(responseDto);
+    }
+    /**
+     * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system.
+     * Delegates the retrieval logic to {@link IOrderService#findAllOrders()}.
+     *
+     * @return A list of {@code OrderResponseDto} objects representing all orders in the system.
+     */
+    @GetMapping
+    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+        log.info("Solicitud recibida para obtener todos los pedidos.");
+        List<OrderResponseDto> orders = orderService.findAllOrders();
+        log.info("Se recuperaron {} pedidos exitosamente.", orders.size());
+        return ResponseEntity.ok(orders);
     }
 }

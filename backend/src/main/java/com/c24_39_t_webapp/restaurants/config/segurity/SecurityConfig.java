@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/order/**").hasAuthority("cliente")
                         // Orders: Restaurante gestiona lo demás (GET, PATCH, DELETE)
                         .requestMatchers("/api/order/**").hasAuthority("restaurante")
+//                        .requestMatchers("/api/order/**").permitAll()
                         // Rutas exclusivas de restaurante, salvo GET
                         .requestMatchers("/api/category/**", "/api/restaurant/**", "/api/product/**").hasAuthority("restaurante")
                         // Rutas exclusivas de cliente

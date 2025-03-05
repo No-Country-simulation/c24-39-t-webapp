@@ -37,7 +37,7 @@ public class ProductServiceImpl implements IProductService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @PreAuthorize("hasAuthority('restaurante')")
+
     @Override
     public ProductResponseDto addProduct(ProductRequestDto productRequestDto) {
         log.info("Intentando crear un producto para el restaurante con ID: {}", productRequestDto.restaurantId());
@@ -131,7 +131,6 @@ public class ProductServiceImpl implements IProductService {
                 });
     }
 
-    @PreAuthorize("hasAuthority('restaurante')")
     @Transactional
     @Override
     public ProductResponseDto updateProduct(Long prd_id, ProductRequestDto updateDto) {
@@ -170,7 +169,6 @@ public class ProductServiceImpl implements IProductService {
     }
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('restaurante')")
     public void deleteProduct(Long prd_id) {
         if (!productRepository.existsById(prd_id)) {
             throw new ProductNotFoundException("Product no encontrado con id: " + prd_id);

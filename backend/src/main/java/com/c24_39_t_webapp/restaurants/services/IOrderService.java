@@ -4,6 +4,7 @@ import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IOrderService {
@@ -16,5 +17,7 @@ public interface IOrderService {
     OrderResponseDto updateOrder(Long ord_id, OrderUpdateRequestDto updateOrderDto);
 
     void deleteOrder(Long ord_id);
+
+    List<OrderResponseDto> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
 
  }

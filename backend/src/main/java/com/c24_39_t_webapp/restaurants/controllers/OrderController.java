@@ -8,9 +8,13 @@ import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +35,7 @@ public class OrderController {
      * @return The {@code OrderResponseDto} object representing the added order.
      */
     @PostMapping
-    @Transactional
+    @PreAuthorize("hasAnyAuthority('cliente')")
     public ResponseEntity<OrderResponseDto> addOrder(@RequestBody OrderRequestDto requestDto, @RequestParam String email) {
         log.info("Recibida solicitud para añadir un pedido con los siguientes datos: {}", requestDto);
         OrderResponseDto responseDto = orderService.addOrder(requestDto, email);
@@ -46,6 +50,7 @@ public class OrderController {
      * @return A list of {@code OrderResponseDto} objects representing all orders in the system.
      */
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('restaurante')")
     public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
         log.info("Solicitud recibida para obtener todos los pedidos.");
         List<OrderResponseDto> orders = orderService.findAllOrders();
@@ -61,6 +66,7 @@ public class OrderController {
      * @return The {@code OrderResponseDto} object representing the retrieved order.
      */
     @GetMapping(value = "/{ord_id}")
+    @PreAuthorize("hasAnyAuthority('restaurante')")
     public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long ord_id) {
         log.info("Solicitud recibida para obtener el pedido con id: {}", ord_id);
         OrderResponseDto order = orderService.findOrderById(ord_id);
@@ -77,6 +83,7 @@ public class OrderController {
      * @return The {@code OrderResponseDto} object representing the updated order.
      */
     @PatchMapping(value = "/{ord_id}")
+    @PreAuthorize("hasAnyAuthority('restaurante')")
     public ResponseEntity<OrderResponseDto> updateOrder(@PathVariable Long ord_id, @RequestBody OrderUpdateRequestDto updateRequestDto) {
         log.info("Solicitud recibida para actualizar el pedido con id: {} con los siguientes datos: {}", ord_id, updateRequestDto);
         OrderResponseDto order = orderService.updateOrder(ord_id, updateRequestDto);
@@ -91,10 +98,19 @@ public class OrderController {
      * @param ord_id The ID of the order to delete.
      */
     @DeleteMapping(value = "/{ord_id}")
+    @PreAuthorize("hasAnyAuthority('restaurante')")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long ord_id) {
         log.info("Solicitud recibida para eliminar el pedido con id: {} junto a sus detalles de pedido", ord_id);
         orderService.deleteOrder(ord_id); // Llama al servicio
         log.info("Pedido con id {} eliminado exitosamente junto a los detalles de pedido.", ord_id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping(value = "/byDate")
+    @PreAuthorize("hasAnyAuthority('cliente', 'restaurante')")
+    public List<OrderResponseDto> getOrdersByDate(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        log.info("Solicitud recibida para obtener todos los pedidos realizados en la fecha {} y la fecha {}", start, end);
+        return orderService.findByCreatedAtBetween(start, end);
     }
 }

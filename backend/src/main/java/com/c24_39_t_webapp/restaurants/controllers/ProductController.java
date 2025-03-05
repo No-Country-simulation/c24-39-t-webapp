@@ -10,6 +10,7 @@ import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class ProductController {
      * @return The {@code CategoryResponseDto} object representing the added category.
      */
     @PostMapping
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto) {
         log.info("Recibida solicitud para añadir un producto al restaurante con ID: {}", requestDto.restaurantId());
         log.info("Datos del producto: {}", requestDto);
@@ -79,6 +81,7 @@ public class ProductController {
      * @return The {@code ProductResponseDto} object representing the updated product.
      */
     @PatchMapping("/{prd_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
         log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);
         ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
@@ -94,6 +97,7 @@ public class ProductController {
      * @return A {@link ResponseEntity} object with no content to indicate a successful deletion.
      */
     @DeleteMapping("/{prd_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long prd_id) {
         log.info("Solicitud recibida para eliminar el producto con ID: {}", prd_id);
         productService.deleteProduct(prd_id);

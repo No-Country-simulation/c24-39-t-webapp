@@ -9,13 +9,15 @@ import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.*;
 import com.c24_39_t_webapp.restaurants.repository.*;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
-import jakarta.transaction.Transactional;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,10 +32,9 @@ public class OrderServiceImpl implements IOrderService {
     private final ProductRepository productRepository;
     private final OrderDetailsRepository orderDetailsRepository;
 
-    //    @PreAuthorize("hasAuthority('user')")
+
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('cliente')")
     public OrderResponseDto addOrder(OrderRequestDto orderRequestDto, String email) {
         log.info("Intentando crear un pedido para el usuario con email: {}", email);
 
@@ -111,7 +112,6 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
     @Override
-    @PreAuthorize("hasAuthority('restaurante')")
     public List<OrderResponseDto> findAllOrders() {
         log.info("Recuperando todos los pedidos del restaurante atenticado.");
         // Obtener el email del usuario autenticado
@@ -147,7 +147,6 @@ public class OrderServiceImpl implements IOrderService {
                 .collect(Collectors.toList());
     }
     @Override
-    @PreAuthorize("hasAuthority('restaurante')")
     public OrderResponseDto findOrderById(Long ord_id) {
         log.info("Buscando el pedido con ID: {}", ord_id);
         if (ord_id == null || ord_id <= 0) {
@@ -195,7 +194,6 @@ public class OrderServiceImpl implements IOrderService {
 
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('restaurante')")
     //posibles estados de pedido: ('pendiente', 'pagado', 'entregado', 'cancelado')
     public OrderResponseDto updateOrder(Long ord_id, OrderUpdateRequestDto orderUpdateRequestDto) {
         log.info("Intentando actualizar el pedido con ID: {}", ord_id);
@@ -247,7 +245,6 @@ public class OrderServiceImpl implements IOrderService {
     }
     @Override
     @Transactional
-    @PreAuthorize("hasAuthority('restaurante')")
     public void deleteOrder(Long ord_id) {
         log.info("Intentando eliminar el pedido con ID: {}", ord_id);
         if (ord_id == null || ord_id <= 0) {
@@ -276,5 +273,33 @@ public class OrderServiceImpl implements IOrderService {
         }
         orderRepository.delete(order); // Hibernate eliminará los OrderDetails automáticamente en cascada
         log.info("Pedido con ID {} eliminado con éxito", ord_id);
+    }
+
+    @GetMapping(value = "/byDate")
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
+        log.info("Recuperando todos los pedidos realizados entre la fecha {} y la fecha {}", start, end);
+        List<Order> orders = orderRepository.findByCreatedAtBetween(start, end);
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException("No se encontraron pedidos entre " + start + " y " + end);
+        }
+        return orders.stream()
+                .map(order -> new OrderResponseDto(
+                        order.getOrd_id(),
+                        order.getClientId().getId(),
+                        order.getRestaurantId().getRst_id(),
+                        order.getEstate(),
+                        order.getTotal(),
+                        order.getComments(),
+                        order.getDetails().stream()
+                                .map(detail -> new OrderDetailsResponseDto(
+                                        detail.getOdt_id(),
+                                        detail.getProduct().getPrd_id(),
+                                        detail.getQuantity(),
+                                        detail.getSubtotal()
+                                ))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
     }
 }

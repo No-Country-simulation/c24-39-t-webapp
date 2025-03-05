@@ -45,15 +45,15 @@ public class OrderController {
 
     /**
      * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system.
-     * Delegates the retrieval logic to {@link IOrderService#findAllOrders()}.
+     * Delegates the retrieval logic to {@link IOrderService#findAllOrders(Long)}.
      *
      * @return A list of {@code OrderResponseDto} objects representing all orders in the system.
      */
     @GetMapping
     @PreAuthorize("hasAnyAuthority('restaurante')")
-    public ResponseEntity<List<OrderResponseDto>> getAllOrders() {
+    public ResponseEntity<List<OrderResponseDto>> findAllOrders(Long restaurantId) {
         log.info("Solicitud recibida para obtener todos los pedidos.");
-        List<OrderResponseDto> orders = orderService.findAllOrders();
+        List<OrderResponseDto> orders = orderService.findAllOrders(restaurantId);
         log.info("Se recuperaron {} pedidos exitosamente.", orders.size());
         return ResponseEntity.ok(orders);
     }
@@ -67,7 +67,7 @@ public class OrderController {
      */
     @GetMapping(value = "/{ord_id}")
     @PreAuthorize("hasAnyAuthority('restaurante')")
-    public ResponseEntity<OrderResponseDto> getOrderById(@PathVariable Long ord_id) {
+    public ResponseEntity<OrderResponseDto> findOrderById(@PathVariable Long ord_id) {
         log.info("Solicitud recibida para obtener el pedido con id: {}", ord_id);
         OrderResponseDto order = orderService.findOrderById(ord_id);
         log.info("Pedido recuperado exitosamente con los siguientes datos: {}", order);
@@ -105,12 +105,40 @@ public class OrderController {
         log.info("Pedido con id {} eliminado exitosamente junto a los detalles de pedido.", ord_id);
         return ResponseEntity.noContent().build();
     }
+    /**
+     * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system within a specified date range.
+     * Delegates the retrieval logic to {@link IOrderService#findByCreatedAtBetween(Long, LocalDateTime, LocalDateTime)}.
+     *
+     * @param start The start date of the range.
+     * @param end   The end date of the range.
+     * @return A list of {@code OrderResponseDto} objects representing all orders within the specified date range.
+     */
     @GetMapping(value = "/byDate")
-    @PreAuthorize("hasAnyAuthority('cliente', 'restaurante')")
+    @PreAuthorize("hasAnyAuthority('restaurante')")
     public List<OrderResponseDto> getOrdersByDate(
+            @RequestParam Long restaurantId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
         log.info("Solicitud recibida para obtener todos los pedidos realizados en la fecha {} y la fecha {}", start, end);
-        return orderService.findByCreatedAtBetween(start, end);
+        List<OrderResponseDto> byDateOrders= orderService.findByCreatedAtBetween(restaurantId, start, end);
+        log.info("Se recuperaron {} pedidos exitosamente.", byDateOrders.size());
+        return byDateOrders;
+
     }
+    /**
+     * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system by client ID.
+     * Delegates the retrieval logic to {@link IOrderService#findByClientId(Long)}.
+     *
+     * @param cln_id The ID of the client to retrieve orders for.
+     * @return A list of {@code OrderResponseDto} objects representing all orders for the specified client.
+     */
+    @GetMapping(value = "/byClientId/{cln_id}")
+    @PreAuthorize("hasAnyAuthority('cliente')")
+    public List<OrderResponseDto> getOrdersByClientId(@PathVariable Long cln_id) {
+        log.info("Solicitud recibida para obtener todos los pedidos realizados por el cliente con id: {}", cln_id);
+        List<OrderResponseDto> clientOrders = orderService.findByClientId(cln_id);
+        log.info("Se recuperaron {} pedidos exitosamente para el cliente {}.", clientOrders.size(), cln_id);
+        return clientOrders;
+    }
+
 }

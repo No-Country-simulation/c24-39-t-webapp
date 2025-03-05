@@ -10,6 +10,7 @@ import com.c24_39_t_webapp.restaurants.models.*;
 import com.c24_39_t_webapp.restaurants.repository.*;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
 
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,7 +86,7 @@ public class OrderServiceImpl implements IOrderService {
         return new OrderResponseDto(
                 order.getOrd_id(),
                 order.getClientId().getId(),
-                order.getRestaurantId().getRst_id(),
+                order.getRestaurantId().getId(),
                 order.getEstate(),
                 order.getTotal(),
                 order.getComments(),
@@ -112,15 +113,16 @@ public class OrderServiceImpl implements IOrderService {
         }
     }
     @Override
-    public List<OrderResponseDto> findAllOrders() {
+    public List<OrderResponseDto> findAllOrders(Long restaurantId) {
         log.info("Recuperando todos los pedidos del restaurante atenticado.");
         // Obtener el email del usuario autenticado
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         log.info("Usuario autenticado: {}", userEmail);
 
         // Buscar el restaurante asociado al usuario
-        Restaurant restaurant = restaurantRepository.findByUserEntityEmail(userEmail)
+        Restaurant restaurant = restaurantRepository.findByIdAndUserEntityEmail(restaurantId, userEmail)
                 .orElseThrow(() -> new RestaurantNotFoundException("No se encontró un restaurante asociado al usuario"));
+        log.info("Restaurante encontrado con éxito: {}", restaurant);
 
         // Filtrar pedidos por restaurante
         List<Order> orders = orderRepository.findByRestaurantId(restaurant);
@@ -131,7 +133,7 @@ public class OrderServiceImpl implements IOrderService {
                 .map(order -> new OrderResponseDto(
                         order.getOrd_id(),
                         order.getClientId().getId(),
-                        order.getRestaurantId().getRst_id(),
+                        order.getRestaurantId().getId(),
                         order.getEstate(),
                         order.getTotal(),
                         order.getComments(),
@@ -175,7 +177,7 @@ public class OrderServiceImpl implements IOrderService {
         return new OrderResponseDto(
                         order.getOrd_id(),
                         order.getClientId().getId(),
-                        order.getRestaurantId().getRst_id(),
+                        order.getRestaurantId().getId(),
                         order.getEstate(),
                         order.getTotal(),
                         order.getComments(),
@@ -229,7 +231,7 @@ public class OrderServiceImpl implements IOrderService {
         return new OrderResponseDto(
                 order.getOrd_id(),
                 order.getClientId().getId(),
-                order.getRestaurantId().getRst_id(),
+                order.getRestaurantId().getId(),
                 order.getEstate(),
                 order.getTotal(),
                 order.getComments(),
@@ -275,11 +277,20 @@ public class OrderServiceImpl implements IOrderService {
         log.info("Pedido con ID {} eliminado con éxito", ord_id);
     }
 
-    @GetMapping(value = "/byDate")
+    @Override
     @Transactional(readOnly = true)
-    public List<OrderResponseDto> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end) {
+    public List<OrderResponseDto> findByCreatedAtBetween(Long restaurantId, LocalDateTime start, LocalDateTime end) {
         log.info("Recuperando todos los pedidos realizados entre la fecha {} y la fecha {}", start, end);
-        List<Order> orders = orderRepository.findByCreatedAtBetween(start, end);
+        // Obtener el email del usuario autenticado (restaurante)
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Usuario autenticado: {}", userEmail);
+
+        // Buscar el restaurante asociado al usuario
+        Restaurant restaurant = restaurantRepository.findByIdAndUserEntityEmail(restaurantId, userEmail)
+                .orElseThrow(() -> new RestaurantNotFoundException("No se encontró un restaurante asociado al usuario"));
+        log.info("Restaurante encontrado con éxito: {}", restaurant);
+
+        List<Order> orders = orderRepository.findByRestaurantIdAndCreatedAtBetween(restaurant, start, end);
         if (orders.isEmpty()) {
             throw new OrderNotFoundException("No se encontraron pedidos entre " + start + " y " + end);
         }
@@ -287,7 +298,55 @@ public class OrderServiceImpl implements IOrderService {
                 .map(order -> new OrderResponseDto(
                         order.getOrd_id(),
                         order.getClientId().getId(),
-                        order.getRestaurantId().getRst_id(),
+                        order.getRestaurantId().getId(),
+                        order.getEstate(),
+                        order.getTotal(),
+                        order.getComments(),
+                        order.getDetails().stream()
+                                .map(detail -> new OrderDetailsResponseDto(
+                                        detail.getOdt_id(),
+                                        detail.getProduct().getPrd_id(),
+                                        detail.getQuantity(),
+                                        detail.getSubtotal()
+                                ))
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponseDto> findByClientId(Long cln_id) {
+        log.info("Recuperando todos los pedidos del cliente con ID: {}", cln_id);
+        if (cln_id == null || cln_id <= 0) {
+            throw new OrderNotFoundException("ID de cliente no válido: " + cln_id);
+        }
+        // Buscar el cliente
+        UserEntity client = userRepository.findById(cln_id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontró el cliente con ID: {}", cln_id);
+                    return new UserNotFoundException("Pedido no encontrado con ID: " + cln_id);
+                });
+        log.info("Cliente encontrado con éxito: {}", client);
+        // Obtener el email del usuario autenticado (restaurante)
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("Usuario autenticado: {}", userEmail);
+        log.info("Email del cliente: {}", client.getEmail());
+
+        // Validar que el pedido pertenece al restaurante del usuario autenticado
+        if (!client.getEmail().equals(userEmail)) {
+            log.warn("Intento de acceso no autorizado al pedido del cliente {} por el usuario {}", cln_id, userEmail);
+            throw new SecurityException("No tienes permiso para acceder a los pedidos de este cliente");
+        }
+        List<Order> orders = orderRepository.findByClientId_Id(cln_id);
+        if (orders.isEmpty()) {
+            throw new OrderNotFoundException("No se encontraron pedidos para el cliente con ID: " + cln_id);
+        }
+        return orders.stream()
+                .map(order -> new OrderResponseDto(
+                        order.getOrd_id(),
+                        order.getClientId().getId(),
+                        order.getRestaurantId().getId(),
                         order.getEstate(),
                         order.getTotal(),
                         order.getComments(),

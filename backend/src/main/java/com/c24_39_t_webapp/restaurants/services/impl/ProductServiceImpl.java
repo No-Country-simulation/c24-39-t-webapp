@@ -71,7 +71,7 @@ public class ProductServiceImpl implements IProductService {
         product = productRepository.save(product);
         return new ProductResponseDto(
                 product.getPrd_id(),
-                product.getRestaurant().getRst_id(),
+                product.getRestaurant().getId(),
                 product.getCategory().getCtg_id(),
                 product.getName(),
                 product.getDescription(),
@@ -93,7 +93,7 @@ public class ProductServiceImpl implements IProductService {
         return products.stream()
                 .map(product -> new ProductResponseDto(
                         product.getPrd_id(),
-                        product.getRestaurant().getRst_id(),
+                        product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),
@@ -116,7 +116,7 @@ public class ProductServiceImpl implements IProductService {
         return productRepository.findById(prd_id)
                 .map(product -> new ProductResponseDto(
                         product.getPrd_id(),
-                        product.getRestaurant().getRst_id(),
+                        product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),
@@ -157,7 +157,7 @@ public class ProductServiceImpl implements IProductService {
         log.info("Producto con ID {} ha sido actualizado con éxito", prd_id);
         return new ProductResponseDto(
                 updatedProduct.getPrd_id(),
-                updatedProduct.getRestaurant().getRst_id(),
+                updatedProduct.getRestaurant().getId(),
                 updatedProduct.getCategory().getCtg_id(),
                 updatedProduct.getName(),
                 updatedProduct.getDescription(),
@@ -194,7 +194,7 @@ public class ProductServiceImpl implements IProductService {
         return products.stream()
                 .map(product -> new ProductSummaryResponseDto(
                         product.getPrd_id(),
-                        product.getRestaurant().getRst_id(),
+                        product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),
@@ -218,7 +218,7 @@ public class ProductServiceImpl implements IProductService {
                 .stream()
                 .map(product -> new ProductSummaryResponseDto(
                         product.getPrd_id(),
-                        product.getRestaurant().getRst_id(),
+                        product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),
@@ -229,7 +229,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant) {
-        log.info("Buscando productos del restaurante con ID: {}", restaurant.getRst_id());
+        log.info("Buscando productos del restaurante con ID: {}", restaurant.getId());
 //        if (newRestaurant == null || newRestaurant <= 0) {
 //            log.warn("El ID del restaurante proporcionado es invalido: {}", restaurantId);
 //            throw new ProductNotFoundException("El ID del restaurante no es válido " + restaurantId);
@@ -240,7 +240,7 @@ public class ProductServiceImpl implements IProductService {
         return products.stream()
                 .map(product -> new ProductSummaryResponseDto(
                         product.getPrd_id(),
-                        product.getRestaurant().getRst_id(),
+                        product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),

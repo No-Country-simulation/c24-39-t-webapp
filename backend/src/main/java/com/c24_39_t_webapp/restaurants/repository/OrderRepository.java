@@ -9,5 +9,6 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByRestaurantId(Restaurant restaurant);
-    List<Order> findByCreatedAtBetween(LocalDateTime start, LocalDateTime end);
+    List<Order> findByRestaurantIdAndCreatedAtBetween(Restaurant restaurant, LocalDateTime start, LocalDateTime end);
+    List<Order> findByClientId_Id(Long clientId);
 }

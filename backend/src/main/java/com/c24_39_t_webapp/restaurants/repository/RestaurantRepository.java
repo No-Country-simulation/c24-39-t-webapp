@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     // Aquí se pueden agregar métodos de consulta personalizados si es necesario
-    Optional<Restaurant> findByUserEntityEmail(String email);
+    Optional<Restaurant> findByIdAndUserEntityEmail(Long id, String email);
+
 }

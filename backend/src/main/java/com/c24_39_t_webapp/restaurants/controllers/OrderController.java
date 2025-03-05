@@ -6,13 +6,11 @@ import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
 import com.c24_39_t_webapp.restaurants.models.OrderState;
 import com.c24_39_t_webapp.restaurants.repository.OrderRepository;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;

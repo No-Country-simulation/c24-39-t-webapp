@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.controllers;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
+import com.c24_39_t_webapp.restaurants.models.OrderState;
 import com.c24_39_t_webapp.restaurants.repository.OrderRepository;
 import com.c24_39_t_webapp.restaurants.services.IOrderService;
 import jakarta.transaction.Transactional;
@@ -141,4 +142,41 @@ public class OrderController {
         return clientOrders;
     }
 
+    /**
+     * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system by client ID and date range.
+     * Delegates the retrieval logic to {@link IOrderService#findByClientIdAndCreatedAtBetween(Long, LocalDateTime, LocalDateTime)}.
+     *
+     * @param clientId The ID of the client to retrieve orders for.
+     * @param start    The start date of the range.
+     * @param end      The end date of the range.
+     * @return A list of {@code OrderResponseDto} objects representing all orders for the specified client within the specified date range.
+     */
+    @GetMapping(value = "/byClientDate")
+    @PreAuthorize("hasAnyAuthority('cliente')")
+    public List<OrderResponseDto> findByClientIdAndCreatedAtBetween(
+            @RequestParam Long clientId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+        log.info("Solicitud recibida para obtener todos los pedidos realizados por el cliente con id: {} entre la fecha {} y la fecha {}", clientId, start, end);
+        List<OrderResponseDto> byClientDateOrders = orderService.findByClientIdAndCreatedAtBetween(clientId, start, end);
+        log.info("Se recuperaron {} pedidos exitosamente.", byClientDateOrders.size());
+        return byClientDateOrders;
+    }
+    /**
+     * Endpoint to retrieve all {@link ResponseEntity} Order objects from the system by state.
+     * Delegates the retrieval logic to {@link IOrderService#findByStateAndRestaurantId(OrderState, Long)}.
+     *
+     * @param state The state of the orders to retrieve.
+     * @return A list of {@code OrderResponseDto} objects representing all orders in the specified state.
+     */
+    @GetMapping(value = "/byRestaurantAndState")
+    @PreAuthorize("hasAnyAuthority('restaurante')")
+    public List<OrderResponseDto> findByRestaurantIdAndState(
+            @RequestParam OrderState state,
+            @RequestParam Long restaurantId) {
+        log.info("Solicitud recibida para obtener todos los pedidos realizados en el restaurante con id: {} en estado {}", restaurantId, state);
+        List<OrderResponseDto> byRestaurantStateOrders = orderService.findByStateAndRestaurantId(state, restaurantId);
+        log.info("Se recuperaron {} pedidos exitosamente.", byRestaurantStateOrders.size());
+        return byRestaurantStateOrders;
+    }
 }

@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.services;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.OrderUpdateRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.OrderResponseDto;
+import com.c24_39_t_webapp.restaurants.models.OrderState;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
@@ -23,4 +24,7 @@ public interface IOrderService {
 
     List<OrderResponseDto> findByClientId(Long clientId);
 
+    List<OrderResponseDto> findByClientIdAndCreatedAtBetween(Long clientId, LocalDateTime start, LocalDateTime end);
+
+    List<OrderResponseDto> findByStateAndRestaurantId(OrderState state, Long restaurantId);
 }

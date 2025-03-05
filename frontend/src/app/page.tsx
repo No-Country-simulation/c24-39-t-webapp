@@ -13,7 +13,9 @@ import {
 } from "flowbite-react";
 import Image from "next/image";
 import { auth } from "../../auth";
-import 'tailwindcss';
+import 'tailwindcss'; // ??????
+import LogoutButton from "@/components/logout-button";
+import Link from "next/link";
 //import Header from "@/components/Header";
 //import Head from "next/head";
 
@@ -78,16 +80,25 @@ export default async function Home() {
           <span className="self-center font-[var(--lobster)] whitespace-nowrap text-xl">Foody</span>
         </NavbarBrand>
         <div className="flex md:order-2">
-          <Dropdown arrowIcon={false} inline label={<Avatar alt="User settings" img="/user.png" rounded />}>
-            <DropdownHeader>
-              <span className="block text-sm">Usuario</span>
-              <span className="block truncate text-sm font-medium">user@example.com</span>
-            </DropdownHeader>
-            <DropdownItem>Dashboard</DropdownItem>
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownDivider />
-            <DropdownItem>Sign out</DropdownItem>
-          </Dropdown>
+          {
+            session?.user && (
+              <Dropdown arrowIcon={false} 
+                  className="hidden md:block"
+                  inline label={<Avatar alt="User settings" 
+                  img="/user.png" rounded />}>
+                <DropdownHeader>
+                  <span className="block text-sm">Usuario</span>
+                  <span className="block truncate text-sm font-medium">{session.user.email}</span>
+                </DropdownHeader>
+                <DropdownItem><Link href="/dashboard">Panel de administración</Link></DropdownItem>
+                <DropdownItem>Settings</DropdownItem>
+                <DropdownDivider />
+                <DropdownItem as={LogoutButton}>
+                  Cerrar sesión
+                </DropdownItem>
+              </Dropdown>
+            )
+          }
           <NavbarToggle />
         </div>
         <NavbarCollapse className="text-3xl hover:text-accent font-bold">
@@ -97,6 +108,8 @@ export default async function Home() {
           <NavbarLink href="#">Categorías</NavbarLink>
           <NavbarLink href="#">Restaurantes</NavbarLink>
           <NavbarLink href="#">Contacto</NavbarLink>
+          {session?.user && <NavbarLink href="/dashboard">Panel de administración</NavbarLink>}
+          {session?.user && <LogoutButton />}
         </NavbarCollapse>
       </Navbar>
 

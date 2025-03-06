@@ -9,18 +9,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
+
 @Entity
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
+@Table(name = "restaurant")
 public class Restaurant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rst_id")
-    private Long rst_id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "rst_usuario_id", nullable = false)

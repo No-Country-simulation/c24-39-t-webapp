@@ -1,5 +1,4 @@
 import {
-  Card,
   Avatar,
   Dropdown,
   DropdownDivider,
@@ -11,17 +10,19 @@ import {
   NavbarLink,
   NavbarToggle,
 } from "flowbite-react";
-import Image from "next/image";
 import { auth } from "../../auth";
 import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
 import { Role } from "@/utils/constants";
+import { api } from "@/server/service";
+import RestaurantCard from "@/components/restaurant-card";
 //import Header from "@/components/Header";
 //import Head from "next/head";
 
 export default async function Home() {
 
   const session = await auth();
+  const restaurants = await api.restaurant.all()
 
   const categories = [
     { id: 1, name: "Italiana", image: "/images/italiana.jpg" },
@@ -31,7 +32,7 @@ export default async function Home() {
     { id: 5, name: "Fast Food", image: "/images/fastfood.jpg" },
   ];
 
-  const restaurants = [
+  /*const restaurants = [
     {
       id: 1,
       name: "Pasta Bella",
@@ -69,8 +70,8 @@ export default async function Home() {
     },
   ];
 
-  
-    if(!session?.access_token) console.log("no autenticado");
+  */
+    
   
   return (
     <div className="bg-gray-300">
@@ -144,19 +145,7 @@ export default async function Home() {
         <h1 className="text-3xl text-primary font-bold text-center my-6">Restaurantes</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {restaurants.map((restaurant) => (
-            <Card key={restaurant.id} className="shadow-lg bg-primary">
-              <Image
-                src={restaurant.image}
-                width={300}
-                height={200}
-                alt={restaurant.name}
-                className="rounded-t-lg  rounded-full"
-              />
-              <div className="p-4">
-                <h2 className="text-xl text-white font-semibold text-center">{restaurant.name}</h2>
-                <p className="text-gray-300 text-center">{restaurant.category}</p>
-              </div>
-            </Card>
+            <RestaurantCard restaurant={restaurant} key={restaurant.rst_id} />
           ))}
         </div>
       </main>

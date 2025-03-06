@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ProductResponseDto {
+    Long id;
     Restaurant restaurant;
     Category category;
     String name;
@@ -21,6 +22,7 @@ public class ProductResponseDto {
     Integer quantity;
 
     public ProductResponseDto(Product product) {
+        this.id = product.getPrd_id();
         this.restaurant = product.getRestaurant();
         this.category = product.getCategory();
         this.name = product.getName();

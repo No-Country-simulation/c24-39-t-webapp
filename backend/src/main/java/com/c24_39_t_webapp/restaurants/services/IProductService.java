@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.services;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductUpdateDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -12,17 +13,17 @@ import java.util.List;
 public interface IProductService {
 
     ProductResponseDto addProduct(ProductUpdateDto productUpdateDto, UserDetailsImpl userDetails);
-    List<Product> findByName(String name);
+    List<ProductResponseDto> findByName(String name);
 
-    List<Product> findByCategory(Category category);
+    List<ProductResponseDto> findByCategory(Category category);
 
-    List<Product> getAllProducts();
+    List<ProductResponseDto> getAllProducts();
 
-    Product updateProduct(ProductUpdateDto productUpdateDto, Product product, UserDetailsImpl userDetails);
+    ProductResponseDto updateProduct(ProductUpdateDto productUpdateDto, Product product, UserDetailsImpl userDetails);
 
     void deleteProduct(Product product, UserDetailsImpl userDetails);
 
-    List<Product> getAllProductsByRestaurant(Restaurant restaurant);
+    List<ProductResponseDto> getAllProductsByRestaurant(Restaurant restaurant);
 
 
 }

@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.controllers;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductUpdateDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.RestaurantResponseDto;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -33,13 +34,19 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<?> getAllProducts() {
-        List<Product> products = iProductService.getAllProducts();
+        List<ProductResponseDto> products = iProductService.getAllProducts();
+        if (products.isEmpty()) {
+            return ResponseEntity.ok("Producto no encontrado");
+        }
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/api/restaurant/products")
+    @GetMapping("/restaurant")
     public ResponseEntity<?> getAllProductsByRestaurant(Restaurant restaurant) {
-        List<Product> products = iProductService.getAllProductsByRestaurant(restaurant);
+        List<ProductResponseDto> products = iProductService.getAllProductsByRestaurant(restaurant);
+        if (products.isEmpty()) {
+            return ResponseEntity.ok("Producto no encontrado");
+        }
         return ResponseEntity.ok(products);
     }
 
@@ -51,7 +58,7 @@ public class ProductController {
 
     @GetMapping("/name")
     public ResponseEntity<?> findProductsByName(@RequestBody String name) {
-        List<Product> products = iProductService.findByName(name);
+        List<ProductResponseDto> products = iProductService.findByName(name);
         if (products.isEmpty()) {
             return ResponseEntity.ok("Producto no encontrado");
         }
@@ -60,7 +67,7 @@ public class ProductController {
 
     @GetMapping("/category")
     public ResponseEntity<?> filterByCategory(@RequestBody Category category) {
-        List<Product> products = iProductService.findByCategory(category);
+        List<ProductResponseDto> products = iProductService.findByCategory(category);
         if (products.isEmpty()) {
             return ResponseEntity.ok("Producto no encontrado");
         }
@@ -71,7 +78,7 @@ public class ProductController {
     public ResponseEntity<?> updateProduct(@RequestBody ProductUpdateDto productData,
                  @RequestBody @Valid final Product product,
                  @AuthenticationPrincipal final UserDetailsImpl userDetails){
-        Product products = iProductService.updateProduct(productData, product, userDetails);
+        ProductResponseDto products = iProductService.updateProduct(productData, product, userDetails);
         return ResponseEntity.ok(product);
     }
 

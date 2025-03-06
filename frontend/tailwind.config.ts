@@ -18,6 +18,9 @@ export default {
         secondary: "#f3f4f6",
         accent: "#2563eb",
       },
+	fontFamily: {
+		"lobster": ["Lobster", "sans-serif"],
+	},
     },
   },
   plugins: [

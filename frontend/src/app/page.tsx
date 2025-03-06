@@ -77,7 +77,7 @@ export default async function Home() {
       <Navbar fluid rounded className=" text-white w-full">
         <NavbarBrand className="" href="/">
           <img src="/logo.svg" className="mr-3 h-6 sm:h-9" alt="Foody Logo" />
-          <span className="self-center font-[var(--lobster)] whitespace-nowrap text-xl">Foody</span>
+          <span className="self-center font-lobster whitespace-nowrap text-xl">Foody</span>
         </NavbarBrand>
         <div className="flex md:order-2">
           {

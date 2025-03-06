@@ -33,7 +33,7 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="w-full h-screen flex justify-center items-center gap-40 bg-gradient-to-r from-gray-700 via-gray-400 to-white">
+    <section className="w-full h-screen flex flex-row md:flex-col justify-center items-center gap-40 bg-gradient-to-r from-gray-700 via-gray-400 to-white">
       <h1 className="text-5xl text-[#FFBA05] font[var(--lobster)]">Foody</h1>
       <form
         action={handleSubmit} noValidate

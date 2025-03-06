@@ -33,11 +33,11 @@ export default function LoginPage() {
   }
 
   return (
-    <section className="w-full h-screen flex justify-center items-center gap-40 bg-gradient-to-r from-gray-700 via-gray-400 to-white">
+    <section className="w-full h-screen flex flex-col md:flex-row justify-center items-center gap-8 md:gap-40 bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500 p-8">
       <h1 className="text-5xl text-[#FFBA05] font[var(--lobster)]">Foody</h1>
       <form
         action={handleSubmit} noValidate
-        className="flex flex-col gap-4 bg-[#FAFAF5] w-2/6 h-auto p-8 box-border overflow-hidden justify-between"
+        className="flex flex-col gap-4 bg-[#FAFAF5] w-full max-w-md p-4 md:p-8 box-border overflow-hidden justify-between max-h-screen rounded-lg"
       >
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">

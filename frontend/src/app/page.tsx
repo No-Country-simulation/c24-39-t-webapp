@@ -15,7 +15,6 @@ import Image from "next/image";
 import { auth } from "../../auth";
 import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
-import Link from "next/link";
 import { Role } from "@/utils/constants";
 //import Header from "@/components/Header";
 //import Head from "next/head";
@@ -88,10 +87,18 @@ export default async function Home() {
                   inline label={<Avatar alt="User settings" 
                   img="/user.png" rounded />}>
                 <DropdownHeader>
-                  <span className="block text-sm">Usuario</span>
-                  <span className="block truncate text-sm font-medium">{session.user.email}</span>
+                  <span className="block text-sm">{session.user.name}</span>
+                  <span className="block truncate text-sm font-medium">{session.user.role}</span>
                 </DropdownHeader>
-                <DropdownItem><Link href="/dashboard">Panel de administración</Link></DropdownItem>
+                {
+                  session.user.role === Role.Restaurant ? (
+                    <DropdownItem href="/dashboard">
+                      Panel de administración
+                    </DropdownItem>) :
+                    <DropdownItem href="/perfil">
+                      Perfil
+                    </DropdownItem>
+                }
                 <DropdownItem>Settings</DropdownItem>
                 <DropdownDivider />
                 <DropdownItem as={LogoutButton}>

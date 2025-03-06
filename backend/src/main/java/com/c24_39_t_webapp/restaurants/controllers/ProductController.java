@@ -80,6 +80,7 @@ public class ProductController {
      * @param updateDto The {@code ProductRequestDto} object containing the updated product details.
      * @return The {@code ProductResponseDto} object representing the updated product.
      */
+
     @PatchMapping("/{prd_id}")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
         log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);

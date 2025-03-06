@@ -3,6 +3,7 @@ package com.c24_39_t_webapp.restaurants.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDateTime;
 
@@ -23,11 +24,12 @@ public class Review {
     @JoinColumn(name = "rvw_id_usuario", nullable = false)
     private UserEntity userEntity;
 
+    @Range(min = 0, max = 10)
     @Column(name = "rvw_puntaje", nullable = false)
     private Integer score;
 
     @Column(name = "rvw_comentario")
-    private String coments;
+    private String comments;
 
     @Column(name = "rvw_fecha_creacion", nullable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     @UpdateTimestamp

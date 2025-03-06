@@ -9,7 +9,6 @@ import com.c24_39_t_webapp.restaurants.exception.*;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
-import com.c24_39_t_webapp.restaurants.models.UserEntity;
 import com.c24_39_t_webapp.restaurants.repository.ProductRepository;
 import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
 import com.c24_39_t_webapp.restaurants.repository.UserRepository;
@@ -222,7 +221,7 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
-
+  
     @Override
     public List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant) {
         log.info("Buscando productos del restaurante con ID: {}", restaurant.getRst_id());

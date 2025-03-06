@@ -87,8 +87,8 @@ export default async function Home() {
                   inline label={<Avatar alt="User settings" 
                   img="/user.png" rounded />}>
                 <DropdownHeader>
-                  <span className="block text-sm">{session.user.name}</span>
-                  <span className="block truncate text-sm font-medium">{session.user.role}</span>
+                  <span className="block text-sm">{session?.user?.name}</span>
+                  <span className="block truncate text-sm font-medium">{session?.user?.role}</span>
                 </DropdownHeader>
                 {
                   session?.user?.role === Role.Restaurant ? (
@@ -116,7 +116,7 @@ export default async function Home() {
           <NavbarLink href="#">Categorías</NavbarLink>
           <NavbarLink href="#">Restaurantes</NavbarLink>
           <NavbarLink href="#">Contacto</NavbarLink>
-          {session?.user.role === Role.Restaurant ? 
+          {session?.user?.role === Role.Restaurant ? 
             <NavbarLink className="block md:hidden" href="/dashboard">
               Panel de administración
             </NavbarLink>:

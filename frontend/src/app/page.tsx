@@ -91,7 +91,7 @@ export default async function Home() {
                   <span className="block truncate text-sm font-medium">{session.user.role}</span>
                 </DropdownHeader>
                 {
-                  session.user.role === Role.Restaurant ? (
+                  session?.user?.role === Role.Restaurant ? (
                     <DropdownItem href="/dashboard">
                       Panel de administración
                     </DropdownItem>) :

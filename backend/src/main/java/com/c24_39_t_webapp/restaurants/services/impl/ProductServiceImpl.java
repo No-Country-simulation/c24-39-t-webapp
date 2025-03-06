@@ -1,8 +1,5 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
-
-import com.c24_39_t_webapp.restaurants.dtos.request.CategoryRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
-import com.c24_39_t_webapp.restaurants.dtos.response.CategoryResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.*;

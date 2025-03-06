@@ -8,6 +8,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+font-family : "Lobster";
+src: url("/fonts/lobster-latin-400-normal.woff2") format("woff2");
+font-weight: 400;
+font-display: swap;
+}
 
 /*:root {
   --background: #ffffff;

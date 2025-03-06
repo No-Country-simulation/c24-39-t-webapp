@@ -16,6 +16,7 @@ import { auth } from "../../auth";
 import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
 import Link from "next/link";
+import { Role } from "@/utils/constants";
 //import Header from "@/components/Header";
 //import Head from "next/head";
 
@@ -108,8 +109,15 @@ export default async function Home() {
           <NavbarLink href="#">Categorías</NavbarLink>
           <NavbarLink href="#">Restaurantes</NavbarLink>
           <NavbarLink href="#">Contacto</NavbarLink>
-          {session?.user && <NavbarLink href="/dashboard">Panel de administración</NavbarLink>}
-          {session?.user && <LogoutButton />}
+          {session?.user.role === Role.Restaurant ? 
+            <NavbarLink className="block md:hidden" href="/dashboard">
+              Panel de administración
+            </NavbarLink>:
+            <NavbarLink className="block md:hidden" href="/perfil">
+              Perfil
+            </NavbarLink>
+          }
+          {session?.user && <span className="block md:hidden"><LogoutButton /></span>}
         </NavbarCollapse>
       </Navbar>
 

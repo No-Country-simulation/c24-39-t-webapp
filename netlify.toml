@@ -1,7 +1,7 @@
 [build]
   base = "frontend"
   command = "npm run build"
-  publish = "frontend/.next/server/pages"
+  publish = "frontend/.next/serverless/chunks/pages
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

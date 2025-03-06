@@ -44,7 +44,14 @@ public class RestaurantServiceImpl implements IRestaurantService {
         restaurant.setUserEntity(user);
         restaurantRepository.save(restaurant);
         log.info("¡Restaurante creado Exitosamente!");
-        return new RestaurantResponseDto(restaurant);
+        return new RestaurantResponseDto(
+                restaurant.getRst_id(),
+                restaurant.getName(),
+                restaurant.getDescription(),
+                restaurant.getPhone(),
+                restaurant.getAddress(),
+                restaurant.getLogo()
+        );
     }
 
 
@@ -112,15 +119,21 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         log.info("Restaurante actualizado exitosamente: {}", updatedRestaurant);
-        return new RestaurantResponseDto(updatedRestaurant);
+        return new RestaurantResponseDto(
+                updatedRestaurant.getRst_id(),
+                updatedRestaurant.getName(),
+                updatedRestaurant.getDescription(),
+                updatedRestaurant.getPhone(),
+                updatedRestaurant.getAddress(),
+                updatedRestaurant.getLogo()
+        );
     }
     @Override
-    public RestaurantResponseDto deleteById(Long id) {
+    public void deleteById(Long id) {
         if (!restaurantRepository.existsById(id)) {
             throw new RestaurantNotFoundException("Restaurante no encontrado con id: " + id);
         }
         restaurantRepository.deleteById(id);
-        return null;
     }
     private Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id)

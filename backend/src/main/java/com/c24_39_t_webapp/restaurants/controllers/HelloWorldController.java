@@ -29,10 +29,10 @@ public class HelloWorldController {
 //    }
 
     // RUTA PROTEGIDA SOLO PARA ROLE_USUARIO
-    @GetMapping("/api/user")
-    @PreAuthorize("hasRole(ROLE_USER)")
-    public ResponseEntity<?> helloUser(){
-        return ResponseEntity.ok("<h2>Hello Role User</h2>");
-    }
+    //@GetMapping("/api/user")
+    //@PreAuthorize("hasRole(ROLE_USER)")
+    //public ResponseEntity<?> helloUser(){
+    //    return ResponseEntity.ok("<h2>Hello Role User</h2>");
+    //}
 
 }

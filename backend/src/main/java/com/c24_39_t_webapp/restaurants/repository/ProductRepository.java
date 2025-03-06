@@ -7,13 +7,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByNameContains(String name);
+    // Aquí se pueden agregar métodos de consulta personalizados si es necesario
+//    @Query("SELECT p FROM Product p WHERE p.category.ctg_id = :categoryId")
+//    List<Product> findProductsByCategory(@Param("categoryId") Long categoryId);
 
-    List<Product> findByCategory(Category category);
+    List<Product> findProductsByCategory(Category category);
 
-    List<Product> findByRestaurant(Restaurant restaurant);
+    //    @Query("SELECT p FROM Product p WHERE LOWER(p.name) = LOWER(:name)")
+    @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :name, '%'))")
+    List<Product> findProductsByName(@Param("name") String name);
+
+//    @Query("SELECT p FROM Product p WHERE p.restaurant.rst_id = :restaurantId")
+    List<Product> findProductsByRestaurant(Restaurant restaurant);
 }

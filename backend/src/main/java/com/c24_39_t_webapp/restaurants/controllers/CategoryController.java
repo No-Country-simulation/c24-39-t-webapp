@@ -84,7 +84,7 @@ public class CategoryController {
      */
     @GetMapping("/{ctg_id}")
     public ResponseEntity<CategoryResponseDto> findCategoryById(@PathVariable Long ctg_id) {
-        log.info("Solicitud recibida para obtener una categoría usando el ID {}.", ctg_id);
+        log.info("Solicitud recibida para obtener una producto usando el ID {}.", ctg_id);
         CategoryResponseDto category = categoryService.findCategoryById(ctg_id);
         log.info("Se recuperó la categoría con ID {} exitosamente.", ctg_id);
         return ResponseEntity.ok(category);

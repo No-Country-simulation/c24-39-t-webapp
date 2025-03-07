@@ -1,6 +1,7 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.GroupedProductsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.exception.CategoryNotFoundException;
@@ -23,7 +24,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.TreeMap;
 
 @Slf4j
 @Service
@@ -166,6 +169,7 @@ public class ProductServiceImpl implements IProductService {
                 updatedProduct.getQuantity()
         );
     }
+
     @Override
     @Transactional
     public void deleteProduct(Long prd_id) {
@@ -201,6 +205,7 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
+
     @Override
     public List<ProductSummaryResponseDto> findProductsByName(String name) {
         log.info("Buscando el product con ID: {}", name);
@@ -250,7 +255,58 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<GroupedProductsResponseDto> findProductsByRestaurantAndCategory(Restaurant restaurant) {
+        log.info("Buscando productos del restaurante con ID: {}", restaurant.getId());
+
+            // Obtener los productos del repositorio
+            List<Product> products = productRepository.findProductsByRestaurant(restaurant);
+
+            // Agrupar los productos por categoría y restaurante
+            Map<String, Map<Long, List<ProductResponseDto>>> groupedProducts = products.stream()
+                    .collect(Collectors.groupingBy(
+                            product -> product.getCategory().getName(), // Agrupar por nombre de categoría
+                            TreeMap::new, // Ordenar por nombre de categoría
+                            Collectors.groupingBy(
+                                    product -> product.getRestaurant().getId(), // Agrupar por ID del restaurante
+                                    TreeMap::new, // Ordenar por ID del restaurante
+                                    Collectors.mapping(
+                                            product -> new ProductResponseDto(
+                                                    product.getPrd_id(),
+                                                    product.getRestaurant().getId(),
+                                                    product.getCategory().getCtg_id(),
+                                                    product.getName(),
+                                                    product.getDescription(),
+                                                    product.getPrice(),
+                                                    product.getImage(),
+                                                    product.getIsActive(),
+                                                    product.getQuantity()
+                                            ),
+                                            Collectors.toList()
+                                    )
+                            )
+                    ));
+
+            // Convertir el mapa a una lista de GroupedProductsResponseDto
+            return groupedProducts.entrySet().stream()
+                    .flatMap(categoryEntry -> categoryEntry.getValue().entrySet().stream()
+                            .map(restaurantEntry -> new GroupedProductsResponseDto(
+                                    categoryEntry.getKey(), // Nombre de la categoría
+                                    products.stream() // Obtener el ID de la categoría
+                                            .filter(p -> p.getCategory().getName().equals(categoryEntry.getKey()))
+                                            .findFirst()
+                                            .map(p -> p.getCategory().getCtg_id())
+                                            .orElse(null),
+                                    products.stream() // Obtener el nombre del restaurante
+                                            .filter(p -> p.getRestaurant().getId().equals(restaurantEntry.getKey()))
+                                            .findFirst()
+                                            .map(p -> p.getRestaurant().getName())
+                                            .orElse(null),
+                                    restaurantEntry.getKey(), // ID del restaurante
+                                    restaurantEntry.getValue() // Lista de productos
+                            ))
+                    )
+                    .collect(Collectors.toList());
+        }
 }
-
-
-

@@ -30,7 +30,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(auth -> auth.requestMatchers("/api/public/**", "/auth/**", "/h2-console", "/api/restaurant/testMethod", "/api/restaurant/testPostMethod").permitAll()
                 // Consultas públicas (lectura para todos)
-                .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**", "/api/product/**").permitAll().requestMatchers("/api/category/**", "/api/restaurant/**", "/api/product/**").hasAuthority("restaurante")
+                .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**", "/api/product/**").permitAll()
+                .requestMatchers("/api/category/**", "/api/restaurant/**", "/api/product/**").hasAuthority("restaurante")
                 // Orders: Cliente solo crea (POST)
                 .requestMatchers(HttpMethod.POST, "/api/order/**").hasAuthority("cliente")
                 // Orders: Cliente solo consulta (GET) por fecha y cliente

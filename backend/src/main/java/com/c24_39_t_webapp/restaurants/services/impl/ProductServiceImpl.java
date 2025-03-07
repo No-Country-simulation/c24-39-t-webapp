@@ -227,7 +227,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant) {
+    public List<ProductResponseDto> findProductsByRestaurant(Restaurant restaurant) {
         log.info("Buscando productos del restaurante con ID: {}", restaurant.getId());
 //        if (newRestaurant == null || newRestaurant <= 0) {
 //            log.warn("El ID del restaurante proporcionado es invalido: {}", restaurantId);
@@ -237,13 +237,16 @@ public class ProductServiceImpl implements IProductService {
 
         List<Product> products = productRepository.findProductsByRestaurant(restaurant);
         return products.stream()
-                .map(product -> new ProductSummaryResponseDto(
+                .map(product -> new ProductResponseDto(
                         product.getPrd_id(),
                         product.getRestaurant().getId(),
                         product.getCategory().getCtg_id(),
                         product.getName(),
                         product.getDescription(),
-                        product.getImage()
+                        product.getPrice(),
+                        product.getImage(),
+                        product.getIsActive(),
+                        product.getQuantity()
                 ))
                 .collect(Collectors.toList());
     }

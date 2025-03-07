@@ -8,7 +8,7 @@ import java.util.List;
 
 public record OrderRequestDto(
     @NotNull(message = "El ID del pedido no puede ser nulo.")
-    Long ord_Id,
+    Long orderDetailsId,
 
     @NotNull(message = "El ID del cliente del pedido  no puede ser nulo.")
     Long clientId,

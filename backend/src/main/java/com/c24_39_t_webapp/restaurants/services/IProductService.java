@@ -24,5 +24,5 @@ public interface IProductService {
 
     List<ProductSummaryResponseDto> findProductsByName(String name);
 
-    List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant);
+    List<ProductResponseDto> findProductsByRestaurant(Restaurant restaurant);
 }

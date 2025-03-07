@@ -9,7 +9,7 @@ export default function RestaurantCard({
   restaurant: Restaurant;
 }) {
   return (
-    <Card key={restaurant.rst_id} className="shadow-lg bg-primary hover:bg-primary/80 transition-colors">
+    <Card key={restaurant.rst_id} className="shadow-lg bg-primary hover:bg-primary/90 transition-colors">
       <Link className="" href={`/restaurante/${restaurant.rst_id}`}>
       <Image
         src={restaurant.logo}

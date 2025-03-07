@@ -33,7 +33,7 @@ export default function Menu({ products }: MenuProps) {
   return (
     <div>
       {/* Carrito con Flowbite */}
-      <div className="absolute top-4 right-4">
+      <div className="absolute top-4 right-4 w-80 ">
         <Dropdown label={<HiShoppingCart className="size-6" />} inline>
           <Dropdown.Header>
             <span className="block text-sm font-semibold">Carrito</span>
@@ -63,16 +63,18 @@ export default function Menu({ products }: MenuProps) {
               </div>
             </AccordionTitle>
             <AccordionContent>
+		<div className="flex justify-between items-center w-full">
               <div className="flex gap-2 items-center">
                 <img src={product.image} alt={product.name} className="object-cover w-[10%]" />
-                <p>{product.description}</p>
+                <p><span className="text-black/70">{product.description}</span> - <span className="font-semibold text-green-700/90">${product.price}</span></p>
               </div>
               <button
                 onClick={() => addToCart(product)}
                 className="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
               >
-                Agregar al carrito
+                Agregar
               </button>
+	     </div>
             </AccordionContent>
           </AccordionPanel>
         ))}

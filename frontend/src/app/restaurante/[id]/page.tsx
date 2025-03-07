@@ -4,8 +4,15 @@ import { Product } from "@/utils/types";
 import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = await params;
+type Props = {
+  params: {
+    id: string;
+  }
+}
+
+export default async function Page({ params }: Props) {
+  console.log(`ID: ${params.id} es de tipo ${typeof params.id}`);
+  const { id } = params;
   const restaurant = await api.restaurant.get(Number(id));
   //const products = await api.product.getAllByRestaurant(Number(id))
 	const products: Product[] = [

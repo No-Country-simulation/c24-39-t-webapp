@@ -11,7 +11,7 @@ type Props = {
 }
 
 export default async function Page({ params }: Props) {
-  console.log(`ID: ${params.id} es de tipo ${typeof params.id}`);
+ 
   const { id } = await params;
   const restaurant = await api.restaurant.get(Number(id));
   //const products = await api.product.getAllByRestaurant(Number(id))

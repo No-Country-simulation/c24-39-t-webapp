@@ -2,12 +2,14 @@ package com.c24_39_t_webapp.restaurants.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Data
 @Entity
+@Data
+@NoArgsConstructor
 @Table(name = "reviews")
 public class Review {
     @Id

@@ -1,5 +1,6 @@
 package com.c24_39_t_webapp.restaurants.repository;
 
+import com.c24_39_t_webapp.restaurants.dtos.response.GroupedProductsResponseDto;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     // Aquí se pueden agregar métodos de consulta personalizados si es necesario
@@ -22,4 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 //    @Query("SELECT p FROM Product p WHERE p.restaurant.rst_id = :restaurantId")
     List<Product> findProductsByRestaurant(Restaurant restaurant);
+
+    @Query("SELECT p FROM Product p WHERE p.restaurant = :restaurant")
+    List<GroupedProductsResponseDto> findProductsByRestaurantAndCategory(@Param("restaurant") Restaurant restaurant);
 }

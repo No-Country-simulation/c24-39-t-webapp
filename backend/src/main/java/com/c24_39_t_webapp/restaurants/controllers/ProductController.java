@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.controllers;
 
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.GroupedProductsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -10,6 +11,7 @@ import com.c24_39_t_webapp.restaurants.services.IProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,18 +29,17 @@ public class ProductController {
 //    }
     /**
      * Endpoint to add a new {@link ResponseEntity} object to the system.
-     * Delegates the addition logic to {@link IProductService#addProduct(ProductRequestDto, String, Long)}.
+     * Delegates the addition logic to {@link IProductService#addProduct(ProductRequestDto)}.
      *
      * @param requestDto The {@code CategoryRequestDto} object to add.
-     * @param email The email of the user adding the category.
-     * @pram restaurantId The ID of the restaurant to which the category will be added.
      * @return The {@code CategoryResponseDto} object representing the added category.
      */
     @PostMapping
-    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto, @RequestParam String email, @RequestParam Long restaurantId) {
-        log.info("Recibida solicitud para añadir producto. Email: {}, RestaurantId: {}", email, restaurantId);
+    @PreAuthorize("hasAuthority('restaurante')")
+    public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto) {
+        log.info("Recibida solicitud para añadir un producto al restaurante con ID: {}", requestDto.restaurantId());
         log.info("Datos del producto: {}", requestDto);
-        ProductResponseDto responseDto = productService.addProduct(requestDto, email, restaurantId);
+        ProductResponseDto responseDto = productService.addProduct(requestDto);
         log.info("Producto agregado exitosamente: {}", responseDto);
         return ResponseEntity.ok(responseDto);
     }
@@ -81,6 +82,7 @@ public class ProductController {
      * @return The {@code ProductResponseDto} object representing the updated product.
      */
     @PatchMapping("/{prd_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
         log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);
         ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
@@ -96,6 +98,7 @@ public class ProductController {
      * @return A {@link ResponseEntity} object with no content to indicate a successful deletion.
      */
     @DeleteMapping("/{prd_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long prd_id) {
         log.info("Solicitud recibida para eliminar el producto con ID: {}", prd_id);
         productService.deleteProduct(prd_id);
@@ -103,12 +106,12 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
     /**
-     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
-     * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Long)}.
-     *
-     * @param categoryId The ID of the category to retrieve products for.
-     * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
-     */
+        * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+        * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category category)}.
+        *
+        * @param category The category to retrieve products for.
+        * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
+        */
 //    @GetMapping(value = "/byCategory/{categoryId}")
 //    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
 //        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);
@@ -146,9 +149,25 @@ public class ProductController {
      * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified restaurant.
      */
     @GetMapping(value = "/byRestaurant/{restaurant}")
-    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByRestaurant(@PathVariable Restaurant restaurant) {
+    public ResponseEntity<List<ProductResponseDto>> findProductsByRestaurant(@PathVariable Restaurant restaurant) {
         log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
-        List<ProductSummaryResponseDto> products = productService.findProductsByRestaurant(restaurant);
+        List<ProductResponseDto> products = productService.findProductsByRestaurant(restaurant);
+        log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * Endpoint to retrieve a list of all {@link GroupedProductsResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByRestaurantAndCategory(Restaurant)}.
+     *
+     * @param restaurant The restaurant to retrieve products for.
+     * @return A list of {@code GroupedProductsResponseDto} objects representing
+     * all products in the specified restaurant grouped by categories.
+     */
+    @GetMapping(value = "/byRestaurantAndCategory/{restaurant}")
+    public ResponseEntity<List<GroupedProductsResponseDto>> findProductsByRestaurantAndCategory(@PathVariable Restaurant restaurant) {
+        log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
+        List<GroupedProductsResponseDto> products = productService.findProductsByRestaurantAndCategory(restaurant);
         log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
         return ResponseEntity.ok(products);
     }

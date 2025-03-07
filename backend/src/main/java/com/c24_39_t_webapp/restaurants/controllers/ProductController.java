@@ -148,9 +148,9 @@ public class ProductController {
      * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified restaurant.
      */
     @GetMapping(value = "/byRestaurant/{restaurant}")
-    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByRestaurant(@PathVariable Restaurant restaurant) {
+    public ResponseEntity<List<ProductResponseDto>> findProductsByRestaurant(@PathVariable Restaurant restaurant) {
         log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
-        List<ProductSummaryResponseDto> products = productService.findProductsByRestaurant(restaurant);
+        List<ProductResponseDto> products = productService.findProductsByRestaurant(restaurant);
         log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
         return ResponseEntity.ok(products);
     }

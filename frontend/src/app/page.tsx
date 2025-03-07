@@ -14,9 +14,7 @@ import { auth } from "../../auth";
 import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
 import { Role } from "@/utils/constants";
-import { api } from "@/server/service";
-import RestaurantCard from "@/components/restaurant-card";
-//import Header from "@/components/Header";
+import Cart from "@/app/cart/cart";
 //import Head from "next/head";
 
 export default async function Home() {
@@ -75,10 +73,11 @@ export default async function Home() {
   
   return (
     <div className="bg-gray-300">
-      <Navbar fluid rounded className=" text-white w-full">
+      <Navbar fluid rounded className="justify-between fixed top-0 right-0 left-0">
         <NavbarBrand className="" href="/">
-          <span className="self-center text-primary font-lobster whitespace-nowrap text-xl">Foody</span>
+          <span className="self-center text-primary font-lobster whitespace-nowrap text-4xl">Foody</span>
         </NavbarBrand>
+        <Cart />
         <div className="flex md:order-2">
           {
             session?.user && (

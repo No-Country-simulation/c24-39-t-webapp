@@ -45,7 +45,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
         restaurantRepository.save(restaurant);
         log.info("¡Restaurante creado Exitosamente!");
         return new RestaurantResponseDto(
-                restaurant.getRst_id(),
+                restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getDescription(),
                 restaurant.getPhone(),
@@ -65,7 +65,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
 
         return restaurants.stream()
                 .map(restaurant -> new RestaurantResponseDto(
-                        restaurant.getRst_id(),
+                        restaurant.getId(),
                         restaurant.getName(),
                         restaurant.getDescription(),
                         restaurant.getPhone(),
@@ -85,7 +85,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
         }
         return restaurantRepository.findById(id)
                 .map(restaurant -> new RestaurantResponseDto(
-                        restaurant.getRst_id(),
+                        restaurant.getId(),
                         restaurant.getName(),
                         restaurant.getDescription(),
                         restaurant.getPhone(),
@@ -120,7 +120,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
         Restaurant updatedRestaurant = restaurantRepository.save(restaurant);
         log.info("Restaurante actualizado exitosamente: {}", updatedRestaurant);
         return new RestaurantResponseDto(
-                updatedRestaurant.getRst_id(),
+                updatedRestaurant.getId(),
                 updatedRestaurant.getName(),
                 updatedRestaurant.getDescription(),
                 updatedRestaurant.getPhone(),

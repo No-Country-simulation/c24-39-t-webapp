@@ -9,7 +9,7 @@ import com.c24_39_t_webapp.restaurants.models.Restaurant;
 import java.util.List;
 
 public interface IProductService {
-    ProductResponseDto addProduct(ProductRequestDto productRequestDto, String username, Long restaurantId);
+    ProductResponseDto addProduct(ProductRequestDto productRequestDto);
 
     List<ProductResponseDto> findAllProducts();
 
@@ -23,5 +23,5 @@ public interface IProductService {
     List<ProductSummaryResponseDto> findProductsByCategory(Category category);
     List<ProductSummaryResponseDto> findProductsByName(String name);
 
-    List<ProductSummaryResponseDto> findProductsByRestaurant(Restaurant restaurant);
+    List<ProductResponseDto> findProductsByRestaurant(Restaurant restaurant);
 }

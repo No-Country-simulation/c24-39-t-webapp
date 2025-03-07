@@ -15,6 +15,12 @@ import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
 import { Role } from "@/utils/constants";
 import Cart from "@/app/cart/cart";
+
+/////////>>>>>
+import RestaurantCard from "@/components/restaurant-card"; // COMPONENTE AGREGADO PARA HACER FUNCIONAR LA PÁGINA
+import { api } from "@/server/service"; // API AGREGADA PARA HACER FUNCIONAR LA PÁGINA
+/////////>>>>>
+
 //import Head from "next/head";
 
 export default async function Home() {

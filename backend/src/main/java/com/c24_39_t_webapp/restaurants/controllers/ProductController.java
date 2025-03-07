@@ -107,7 +107,7 @@ public class ProductController {
      * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
      * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category)}.
      *
-     * @param categoryId The ID of the category to retrieve products for.
+     * @param category The ID of the category to retrieve products for.
      * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
      */
 //    @GetMapping(value = "/byCategory/{categoryId}")

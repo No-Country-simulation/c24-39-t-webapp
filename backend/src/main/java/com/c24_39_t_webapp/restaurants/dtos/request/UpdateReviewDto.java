@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Range;
 
 public record UpdateReviewDto(
         @NotBlank
-        Long reviewId,
+        Long reviewToUpdateId,
         @NotBlank
         @Range(min = 0, max = 10)
         Integer score,

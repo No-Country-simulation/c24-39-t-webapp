@@ -57,7 +57,12 @@ public class ReviewServiceImpl implements IReviewService {
     }
 
     @Override
-    public List<ReviewResponseDto> getAllRestaurantReviews(Restaurant restaurant) {
+    public List<ReviewResponseDto> getAllRestaurantReviews(Long restaurantId) {
+        log.info("Obteniendo la Entidad para la busqueda de la Reseña, rstId: {}", restaurantId);
+        Restaurant restaurant =
+                restaurantRepository.findById(restaurantId).orElseThrow(() -> new ResourceNotFoundException("El " +
+                        "restaurante con id enviado no existe"));
+
         log.info("Obteniendo la lista de reseñas del repositorio");
         List<Review> rewiewList = reviewRepository.findByRestaurant(restaurant);
 
@@ -86,13 +91,13 @@ public class ReviewServiceImpl implements IReviewService {
     public ReviewResponseDto updateReview(UpdateReviewDto updateReviewDto, UserDetailsImpl userDetails) {
         log.info("Buscando recursos para actualizar la reseña");
         Review review =
-                reviewRepository.findById(updateReviewDto.reviewId()).orElseThrow(() -> new ResourceNotFoundException(
+                reviewRepository.findById(updateReviewDto.reviewToUpdateId()).orElseThrow(() -> new ResourceNotFoundException(
                         "Reseña no encontrada"));
 
         log.info("validando que el usuario que esta intentando actualizar la reseña tenga los permisos necesarios id:" +
                         " {}",
-                updateReviewDto.reviewId());
-        validateUserPermissions(userDetails, updateReviewDto.reviewId());
+                userDetails.getId());
+        validateUserPermissions(userDetails, review.getUserEntity().getId());
 
         log.info("Actualizando datos");
         Optional.ofNullable(updateReviewDto.comments())
@@ -114,7 +119,7 @@ public class ReviewServiceImpl implements IReviewService {
                 new ResourceNotFoundException("No se encontro la reseña"));
 
         log.info("Validando que el usuario tenga permisos para eliminar la reseña");
-        validateUserPermissions(userDetails, id);
+        validateUserPermissions(userDetails, review.getUserEntity().getId());
 
         log.warn("Eliminando la reseña");
         reviewRepository.deleteById(id);

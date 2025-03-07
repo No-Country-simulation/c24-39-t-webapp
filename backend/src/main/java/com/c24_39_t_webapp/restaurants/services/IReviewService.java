@@ -12,7 +12,7 @@ public interface IReviewService {
 
     ReviewResponseDto addReview(AddReviewDto reviewDto, UserDetailsImpl userDetails);
 
-    List<ReviewResponseDto> getAllRestaurantReviews(Restaurant restaurant);
+    List<ReviewResponseDto> getAllRestaurantReviews(Long restaurantId);
 
     ReviewResponseDto getReviewById(Long id);
 

@@ -80,6 +80,7 @@ public class ProductController {
      * @param updateDto The {@code ProductRequestDto} object containing the updated product details.
      * @return The {@code ProductResponseDto} object representing the updated product.
      */
+
     @PatchMapping("/{prd_id}")
     @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
@@ -105,12 +106,12 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
     /**
-        * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
-        * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category category)}.
-        *
-        * @param category The category to retrieve products for.
-        * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
-        */
+     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category category)}.
+     *
+     * @param category The category to retrieve products for.
+     * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
+     */
 //    @GetMapping(value = "/byCategory/{categoryId}")
 //    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
 //        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);

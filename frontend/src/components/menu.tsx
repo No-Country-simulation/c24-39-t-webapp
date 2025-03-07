@@ -5,13 +5,14 @@ import { Product } from "@/utils/types";
 import { Accordion, AccordionPanel, AccordionTitle, AccordionContent } from "flowbite-react";
 import { HiShoppingCart } from "react-icons/hi";
 import { Dropdown } from "flowbite-react";
+import { HiPlus, HiMinus } from "react-icons/hi";
 
 type MenuProps = {
   products: Product[];
 };
 
 export default function Menu({ products }: MenuProps) {
-  const [cart, setCart] = useState<{ id: number; name: string; price: number }[]>([]);
+  const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
 
   // ✅ Cargar carrito desde localStorage
   useEffect(() => {
@@ -26,22 +27,38 @@ export default function Menu({ products }: MenuProps) {
 
   // ✅ Agregar producto al carrito
   const addToCart = (product: Product) => {
-    const newCart = [...cart, { id: product.prd_id, name: product.name, price: product.price }];
-    setCart(newCart);
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.prd_id);
+      if (existingProduct) {
+        return prevCart.map((item) => (item.id === product.prd_id ? { ...item, quantity: item.quantity + 1 } : item));
+      }
+      return [...prevCart, { id: product.prd_id, name: product.name, price: product.price, quantity: 1 }];
+    });
+  };
+
+  // ✅ Quitar producto del carrito
+  const removeFromCart = (product: Product) => {
+    setCart((prevCart) => {
+      return prevCart
+        .map((item) => (item.id === product.prd_id ? { ...item, quantity: item.quantity - 1 } : item))
+        .filter((item) => item.quantity > 0);
+    });
   };
 
   return (
     <div>
       {/* Carrito con Flowbite */}
-      <div className="absolute top-4 right-4 w-80 ">
+      <div className="absolute top-4 right-4 w-80">
         <Dropdown label={<HiShoppingCart className="size-6" />} inline>
           <Dropdown.Header>
             <span className="block text-sm font-semibold">Carrito</span>
           </Dropdown.Header>
           {cart.length > 0 ? (
             cart.map((product) => (
-              <Dropdown.Item key={product.id}>
-                {product.name} - ${product.price}
+              <Dropdown.Item key={product.id} className="flex justify-between">
+                <span>
+                  {product.name} ({product.quantity}) - ${product.price * product.quantity}
+                </span>
               </Dropdown.Item>
             ))
           ) : (
@@ -63,18 +80,30 @@ export default function Menu({ products }: MenuProps) {
               </div>
             </AccordionTitle>
             <AccordionContent>
-		<div className="flex justify-between items-center w-full">
-              <div className="flex gap-2 items-center">
-                <img src={product.image} alt={product.name} className="object-cover w-[10%]" />
-                <p><span className="text-black/70">{product.description}</span> - <span className="font-semibold text-green-700/90">${product.price}</span></p>
+              <div className="flex justify-between items-center w-full">
+                <div className="flex gap-2 items-center">
+                  <img src={product.image} alt={product.name} className="object-cover w-[10%]" />
+                  <p>
+                    <span className="text-black/70">{product.description}</span> -
+                    <span className="font-semibold text-green-700/90">${product.price}</span>
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => removeFromCart(product)}
+                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition"
+                  >
+                    <HiMinus />
+                  </button>
+                  <span>{cart.find((item) => item.id === product.prd_id)?.quantity || 0}</span>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
+                  >
+                    <HiPlus />
+                  </button>
+                </div>
               </div>
-              <button
-                onClick={() => addToCart(product)}
-                className="mt-2 bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
-              >
-                Agregar
-              </button>
-	     </div>
             </AccordionContent>
           </AccordionPanel>
         ))}

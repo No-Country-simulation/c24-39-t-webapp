@@ -8,3 +8,15 @@ export interface Restaurant {
     phone: string
     address: string
 }
+
+export type Product = {
+    "prd_id": number
+    restaurantId: number
+    categoryId: number
+    name: string
+    description: string
+    price: number
+    image: string
+    isActive: boolean
+    quantity: number
+}

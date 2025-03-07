@@ -7,6 +7,7 @@ import imageShoppingCart from "../../../public/shopping-cart.png";
 
 export default function Cart() {
     const router = useRouter();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [cartCounter, setCartCounter] = useState("0");
 
     const handleClick = () => {

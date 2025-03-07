@@ -38,7 +38,8 @@
     ],
     "rules": {
       "@next/next/no-img-element": "off",
-      "no-unused-vars": "warn"
+      "no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "warn"
     }
   }
 }

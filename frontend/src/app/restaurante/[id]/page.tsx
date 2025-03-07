@@ -5,13 +5,14 @@ import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
 
 type Props = {
-  params: Promise<{ id: string }>;
-};
+  params: Promise<{
+    id: string;
+  }>
+}
 
 export default async function Page({ params }: Props) {
-  const { id } = await params;
 
-  // Obtener datos del restaurante desde la API
+  const { id } = await params;
   const restaurant = await api.restaurant.get(Number(id));
 
   // Simulación de productos (cambiar por API real)

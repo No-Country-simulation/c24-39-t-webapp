@@ -8,7 +8,7 @@ export default function Menu({products = []}: {products: Product[]}) {
    console.log(products)
 
     return (
-        <Accordion className="focus:ring-red-300">
+        <Accordion>
             {products.map((product) => (
                 <AccordionPanel key={product.prd_id}>
                     <AccordionTitle>

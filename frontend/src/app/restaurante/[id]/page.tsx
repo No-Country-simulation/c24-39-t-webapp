@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     {
       "prd_id": 1,
       name: "Hamburguesa",
-      price: 100,
+      price: 3500,
       description: "Una hamburguesa",
       restaurantId: Number(id),
       quantity: 100,
@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     {
       "prd_id": 2,
       name: "Pizza",
-      price: 200,
+      price: 4000,
       description: "Una pizza",
       restaurantId: Number(id),
       quantity: 100,
@@ -34,7 +34,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     {
       "prd_id": 3,
       name: "Ensalada",
-      price: 50,
+      price: 2500,
       description: "Una ensalada",
       restaurantId: Number(id),
       quantity: 100,
@@ -42,12 +42,34 @@ export default async function Page({ params }: { params: { id: string } }) {
       isActive: true,
       categoryId: 3,
     },
+    {
+      "prd_id": 4,
+      name: "Pizza de pasta",
+      price: 4800,
+      description: "Una pizza de pasta con queso en la orilla",
+      restaurantId: Number(id),
+      quantity: 100,
+      image: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg",
+      isActive: true,
+      categoryId: 2,
+    },
+    {
+      "prd_id": 5,
+      name: "Pizza de doble queso",
+      price: 4800,
+      description: "Una pizza de doble queso con relleno en la orilla",
+      restaurantId: Number(id),
+      quantity: 100,
+      image: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg",
+      isActive: true,
+      categoryId: 2,
+    }
   ]
 
   return (
     <main
       className="min-h-screen w-full md:w-[760px] text-black p-2 md:p-6 mx-auto flex 
-		flex-col align-center bg-gray-200/50 border border-primary"
+		  flex-col align-center shadow-lg"
     >
       <div>
         <Link

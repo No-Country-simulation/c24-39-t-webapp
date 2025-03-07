@@ -114,7 +114,7 @@ export default async function Home() {
           }
           <NavbarToggle />
         </div>
-        <NavbarCollapse className="text-3xl hover:text-accent font-bold">
+        <NavbarCollapse className="text-3xl hover:text-accent z-10 font-bold">
           <NavbarLink href="#" active>
             Inicio
           </NavbarLink>
@@ -134,7 +134,15 @@ export default async function Home() {
       </Navbar>
 
       <main className="container mx-auto p-6">
-        <h1 className="text-3xl text-primary p-10 font-bold text-center mb-6">Explora Categorías</h1>
+
+      <h1 className="text-3xl text-primary -z-10 font-bold text-center mt-14 mb-6">Restaurantes</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {restaurants.map((restaurant) => (
+            <RestaurantCard restaurant={restaurant} key={restaurant.rst_id} />
+          ))}
+        </div>
+
+        <h1 className="text-3xl text-primary mt-10 font-bold text-center">Explora Categorías</h1>
         <div className="flex flex-wrap justify-center gap-4 p-10">
           {categories.map((category) => (
             <button
@@ -144,13 +152,6 @@ export default async function Home() {
             >
               {category.name}
             </button>
-          ))}
-        </div>
-
-        <h1 className="text-3xl text-primary font-bold text-center my-6">Restaurantes</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {restaurants.map((restaurant) => (
-            <RestaurantCard restaurant={restaurant} key={restaurant.rst_id} />
           ))}
         </div>
       </main>

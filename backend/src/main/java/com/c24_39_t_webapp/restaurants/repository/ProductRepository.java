@@ -25,6 +25,9 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 //    @Query("SELECT p FROM Product p WHERE p.restaurant.rst_id = :restaurantId")
     List<Product> findProductsByRestaurant(Restaurant restaurant);
 
-    @Query("SELECT p FROM Product p WHERE p.restaurant = :restaurant")
-    List<GroupedProductsResponseDto> findProductsByRestaurantAndCategory(@Param("restaurant") Restaurant restaurant);
+//    @Query("SELECT p FROM Product p WHERE p.restaurant = :restaurant")
+//    List<GroupedProductsResponseDto> findProductsByRestaurantAndCategory(@Param("restaurant") Restaurant restaurant);
+
+    @Query("SELECT p FROM Product p WHERE p.restaurant.id = :restaurantId ORDER BY p.category.name")
+    List<Product> findProductsByRestaurantIdAndCategory(@Param("restaurantId") Long restaurantId);
 }

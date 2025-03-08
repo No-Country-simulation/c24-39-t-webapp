@@ -257,11 +257,11 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public List<GroupedProductsResponseDto> findProductsByRestaurantAndCategory(Restaurant restaurant) {
-        log.info("Buscando productos del restaurante con ID: {}", restaurant.getId());
+    public List<GroupedProductsResponseDto> findProductsByRestaurantIdAndCategory(Long restaurantId) {
+        log.info("Buscando productos del restaurante con ID: {}", restaurantId);
 
             // Obtener los productos del repositorio
-            List<Product> products = productRepository.findProductsByRestaurant(restaurant);
+            List<Product> products = productRepository.findProductsByRestaurantIdAndCategory(restaurantId);
 
             // Agrupar los productos por categoría y restaurante
             Map<String, Map<Long, List<ProductResponseDto>>> groupedProducts = products.stream()

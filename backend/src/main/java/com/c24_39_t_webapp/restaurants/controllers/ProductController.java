@@ -158,17 +158,17 @@ public class ProductController {
 
     /**
      * Endpoint to retrieve a list of all {@link GroupedProductsResponseDto} objects stored in the system.
-     * Delegates the retrieval logic to {@link IProductService#findProductsByRestaurantAndCategory(Restaurant)}.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByRestaurantIdAndCategory(Long)}.
      *
-     * @param restaurant The restaurant to retrieve products for.
+     * @param restaurantId The restaurant to retrieve products for.
      * @return A list of {@code GroupedProductsResponseDto} objects representing
      * all products in the specified restaurant grouped by categories.
      */
-    @GetMapping(value = "/byRestaurantAndCategory/{restaurant}")
-    public ResponseEntity<List<GroupedProductsResponseDto>> findProductsByRestaurantAndCategory(@PathVariable Restaurant restaurant) {
-        log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
-        List<GroupedProductsResponseDto> products = productService.findProductsByRestaurantAndCategory(restaurant);
-        log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
+    @GetMapping(value = "/byRestaurantAndCategory/{restaurantId}")
+    public ResponseEntity<List<GroupedProductsResponseDto>> findProductsByRestaurantAndCategory(@PathVariable Long restaurantId) {
+        log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurantId);
+        List<GroupedProductsResponseDto> products = productService.findProductsByRestaurantIdAndCategory(restaurantId);
+        log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurantId);
         return ResponseEntity.ok(products);
     }
 }

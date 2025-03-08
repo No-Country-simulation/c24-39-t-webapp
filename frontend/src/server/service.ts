@@ -1,5 +1,5 @@
 import { URL_BACKEND } from "@/utils/constants"
-import { ListOfRestaurants, Product, Restaurant } from "@/utils/types"
+import { ListOfRestaurants, MenuProduct, Restaurant } from "@/utils/types"
 
 export const api = {
 	restaurant: {
@@ -28,9 +28,9 @@ export const api = {
 	},
 
 	product: {
-		getAllByRestaurant: async (id: number): Promise<Product[]> => {
+		getAllByRestaurant: async (id: number): Promise<MenuProduct[]> => {
 			try {
-				const res = await fetch(`${URL_BACKEND}/api/product/byRestaurant/${id}`)
+				const res = await fetch(`${URL_BACKEND}/api/product/byRestaurantAndCategory/${id}`)
 				if (!res.ok) throw new Error(res.statusText)
 				const data = await res.json()
 				return data

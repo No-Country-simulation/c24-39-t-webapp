@@ -20,3 +20,11 @@ export type Product = {
     isActive: boolean
     quantity: number
 }
+
+export type MenuProduct = {
+	categoryName: string
+	categoryId:  number
+	restaurantName: string
+	restaurantId: number
+	products: Product[]
+}

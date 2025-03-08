@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Product } from "@/utils/types";
+import { MenuProduct, Product } from "@/utils/types";
 import { Accordion, AccordionPanel, AccordionTitle, AccordionContent } from "flowbite-react";
 import { HiShoppingCart } from "react-icons/hi";
 import { Dropdown } from "flowbite-react";
-import { HiPlus, HiMinus } from "react-icons/hi";
+import MenuItem from "./menu-item";
 
 type MenuProps = {
-  products: Product[];
+  menu: MenuProduct[];
 };
 
-export default function Menu({ products }: MenuProps) {
+export default function Menu({ menu }: MenuProps) {
   const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
 
   // ✅ Cargar carrito desde localStorage
@@ -44,7 +44,6 @@ export default function Menu({ products }: MenuProps) {
         .filter((item) => item.quantity > 0);
     });
   };
-
   return (
     <div>
       {/* Carrito con Flowbite */}
@@ -65,45 +64,36 @@ export default function Menu({ products }: MenuProps) {
             <Dropdown.Item disabled>Tu carrito está vacío</Dropdown.Item>
           )}
           <Dropdown.Divider />
-          <Dropdown.Item className="text-center font-bold cursor-pointer">Finalizar compra</Dropdown.Item>
+          <Dropdown.Item className="text-center font-bold cursor-pointer">
+            Finalizar compra
+          </Dropdown.Item>
         </Dropdown>
       </div>
 
       {/* Lista de productos */}
       <Accordion>
-        {products.map((product) => (
-          <AccordionPanel key={product.prd_id}>
+        {menu.map((item, index) => (
+          <AccordionPanel key={item.categoryId + index}>
             <AccordionTitle>
               <div className="flex gap-6 items-center justify-between">
-                <h3 className="text-lg">{product.name}</h3>
-                <span className="font-bold">${product.price}</span>
+                <h3 className="text-lg">{item.categoryName}</h3>
+                <div className="flex justify-center items-center gap-1">
+                  <span className="font-bold">{item.products.length}</span> Productos
+                </div>
               </div>
             </AccordionTitle>
             <AccordionContent>
-              <div className="flex justify-between items-center w-full">
-                <div className="flex gap-2 items-center">
-                  <img src={product.image} alt={product.name} className="object-cover w-[10%]" />
-                  <p>
-                    <span className="text-black/70">{product.description}</span> -
-                    <span className="font-semibold text-green-700/90">${product.price}</span>
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => removeFromCart(product)}
-                    className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition"
-                  >
-                    <HiMinus />
-                  </button>
-                  <span>{cart.find((item) => item.id === product.prd_id)?.quantity || 0}</span>
-                  <button
-                    onClick={() => addToCart(product)}
-                    className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
-                  >
-                    <HiPlus />
-                  </button>
-                </div>
-              </div>
+		<div className="flex flex-col gap-2">
+            {
+              item.products.length > 0 && item.products.map((product) => (
+                  <MenuItem 
+                    key={product.prd_id} 
+                    product={product}  cart={cart}
+                    addToCart={addToCart} removeFromCart={removeFromCart}
+                  />
+              ))
+            }
+		</div>
             </AccordionContent>
           </AccordionPanel>
         ))}

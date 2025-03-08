@@ -1,6 +1,5 @@
 import Menu from "@/components/menu";
 import { api } from "@/server/service";
-import { Product } from "@/utils/types";
 import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
 
@@ -13,33 +12,12 @@ type Props = {
 export default async function Page({ params }: Props) {
 
   const { id } = await params;
-  const restaurant = await api.restaurant.get(Number(id));
 
-  // Simulación de productos (cambiar por API real)
-  const products: Product[] = [
-    {
-      prd_id: 1,
-      name: "Hamburguesa",
-      price: 3500,
-      description: "Una hamburguesa",
-      restaurantId: Number(id),
-      quantity: 100,
-      image: "https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_960_720.jpg",
-      isActive: true,
-      categoryId: 1,
-    },
-    {
-      prd_id: 2,
-      name: "Pizza",
-      price: 4000,
-      description: "Una pizza",
-      restaurantId: Number(id),
-      quantity: 100,
-      image: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_960_720.jpg",
-      isActive: true,
-      categoryId: 2,
-    },
-  ];
+  // Hago la llamada en paralelo para que sea más rápido
+  const [restaurant, products] = await Promise.all([
+    api.restaurant.get(Number(id)),
+    api.product.getAllByRestaurant(Number(id)),
+  ]);
 
   return (
     <main className="min-h-screen w-full md:w-[760px] text-black p-2 md:p-6 mx-auto flex flex-col align-center shadow-lg relative">
@@ -70,7 +48,7 @@ export default async function Page({ params }: Props) {
 
       {/* Menú (componente Client) */}
       <section className="mt-6">
-        <Menu products={products} />
+        <Menu menu={products} />
       </section>
     </main>
   );

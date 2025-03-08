@@ -26,5 +26,5 @@ export type MenuProduct = {
 	categoryId:  number
 	restaurantName: string
 	restaurantId: number
-	products: Products[]
+	products: Product[]
 }

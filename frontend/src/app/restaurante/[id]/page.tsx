@@ -1,16 +1,13 @@
 import Menu from "@/components/menu";
 import { api } from "@/server/service";
-import Link from "next/link";
-import { HiArrowLeft } from "react-icons/hi";
 
 type Props = {
   params: Promise<{
     id: string;
-  }>
-}
+  }>;
+};
 
 export default async function Page({ params }: Props) {
-
   const { id } = await params;
 
   // Hago la llamada en paralelo para que sea más rápido
@@ -20,34 +17,24 @@ export default async function Page({ params }: Props) {
   ]);
 
   return (
-    <main className="min-h-screen w-full md:w-[760px] text-black p-2 md:p-6 mx-auto flex flex-col align-center shadow-lg relative">
-      <div>
-        <Link
-          className="flex gap-1 w-fit items-center justify-center transition-colors hover:bg-gray-200/60 hover:border-black/80 px-2 py-1 text-black decoration-none rounded-full border border-black"
-          href="/"
-        >
-          <HiArrowLeft className="size-3" />
-          Volver
-        </Link>
-      </div>
-
+    <main className="min-h-screen rounded-lg bg-gray-200 w-full max-w-4xl mx-auto text-black p-4 md:p-6 flex flex-col items-center shadow-lg relative mt-20">
       {restaurant && (
         <>
-          <div className="w-full flex mb-2 justify-center items-center">
+          <div className="w-full flex mb-4 justify-center">
             <img
               height="250px"
-              className="object-cover w-[50%] md:w-[30%]"
+              className="object-cover w-[50%] md:w-[30%] rounded-lg"
               src={restaurant.logo}
               alt={`Logo de ${restaurant.name}`}
             />
           </div>
-          <h1 className="leading-2 text-center text-2xl md:text-5xl font-bold">{restaurant.name}</h1>
+          <h1 className="text-center text-2xl md:text-5xl font-bold">{restaurant.name}</h1>
           <p className="text-center md:text-2xl text-black/70">{restaurant.description}</p>
         </>
       )}
 
-      {/* Menú (componente Client) */}
-      <section className="mt-6">
+      {/* Menú */}
+      <section className="mt-6  w-full">
         <Menu menu={products} />
       </section>
     </main>

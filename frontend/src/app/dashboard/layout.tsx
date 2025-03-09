@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Lobster } from "next/font/google";
-import "./globals.css";
-import NavBar from "@/components/nav-bar";
 
 const lobster = Lobster({
   variable: "--lobster",
@@ -14,17 +12,14 @@ export const metadata: Metadata = {
   description: "Foody es una app para hacer tus pedidos de tus restaurantes favoritos!",
 };
 
-export default function RootLayout({
+export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="es">
-      <body className={` ${lobster.variable} antialiased`}>
-        <NavBar />
-        {children}
-      </body>
+      <body className={` ${lobster.variable} antialiased`}>{children}</body>
     </html>
   );
 }

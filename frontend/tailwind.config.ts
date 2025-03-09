@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-const flowbite = require("flowbite-react/tailwind");
+import flowbite from "flowbite-react/tailwind";
 
 // import { plugin, content } from 'flowbite-react/tailwind';
 

@@ -1,7 +1,12 @@
 # Instalar dependencias antes de iniciar el servidor de desarrollo
 
-```bash
-npm install
+# Instrucciones de instalación local de dependencias
+
+### URL despliegue: https://foody-nocountry.netlify.app/#
+
+### Usuario: test000@test.com
+
+### Password: test
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

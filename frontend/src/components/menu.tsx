@@ -6,6 +6,7 @@ import { Accordion, AccordionPanel, AccordionTitle, AccordionContent } from "flo
 import { HiShoppingCart } from "react-icons/hi";
 import { Dropdown } from "flowbite-react";
 import MenuItem from "./menu-item";
+import ProductModal from "./product-modal";
 
 type MenuProps = {
   menu: MenuProduct[];
@@ -13,6 +14,8 @@ type MenuProps = {
 
 export default function Menu({ menu }: MenuProps) {
   const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar el modal
 
   // ✅ Cargar carrito desde localStorage
   useEffect(() => {
@@ -44,6 +47,17 @@ export default function Menu({ menu }: MenuProps) {
         .filter((item) => item.quantity > 0);
     });
   };
+  // ✅ Abrir modal con el producto seleccionado
+  const openModal = (product: Product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+
+  // ✅ Cerrar modal
+  const closeModal = () => {
+    setSelectedProduct(null);
+    setIsModalOpen(false);
+  };
   return (
     <div>
       {/* Carrito con Flowbite */}
@@ -72,32 +86,50 @@ export default function Menu({ menu }: MenuProps) {
 
       {/* Lista de productos */}
       <Accordion>
-        {menu.map((item, index) => (
-          <AccordionPanel key={item.categoryId + index}>
-            <AccordionTitle>
-              <div className="flex gap-6 items-center justify-between">
-                <h3 className="text-lg">{item.categoryName}</h3>
-                <div className="flex justify-center items-center gap-1">
-                  <span className="font-bold">{item.products.length}</span> Productos
+        {menu.map((item, index) => {
+          // Filtra productos duplicados
+          const uniqueProducts = item.products.filter(
+            (product, index, self) =>
+              index === self.findIndex((p) => p.prd_id === product.prd_id)
+          );
+
+          return (
+            <AccordionPanel key={item.categoryId + index}>
+              <AccordionTitle>
+                <div className="flex gap-6 items-center justify-between">
+                  <h3 className="text-lg">{item.categoryName}</h3>
+                  <div className="flex justify-center items-center gap-1">
+                    <span className="font-bold">{item.products.length}</span> Productos
+                  </div>
                 </div>
-              </div>
-            </AccordionTitle>
-            <AccordionContent>
-		<div className="flex flex-col gap-2">
-            {
-              item.products.length > 0 && item.products.map((product) => (
-                  <MenuItem 
-                    key={product.prd_id} 
-                    product={product}  cart={cart}
-                    addToCart={addToCart} removeFromCart={removeFromCart}
-                  />
-              ))
-            }
-		</div>
-            </AccordionContent>
-          </AccordionPanel>
-        ))}
+              </AccordionTitle>
+              <AccordionContent>
+                <div className="flex flex-col gap-2">
+                  {uniqueProducts.length > 0 &&
+                    uniqueProducts.map((product) => (
+                      <MenuItem
+                        key={product.prd_id} // Clave única
+                        product={product}
+                        cart={cart}
+                        addToCart={addToCart}
+                        removeFromCart={removeFromCart}
+                        openModal={openModal} // Pasamos la función para abrir el modal
+                      />
+                    ))}
+                </div>
+              </AccordionContent>
+            </AccordionPanel>
+          );
+        })}
       </Accordion>
+      {/* Modal */}
+      {selectedProduct && (
+        <ProductModal
+          product={selectedProduct}
+          isOpen={isModalOpen}
+          onClose={closeModal}
+        />
+      )}
     </div>
   );
 }

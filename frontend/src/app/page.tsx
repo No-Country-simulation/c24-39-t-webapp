@@ -10,8 +10,8 @@ import {
   NavbarLink,
   NavbarToggle,
 } from "flowbite-react";
+import 'tailwindcss';
 import { auth } from "../../auth";
-import 'tailwindcss'; // ??????
 import LogoutButton from "@/components/logout-button";
 import { Role } from "@/utils/constants";
 import Cart from "@/app/cart/cart";
@@ -75,21 +75,41 @@ export default async function Home() {
   ];
 
   */
-    
-  
+
+
   return (
-    <div className="bg-gray-300">
-      <Navbar fluid rounded className="justify-between fixed top-0 right-0 left-0">
-        <NavbarBrand className="" href="/">
+    <div className="flex flex-col min-h-screen bg-gray-300">
+      <Navbar fluid rounded className="justify-between w-full fixed top-0 right-0 left-0">
+        <NavbarBrand className="order-1" href="/">
           <span className="self-center text-primary font-lobster whitespace-nowrap text-4xl">Foody</span>
         </NavbarBrand>
-        <Cart />
-        <div className="flex md:order-2">
+        <NavbarToggle className="order-4 md:hidden"/>
+        <NavbarCollapse className="order-2 ml-96 justify-self-center text-3xl hover:text-accent z-10 font-bold">
+          <NavbarLink href="#" active>
+            Inicio
+          </NavbarLink>
+          <NavbarLink href="#">Categorías</NavbarLink>
+          <NavbarLink href="#">Restaurantes</NavbarLink>
+          <NavbarLink href="#">Contacto</NavbarLink>
+          {session?.user?.role === Role.Restaurant ?
+            <NavbarLink className="block md:hidden" href="/dashboard">
+              Panel de administración
+            </NavbarLink> :
+            <NavbarLink className="block md:hidden" href="/perfil">
+              Perfil
+            </NavbarLink>
+          }
+          {session?.user && <span className="block md:hidden"><LogoutButton /></span>}
+        </NavbarCollapse>
+        <div className="order-3 flex ml-auto">
+          <Cart />
+        </div>
+        <div className="flex items-center">
           {
             session?.user && (
-              <Dropdown arrowIcon={false} 
-                  className="hidden md:block"
-                  inline label={<Avatar alt="User settings" 
+              <Dropdown arrowIcon={false}
+                className="hidden md:block"
+                inline label={<Avatar alt="User settings"
                   img="/user.png" rounded />}>
                 <DropdownHeader>
                   <span className="block text-sm">{session?.user?.name}</span>
@@ -112,30 +132,10 @@ export default async function Home() {
               </Dropdown>
             )
           }
-          <NavbarToggle />
         </div>
-        <NavbarCollapse className="text-3xl hover:text-accent z-10 font-bold">
-          <NavbarLink href="#" active>
-            Inicio
-          </NavbarLink>
-          <NavbarLink href="#">Categorías</NavbarLink>
-          <NavbarLink href="#">Restaurantes</NavbarLink>
-          <NavbarLink href="#">Contacto</NavbarLink>
-          {session?.user?.role === Role.Restaurant ? 
-            <NavbarLink className="block md:hidden" href="/dashboard">
-              Panel de administración
-            </NavbarLink>:
-            <NavbarLink className="block md:hidden" href="/perfil">
-              Perfil
-            </NavbarLink>
-          }
-          {session?.user && <span className="block md:hidden"><LogoutButton /></span>}
-        </NavbarCollapse>
       </Navbar>
-
       <main className="container mx-auto p-6">
-
-      <h1 className="text-3xl text-primary -z-10 font-bold text-center mt-14 mb-6">Restaurantes</h1>
+        <h1 className="text-3xl text-primary -z-10 font-bold text-center mt-14 mb-6">Restaurantes</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
           {restaurants.map((restaurant) => (
             <RestaurantCard restaurant={restaurant} key={restaurant.rst_id} />
@@ -148,14 +148,13 @@ export default async function Home() {
             <button
               key={category.id}
               className="px-20 py-10 bg-secondary text-primary text-lg rounded-lg hover:bg-primary hover:text-secondary transition"
-              // aca colocar una funcion en onclick para el filtrado por categorias
+            // aca colocar una funcion en onclick para el filtrado por categorias
             >
               {category.name}
             </button>
           ))}
         </div>
       </main>
-
       <footer className="bg-accent w-full text-white text-center p-4 mt-6">
         &copy; 2025 Foody. Todos los derechos reservados.
       </footer>

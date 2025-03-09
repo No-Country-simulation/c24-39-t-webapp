@@ -34,17 +34,17 @@ export default function LoginPage() {
 
   return (
     <section className="w-full h-screen flex flex-col md:flex-row justify-center items-center gap-8 md:gap-40 bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500 p-8">
-      <h1 className="text-5xl text-[#FFBA05] font-lobster">Foody</h1>
+      <h1 className="text-6xl text-[#FFBA05] font-lobster">Foody</h1>
       <form
         action={handleSubmit} noValidate
-        className="flex flex-col gap-4 bg-[#FAFAF5] w-full max-w-md p-4 md:p-8 box-border overflow-hidden justify-between max-h-screen rounded-lg"
+        className="flex flex-col gap-4 bg-[#fafae9] w-full max-w-md p-4 md:p-8 box-border overflow-hidden justify-between max-h-screen rounded-lg shadow-md"
       >
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">
             <Label htmlFor="email1" value="Tu email"/>
           </div>
           <TextInput 
-            className="dark:bg-gray-800 bg-transparent "
+            className="shadow rounded-md"
             name="email" 
             id="email1" 
             type="email" 
@@ -59,7 +59,7 @@ export default function LoginPage() {
             <Label htmlFor="password1" value="Tu contraseña" />
           </div>
           <TextInput
-            className="dark:bg-gray-800 bg-transparent "
+            className="shadow rounded-md"
             name="password"
             id="password1"
             type="password"
@@ -69,7 +69,7 @@ export default function LoginPage() {
           />
           {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
-        <Button className="mt-2 bg-primary text-white font-semibold" disabled={isPending} type="submit">
+        <Button className="mt-2 bg-primary text-white font-semibold shadow hover:bg-[#FFBA05]" disabled={isPending} type="submit">
           {
             isPending ? "Cargando..." : "Iniciar sesión"
           }

@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 export default async function ProfilePage() {
     
     const session = await auth();
-
     if(!session || !session.user) {
         return <section className="flex flex-col items-center justify-center h-screen w-full">
             <h2 className="text-3xl font-semibold">Usuario no autenticado.</h2>

@@ -2,6 +2,7 @@ import Menu from "@/components/menu";
 import { api } from "@/server/service";
 import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
+import Image from "next/image";
 
 type Props = {
   params: Promise<{
@@ -34,11 +35,12 @@ export default async function Page({ params }: Props) {
       {restaurant && (
         <>
           <div className="w-full flex mb-2 justify-center items-center">
-            <img
-              height="250px"
+            <Image
               className="object-cover w-[50%] md:w-[30%]"
               src={restaurant.logo}
               alt={`Logo de ${restaurant.name}`}
+              width={300}
+              height={300}
             />
           </div>
           <h1 className="leading-2 text-center text-2xl md:text-5xl font-bold">{restaurant.name}</h1>

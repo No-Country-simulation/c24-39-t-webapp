@@ -73,7 +73,7 @@ export default function Menu({ menu }: MenuProps) {
       {/* Lista de productos */}
       <Accordion>
         {menu.map((item, index) => (
-          <AccordionPanel key={item.categoryId + index}>
+          <AccordionPanel key={`${item.restaurantId}-${item.categoryId}-${index}`}>
             <AccordionTitle>
               <div className="flex gap-6 items-center justify-between">
                 <h3 className="text-lg">{item.categoryName}</h3>
@@ -83,17 +83,17 @@ export default function Menu({ menu }: MenuProps) {
               </div>
             </AccordionTitle>
             <AccordionContent>
-		<div className="flex flex-col gap-2">
-            {
-              item.products.length > 0 && item.products.map((product) => (
-                  <MenuItem 
-                    key={product.prd_id} 
-                    product={product}  cart={cart}
-                    addToCart={addToCart} removeFromCart={removeFromCart}
-                  />
-              ))
-            }
-		</div>
+              <div className="flex flex-col gap-2">
+                      {
+                        item.products.length > 0 && item.products.map((product,index) => (
+                            <MenuItem 
+                              key={`${product.prd_id}-${index}`} 
+                              product={product}  cart={cart}
+                              addToCart={addToCart} removeFromCart={removeFromCart}
+                            />
+                        ))
+                      }
+              </div>
             </AccordionContent>
           </AccordionPanel>
         ))}

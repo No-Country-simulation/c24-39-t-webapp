@@ -78,19 +78,26 @@ export default async function Home() {
 
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-300">
-      <Navbar fluid rounded className="justify-between w-full fixed top-0 right-0 left-0">
+    <div className="flex flex-col min-h-screen bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500">
+      <Navbar fluid rounded className="justify-between w-full fixed top-0 right-0 left-0 bg-[#fafae9]">
         <NavbarBrand className="order-1" href="/">
-          <span className="self-center text-primary font-lobster whitespace-nowrap text-4xl">Foody</span>
+          <span className="self-center text-[#FFBA05] font-lobster whitespace-nowrap text-5xl">Foody</span>
         </NavbarBrand>
-        <NavbarToggle className="order-4 md:hidden"/>
-        <NavbarCollapse className="order-2 ml-96 justify-self-center text-3xl hover:text-accent z-10 font-bold">
+        <NavbarToggle className="order-4 md:hidden" />
+        <NavbarCollapse className="order-2 flex justify-center items-center text-3xl hover:text-accent z-10 font-bold">
           <NavbarLink href="#" active>
             Inicio
           </NavbarLink>
           <NavbarLink href="#">Categorías</NavbarLink>
           <NavbarLink href="#">Restaurantes</NavbarLink>
           <NavbarLink href="#">Contacto</NavbarLink>
+          {!session?.user && (
+            <NavbarLink href="/login">
+              <div className="cursor-pointer bg-black text-white px-6 py-2 rounded-md hover:bg-[#393433] transition duration-200">
+                Inicia Sesión
+              </div>
+            </NavbarLink>
+          )}
           {session?.user?.role === Role.Restaurant ?
             <NavbarLink className="block md:hidden" href="/dashboard">
               Panel de administración
@@ -100,62 +107,67 @@ export default async function Home() {
             </NavbarLink>
           }
           {session?.user && <span className="block md:hidden"><LogoutButton /></span>}
+          <div className={`${session?.user ? 'flex' : 'hidden'} items-center ml-auto`}>
+            {session?.user && <Cart />}
+          </div>
+          <div className={`${session?.user ? 'flex' : 'hidden'} items-center ml-1 m-2`}>
+            {
+              session?.user && (
+                <Dropdown arrowIcon={false}
+                  className="hidden md:block"
+                  inline label={<Avatar alt="User settings"
+                    img="/user.png" rounded />}>
+                  <DropdownHeader>
+                    <span className="block text-sm">{session?.user?.name}</span>
+                    <span className="block truncate text-sm font-medium">{session?.user?.role}</span>
+                  </DropdownHeader>
+                  {
+                    session?.user?.role === Role.Restaurant ? (
+                      <DropdownItem href="/dashboard">
+                        Panel de administración
+                      </DropdownItem>) :
+                      <DropdownItem href="/perfil">
+                        Perfil
+                      </DropdownItem>
+                  }
+                  <DropdownItem>Settings</DropdownItem>
+                  <DropdownDivider />
+                  <DropdownItem as={LogoutButton}>
+                    Cerrar sesión
+                  </DropdownItem>
+                </Dropdown>
+              )
+            }
+          </div>
         </NavbarCollapse>
-        <div className="order-3 flex ml-auto">
-          <Cart />
-        </div>
-        <div className="flex items-center">
-          {
-            session?.user && (
-              <Dropdown arrowIcon={false}
-                className="hidden md:block"
-                inline label={<Avatar alt="User settings"
-                  img="/user.png" rounded />}>
-                <DropdownHeader>
-                  <span className="block text-sm">{session?.user?.name}</span>
-                  <span className="block truncate text-sm font-medium">{session?.user?.role}</span>
-                </DropdownHeader>
-                {
-                  session?.user?.role === Role.Restaurant ? (
-                    <DropdownItem href="/dashboard">
-                      Panel de administración
-                    </DropdownItem>) :
-                    <DropdownItem href="/perfil">
-                      Perfil
-                    </DropdownItem>
-                }
-                <DropdownItem>Settings</DropdownItem>
-                <DropdownDivider />
-                <DropdownItem as={LogoutButton}>
-                  Cerrar sesión
-                </DropdownItem>
-              </Dropdown>
-            )
-          }
-        </div>
       </Navbar>
-      <main className="container mx-auto p-6">
-        <h1 className="text-3xl text-primary -z-10 font-bold text-center mt-14 mb-6">Restaurantes</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {restaurants.map((restaurant) => (
-            <RestaurantCard restaurant={restaurant} key={restaurant.rst_id} />
-          ))}
+      <main className="w-full mt-10 mb-10">
+        <h1 className="text-3xl text-[#fafae9] -z-10 font-lobster text-center mt-14 mb-3">Restaurantes</h1>
+        <div className="overflow-x-auto">
+          <div className="flex gap-3">
+            {restaurants.map((restaurant) => (
+              <div key={restaurant.rst_id} className="flex-none w-64 bg-[#fafae9] p-2 border rounded-lg shadow-md">
+                <RestaurantCard restaurant={restaurant}/>
+              </div>
+            ))}
+          </div>
         </div>
-
-        <h1 className="text-3xl text-primary mt-10 font-bold text-center">Explora Categorías</h1>
-        <div className="flex flex-wrap justify-center gap-4 p-10">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              className="px-20 py-10 bg-secondary text-primary text-lg rounded-lg hover:bg-primary hover:text-secondary transition"
-            // aca colocar una funcion en onclick para el filtrado por categorias
-            >
-              {category.name}
-            </button>
-          ))}
+        <h1 className="text-3xl text-[#fafae9] mt-10 font-lobster text-center mb-3">Explora Categorías</h1>
+        <div className="overflow-x-auto">
+          <div className="flex gap-3">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className="flex-none w-64 p-4 rounded-lg shadow-md px-20 py-10 bg-[#f5750c] text-[#fafae9] text-lg rounded-lg hover:bg-primary hover:text-secondary transition"
+              // aca colocar una funcion en onclick para el filtrado por categorias
+              >
+                {category.name}
+              </button>
+            ))}
+          </div>
         </div>
       </main>
-      <footer className="bg-accent w-full text-white text-center p-4 mt-6">
+      <footer className="bg-[#fafae9] w-full text-black text-center p-4 mt-6">
         &copy; 2025 Foody. Todos los derechos reservados.
       </footer>
     </div>

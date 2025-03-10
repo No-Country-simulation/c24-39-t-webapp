@@ -69,7 +69,7 @@ export default function LoginPage() {
           />
           {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
-        <Button className="mt-2 bg-primary text-white font-semibold shadow hover:bg-[#FFBA05]" disabled={isPending} type="submit">
+        <Button className="bg-primary text-white font-semibold shadow hover:bg-[#FFBA05]" disabled={isPending} type="submit">
           {
             isPending ? "Cargando..." : "Iniciar sesión"
           }

@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { auth } from "../../../auth";
+import { Role } from "@/utils/constants";
+import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
     
@@ -21,6 +23,10 @@ export default async function ProfilePage() {
                 </Link>    
             </div>  
         </section>
+    }
+
+    if(session.user.role === Role.Restaurant) {
+        redirect("/dashboard")
     }
 
     const userData = session.user;

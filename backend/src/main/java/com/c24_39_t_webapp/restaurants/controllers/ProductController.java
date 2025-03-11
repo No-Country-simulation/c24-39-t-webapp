@@ -2,6 +2,7 @@ package com.c24_39_t_webapp.restaurants.controllers;
 
 
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
+import com.c24_39_t_webapp.restaurants.dtos.response.GroupedProductsResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
@@ -153,6 +154,22 @@ public class ProductController {
         log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurant);
         List<ProductResponseDto> products = productService.findProductsByRestaurant(restaurant);
         log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurant);
+        return ResponseEntity.ok(products);
+    }
+
+    /**
+     * Endpoint to retrieve a list of all {@link GroupedProductsResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByRestaurantIdAndCategory(Long)}.
+     *
+     * @param restaurantId The restaurant to retrieve products for.
+     * @return A list of {@code GroupedProductsResponseDto} objects representing
+     * all products in the specified restaurant grouped by categories.
+     */
+    @GetMapping(value = "/byRestaurantAndCategory/{restaurantId}")
+    public ResponseEntity<List<GroupedProductsResponseDto>> findProductsByRestaurantAndCategory(@PathVariable Long restaurantId) {
+        log.info("Solicitud recibida para obtener productos del restaurante: {}", restaurantId);
+        List<GroupedProductsResponseDto> products = productService.findProductsByRestaurantIdAndCategory(restaurantId);
+        log.info("Se recuperaron {} productos del restaurante: {} exitosamente.", products.size(), restaurantId);
         return ResponseEntity.ok(products);
     }
 }

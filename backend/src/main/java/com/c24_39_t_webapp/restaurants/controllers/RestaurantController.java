@@ -114,6 +114,7 @@ public class RestaurantController {
      */
     //    @PutMapping("/{rst_id}")
     @PatchMapping("/{rst_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
 //    public int updateRestaurant(@RequestBody RestaurantResponseDto restaurantResponseDto) {
     public ResponseEntity<RestaurantResponseDto> updateRestaurant(
             @PathVariable Long rst_id,
@@ -125,7 +126,15 @@ public class RestaurantController {
             return ResponseEntity.ok(updatedRestaurant);
     }
 
+    /**
+     * Endpoint to update an existing restaurant in the system using the provided {@link RestaurantRequestDto}.
+     * Delegates the update logic to {@link IRestaurantService#updateRestaurant(Long, RestaurantRequestDto)}.
+     *
+     * @param rst_id The ID of the restaurant to update.
+     * @return A response entity containing the updated restaurant.
+     */
     @DeleteMapping("/{rst_id}")
+    @PreAuthorize("hasAuthority('restaurante')")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable Long rst_id) {
             log.info("Solicitud recibida para eliminar el restaurante con ID: {}", rst_id);
             restaurantService.deleteById(rst_id);

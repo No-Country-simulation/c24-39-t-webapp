@@ -37,8 +37,8 @@ public class SecurityConfig {
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
                 // Consultas públicas (lectura para todos)
-                .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**", "/api/product/**").permitAll().requestMatchers("/api/category/**", "/api/restaurant/**", "/api/product/**").hasRole("RESTAURANTE")
-                // Orders: Cliente solo crea (POST)
+                .requestMatchers(HttpMethod.GET, "/api/category/**", "/api/restaurant/**", "/api/product/**").permitAll()
+                .requestMatchers("/api/category/**", "/api/restaurant/**", "/api/product/**").hasRole("RESTAURANTE")  // Orders: Cliente solo crea (POST)
                 .requestMatchers(HttpMethod.POST, "/api/order/**").hasRole("CLIENTE")
                 // Orders: Cliente solo consulta (GET) por fecha y cliente
                 .requestMatchers(HttpMethod.GET, "/api/order/byClientDate", "/api/order/byClientId/{cln_id}").hasRole("CLIENTE")

@@ -35,13 +35,6 @@ export default function Menu({ menu }: MenuProps) {
     localStorage.setItem("cart", JSON.stringify(cart));
   }, [cart]);
 
-  // ✅ Mostrar toast de carrito abierto
-  useEffect(() => {
-    if (isModalOpen) {
-      toast.success("Carrito abierto.");
-    }
-  }, [isModalOpen]);
-
   // ✅ Mostrar toast según el tipo
   useEffect(() => {
     if (toastConfig) {

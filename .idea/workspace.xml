@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a483b466-de63-4609-9370-87df1b8585a9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/controllers/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/controllers/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/controllers/ReviewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/controllers/ReviewController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/dtos/request/UpdateReviewDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/dtos/request/UpdateReviewDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/IReviewService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/IReviewService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/impl/ReviewServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/impl/ReviewServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/config/segurity/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/config/segurity/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/dtos/request/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/dtos/request/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/c24_39_t_webapp/restaurants/services/AuthService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,8 +48,9 @@
     "Application.RestaurantsApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "dev1",
+    "git-widget-placeholder": "dev-swagger",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/wjosu/Java-projects/NoCountrySimulation/modifiable/c24-39-t-webapp",
     "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>

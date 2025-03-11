@@ -1,8 +1,9 @@
 "use client";
 
 import { Modal } from "flowbite-react";
-import { Product } from "@/utils/types";
+import { Product } from "../utils/types";
 import Image from "next/image";
+import React from "react";
 
 // Define las props del modal
 type ProductModalProps = {

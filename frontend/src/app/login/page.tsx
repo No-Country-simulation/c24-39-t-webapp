@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useTransition } from "react";
-
 import { Button, Label, TextInput } from "flowbite-react";
 import { HiLockClosed, HiMail } from "react-icons/hi";
 import ErrorMessage from "@/components/error-message";
@@ -10,20 +9,20 @@ import { useRouter } from "next/navigation";
 
 type FormErrors = {
   _form?: string[];
-  email?: string[]| undefined;
-  password?:  string[]| undefined;
+  email?: string[] | undefined;
+  password?: string[] | undefined;
 };
 
 export default function LoginPage() {
 
   const [isPending, startTransition] = useTransition();
-  const [errors, setErrors] = useState<FormErrors|null>(null);
+  const [errors, setErrors] = useState<FormErrors | null>(null);
   const router = useRouter()
 
   const handleSubmit = async (formData: FormData) => {
     startTransition(async () => {
       const result = await loginAction(formData);
-      if(result && !result.success){
+      if (result && !result.success) {
         setErrors(result.errors)
       } else {
         setErrors(null)
@@ -34,22 +33,22 @@ export default function LoginPage() {
 
   return (
     <section className="w-full h-screen flex flex-col md:flex-row justify-center items-center gap-8 md:gap-40 bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500 p-8">
-      <h1 className="text-6xl text-[#FFBA05] font-lobster">Foody</h1>
+      <h1 className="text-6xl text-logo font-lobster font-bold">Foody</h1>
       <form
         action={handleSubmit} noValidate
         className="flex flex-col gap-4 bg-[#fafae9] w-full max-w-md p-4 md:p-8 box-border overflow-hidden justify-between max-h-screen rounded-lg shadow-md"
       >
         <div className="flex flex-col gap-2">
           <div className="mb-2 block">
-            <Label htmlFor="email1" value="Tu email"/>
+            <Label htmlFor="email1" value="Tu email" />
           </div>
-          <TextInput 
+          <TextInput
             className="shadow rounded-md"
-            name="email" 
-            id="email1" 
-            type="email" 
-            rightIcon={HiMail} 
-            placeholder="name@text.com" 
+            name="email"
+            id="email1"
+            type="email"
+            rightIcon={HiMail}
+            placeholder="name@text.com"
             required disabled={isPending}
           />
           {errors?.email && <ErrorMessage message={errors.email[0]} />}
@@ -69,7 +68,7 @@ export default function LoginPage() {
           />
           {errors?.password && <ErrorMessage message={errors.password[0]} />}
         </div>
-        <Button className="mt-2 bg-primary text-white font-semibold shadow hover:bg-[#FFBA05]" disabled={isPending} type="submit">
+        <Button className="bg-primary text-white font-semibold shadow hover:bg-[#FFBA05]" disabled={isPending} type="submit">
           {
             isPending ? "Cargando..." : "Iniciar sesión"
           }

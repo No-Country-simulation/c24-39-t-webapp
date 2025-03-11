@@ -21,7 +21,7 @@ import Cart from "@/app/cart/cart";
 /////////>>>>>
 import RestaurantCard from "@/components/restaurant-card"; // COMPONENTE AGREGADO PARA HACER FUNCIONAR LA PÁGINA
 import { api } from "@/server/service"; // API AGREGADA PARA HACER FUNCIONAR LA PÁGINA
-import { Chocolate_Classical_Sans } from "next/font/google";
+// import { Chocolate_Classical_Sans } from "next/font/google"; 
 /////////>>>>>
 
 //import Head from "next/head";

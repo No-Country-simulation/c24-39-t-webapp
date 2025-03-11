@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements IRestaurantService {
                     log.warn("Intento fallido: Usuario con email {} no encontrado", email);
                     return new ResponseStatusException(HttpStatus.FORBIDDEN, "Usuario no registrado");
                 });
-        if (!user.getRole().equals("RESTAURANT")) {
+        if (!user.getRole().equals("RESTAURANTE")) {
             log.warn("Intento fallido: Usuario con el Rol {} no esta autorizado", user.getRole());
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes permisos para crear un Restaurante");
         }

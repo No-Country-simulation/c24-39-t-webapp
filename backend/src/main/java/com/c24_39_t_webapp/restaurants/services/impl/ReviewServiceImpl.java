@@ -32,7 +32,7 @@ public class ReviewServiceImpl implements IReviewService {
     private final RestaurantRepository restaurantRepository;
     private final ReviewRepository reviewRepository;
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('CLIENTE')")
     @Override
     public ReviewResponseDto addReview(AddReviewDto reviewDto, UserDetailsImpl userDetails) {
 
@@ -86,7 +86,7 @@ public class ReviewServiceImpl implements IReviewService {
         return new ReviewResponseDto(review);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('CLIENTE')")
     @Override
     public ReviewResponseDto updateReview(UpdateReviewDto updateReviewDto, UserDetailsImpl userDetails) {
         log.info("Buscando recursos para actualizar la reseña");
@@ -111,7 +111,7 @@ public class ReviewServiceImpl implements IReviewService {
         return new ReviewResponseDto(review);
     }
 
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasRole('CLIENTE')")
     @Override
     public void deleteReview(Long id, UserDetailsImpl userDetails) {
         log.info("Obteniendo recursos de la db");

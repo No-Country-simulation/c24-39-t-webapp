@@ -34,7 +34,7 @@ public class ProductController {
      * @return The {@code CategoryResponseDto} object representing the added category.
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto) {
         log.info("Recibida solicitud para añadir un producto al restaurante con ID: {}", requestDto.restaurantId());
         log.info("Datos del producto: {}", requestDto);
@@ -82,7 +82,7 @@ public class ProductController {
      */
 
     @PatchMapping("/{prd_id}")
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
         log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);
         ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
@@ -98,7 +98,7 @@ public class ProductController {
      * @return A {@link ResponseEntity} object with no content to indicate a successful deletion.
      */
     @DeleteMapping("/{prd_id}")
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long prd_id) {
         log.info("Solicitud recibida para eliminar el producto con ID: {}", prd_id);
         productService.deleteProduct(prd_id);

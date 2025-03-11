@@ -1,40 +1,83 @@
 import {
+  Avatar,
+  Button,
+  Dropdown,
+  DropdownDivider,
+  DropdownHeader,
+  DropdownItem,
   Navbar,
   NavbarBrand,
   NavbarCollapse,
   NavbarLink,
   NavbarToggle,
 } from "flowbite-react";
-import 'tailwindcss';
+import { auth } from "../../../auth";
+import LogoutButton from "@/components/logout-button";
+import { Role } from "@/utils/constants";
+import Cart from "@/app/cart/cart";
 
-export default function cartList() {
-  
+export default async function cartList() {
+
+  const session = await auth();
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-300">
-      <Navbar fluid rounded className="justify-between fixed top-0 right-0 left-0">
-        <NavbarBrand className="" href="/">
-          <span className="self-center text-primary font-lobster whitespace-nowrap text-4xl">Foody</span>
+    <>
+      <Navbar fluid rounded className="bg-cream">
+        <NavbarBrand href="/">
+          <span className="self-center text-logo text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">Foody</span>
         </NavbarBrand>
-        <div className="flex md:order-4">
+        <div className={`${!session?.user ? 'flex' : 'hidden'} md:order-2`}>
+          <Button href="/login" className="bg-element">Inicia Sesión</Button>
           <NavbarToggle />
         </div>
-        <NavbarCollapse className="text-3xl hover:text-accent font-bold">
-          <NavbarLink href="#" active>
-            Inicio
-          </NavbarLink>
-          <NavbarLink href="#">Categorías</NavbarLink>
-          <NavbarLink href="#">Restaurantes</NavbarLink>
-          <NavbarLink href="#">Contacto</NavbarLink>
+        <div className={`${!session?.user ? 'hidden' : 'flex'} md:order-2`}>
+          <NavbarBrand>
+            <div className={`${!session?.user ? 'hidden' : 'flex'} md:order-3`}>
+              {session?.user && <Cart />}
+            </div>
+          </NavbarBrand>
+          {
+            session?.user && (
+              <Dropdown
+                arrowIcon={false}
+                inline
+                label={
+                  <Avatar alt="Foto de usuario" img="images/user.png" rounded />
+                }
+              >
+                <DropdownHeader>
+                  <span className="block text-sm">{session?.user?.name}</span>
+                  <span className="block truncate text-sm font-medium">{session?.user?.role}</span>
+                </DropdownHeader>
+                {
+                  session?.user?.role === Role.Restaurant ?
+                    (<DropdownItem href="/dashboard">Panel de administración</DropdownItem>) :
+                    <DropdownItem href="/perfil">Perfil</DropdownItem>
+                }
+                <DropdownItem>Dashboard</DropdownItem>
+                <DropdownItem>Configuración</DropdownItem>
+                <DropdownDivider />
+                <DropdownItem as={LogoutButton}>Cerrar Sesión</DropdownItem>
+              </Dropdown>
+            )
+          }
+          <NavbarToggle />
+        </div>
+        <NavbarCollapse>
+          <NavbarLink href="/">Inicio</NavbarLink>
+          <NavbarLink href="#">¿Qué es foody?</NavbarLink>
+          <NavbarLink href="#">Conviértete en Anfitrión</NavbarLink>
+          <NavbarLink href="#">Ayuda</NavbarLink>
         </NavbarCollapse>
       </Navbar>
-      <main className="flex-grow pt-[4rem] container mx-auto p-6">
-        <h2 className="text-3xl text-primary p-10 font-bold text-center mb-6">
+      <main className="w-full flex flex-col min-h-screen bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500">
+        <h2 className="text-3xl text-cream z-10 font-lobster text-center mt-10 mb-3">
           Listar artículos
         </h2>
       </main>
-      <footer className="bg-accent w-full text-white text-center p-4 mt-6">
+      <footer className="bg-cream w-full text-black text-center p-4">
         &copy; 2025 Foody. Todos los derechos reservados.
       </footer>
-    </div>
+    </>
   );
 }

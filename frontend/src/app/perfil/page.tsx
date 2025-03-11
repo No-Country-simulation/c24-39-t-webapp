@@ -19,7 +19,7 @@ export default async function ProfilePage() {
                 </Link>
                 <Link className="text-accent font-semibold hover:text-accent/80" 
                     href="/">Inicio
-                </Link>    
+                </Link>
             </div>  
         </section>
     }

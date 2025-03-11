@@ -1,5 +1,6 @@
+import { ThemeModeScript } from "flowbite-react";
 import type { Metadata } from "next";
-import { Lobster} from "next/font/google";
+import { Lobster } from "next/font/google";
 import "./globals.css";
 
 const lobster = Lobster({
@@ -20,7 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
+      <head>
+        <ThemeModeScript />
+      </head>
       <body
         className={` ${lobster.variable} antialiased`}
       >

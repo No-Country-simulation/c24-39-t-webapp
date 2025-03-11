@@ -58,9 +58,9 @@ public class RestaurantController {
      */
 
     @PostMapping("/create")
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<?> registerRestaurant(@RequestBody @Valid final RestaurantRequestDto restaurantRequestDto,
-                                                @AuthenticationPrincipal final UserDetailsImpl userDetails) {
+                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
         RestaurantResponseDto restaurant = restaurantService.
                 registerRestaurant(restaurantRequestDto, userDetails.getUsername());
 

@@ -8,18 +8,22 @@ import com.c24_39_t_webapp.restaurants.repository.UserRepository;
 import com.c24_39_t_webapp.restaurants.services.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponseDto updateUser(UserUpdateRequestDto request, String username) {
         log.info("Getting from db the needed resource with username: {}", username);
@@ -30,22 +34,16 @@ public class UserServiceImpl implements IUserService {
                             return new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 "Not found");
                         });
-        if (request.email() != null) {
-            user.setEmail(request.email());
-        }
-        if (request.name() != null) {
-            user.setName(request.name());
-        }
-        if (request.address() != null) {
-            user.setAddress(request.address());
-        }
-        if (request.phone() != null) {
-            user.setPhone(request.phone());
-        }
+
+        Optional.ofNullable(request.email()).ifPresent(user::setEmail);
+        Optional.ofNullable(request.name()).ifPresent(user::setName);
+        Optional.ofNullable(request.address()).ifPresent(user::setAddress   );
+        Optional.ofNullable(request.phone()).ifPresent(user::setPhone);
         if (request.password() != null) {
-            user.setPassword(request.password());
+            user.setPassword(passwordEncoder.encode(request.password()));
         }
         userRepository.save(user);
+
         log.info("Resource saved");
         UserResponseDto userRes = new UserResponseDto(user);
         return userRes;

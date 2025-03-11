@@ -34,7 +34,7 @@ public class ProductController {
      * @return The {@code CategoryResponseDto} object representing the added category.
      */
     @PostMapping
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<ProductResponseDto> addProduct(@RequestBody ProductRequestDto requestDto) {
         log.info("Recibida solicitud para añadir un producto al restaurante con ID: {}", requestDto.restaurantId());
         log.info("Datos del producto: {}", requestDto);
@@ -80,8 +80,9 @@ public class ProductController {
      * @param updateDto The {@code ProductRequestDto} object containing the updated product details.
      * @return The {@code ProductResponseDto} object representing the updated product.
      */
+
     @PatchMapping("/{prd_id}")
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<ProductResponseDto> updateProduct(@PathVariable Long prd_id, @RequestBody ProductRequestDto updateDto) {
         log.info("Solicitud recibida para actualizar el producto con ID: {}", prd_id);
         ProductResponseDto updatedProduct = productService.updateProduct(prd_id, updateDto);
@@ -97,7 +98,7 @@ public class ProductController {
      * @return A {@link ResponseEntity} object with no content to indicate a successful deletion.
      */
     @DeleteMapping("/{prd_id}")
-    @PreAuthorize("hasAuthority('restaurante')")
+    @PreAuthorize("hasRole('RESTAURANTE')")
     public ResponseEntity<Void> deleteProduct(@PathVariable Long prd_id) {
         log.info("Solicitud recibida para eliminar el producto con ID: {}", prd_id);
         productService.deleteProduct(prd_id);
@@ -105,12 +106,12 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
     /**
-        * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
-        * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category category)}.
-        *
-        * @param category The category to retrieve products for.
-        * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
-        */
+     * Endpoint to retrieve a list of all {@link ProductSummaryResponseDto} objects stored in the system.
+     * Delegates the retrieval logic to {@link IProductService#findProductsByCategory(Category category)}.
+     *
+     * @param category The category to retrieve products for.
+     * @return A list of {@code ProductSummaryResponseDto} objects representing all products in the specified category.
+     */
 //    @GetMapping(value = "/byCategory/{categoryId}")
 //    public ResponseEntity<List<ProductSummaryResponseDto>> findProductsByCategory(@PathVariable Long categoryId) {
 //        log.info("Solicitud recibida para obtener productos por categoria con ID: {}", categoryId);

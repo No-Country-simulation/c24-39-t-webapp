@@ -20,10 +20,10 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expiration;
 
-    public String generateToken(String email, String role){
+    public String generateToken(String email, String role, Long id){
         return Jwts.builder()
                 .subject(email)
-                .claims(Map.of("email", email,"role", role))
+                .claims(Map.of("email", email,"role", role, "id", id))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis()+expiration))
                 .signWith(getSigningKey())

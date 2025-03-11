@@ -1,5 +1,6 @@
 package com.c24_39_t_webapp.restaurants.services.impl;
 
+
 import com.c24_39_t_webapp.restaurants.dtos.request.ProductRequestDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductResponseDto;
 import com.c24_39_t_webapp.restaurants.dtos.response.ProductSummaryResponseDto;
@@ -9,6 +10,7 @@ import com.c24_39_t_webapp.restaurants.exception.RestaurantNotFoundException;
 import com.c24_39_t_webapp.restaurants.models.Category;
 import com.c24_39_t_webapp.restaurants.models.Product;
 import com.c24_39_t_webapp.restaurants.models.Restaurant;
+
 import com.c24_39_t_webapp.restaurants.repository.CategoryRepository;
 import com.c24_39_t_webapp.restaurants.repository.ProductRepository;
 import com.c24_39_t_webapp.restaurants.repository.RestaurantRepository;
@@ -225,7 +227,7 @@ public class ProductServiceImpl implements IProductService {
                 ))
                 .collect(Collectors.toList());
     }
-
+  
     @Override
     public List<ProductResponseDto> findProductsByRestaurant(Restaurant restaurant) {
         log.info("Buscando productos del restaurante con ID: {}", restaurant.getId());

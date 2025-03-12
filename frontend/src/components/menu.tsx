@@ -9,7 +9,7 @@ import MenuItem from "./menu-item";
 import ProductModal from "./product-modal";
 import { toast, ToastContainer } from "react-toastify";
 import { useCart } from "@/context/CartContext";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 type MenuProps = {
   menu: MenuProduct[];
@@ -19,28 +19,13 @@ export default function Menu({ menu }: MenuProps) {
   // const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado
   const { carts, addToCart, removeFromCart } = useCart();
-  // const restaurantId = 1; // Define restaurantId with a valid value
   const params = useParams();
   const restaurantId = params?.id ? params.id : null;
   const cart = carts[restaurantId as string] || []; // Carrito específico del restaurante
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar el modal
   const [isLoading, setIsLoading] = useState(false);
   const [toastConfig, setToastConfig] = useState<{ type: "success" | "info"; message: string } | null>(null); // Estado estructurado
-
-  // ✅ Cargar carrito desde localStorage
-  // useEffect(() => {
-  //   console.log("Carrito 1 en localStorage:", cart);
-  //   const storedCart = localStorage.getItem("cart");
-  //   if (storedCart) {
-  //     setCart(JSON.parse(storedCart));
-  //   }
-  //   setIsLoading(false);
-  // }, []);
-
-  // ✅ Guardar carrito en localStorage cuando cambia
-  // useEffect(() => {
-  //   localStorage.setItem("cart", JSON.stringify(cart));
-  // }, [cart]);
+  const router = useRouter();
 
   // ✅ Mostrar toast según el tipo
   useEffect(() => {
@@ -175,7 +160,14 @@ export default function Menu({ menu }: MenuProps) {
           );
         })}
       </Accordion>
-      {/* Modal */}
+      <div className="flex justify-end">
+      <button
+          onClick={() => router.push("/cart")}
+          className="flex items-end bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+        >
+        Finalizar compra
+        </button>
+      </div>
       {selectedProduct && (
         <ProductModal
           product={selectedProduct}

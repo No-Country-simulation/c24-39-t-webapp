@@ -9,6 +9,7 @@ type CartContextType = {
   globalCart: CartItem[];
   addToCart: (restaurantId: string, product: CartItem) => void;
   removeFromCart: (restaurantId: string, product: Number) => void;
+  clearCart: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -84,8 +85,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
+  const clearCart = () => {
+    setCarts({}); // Vacía el estado del carrito
+    if (typeof window !== "undefined") {
+      localStorage.setItem("carts", JSON.stringify({})); // Vacía el localStorage
+    }
+  };
+
   return (
-    <CartContext.Provider value={{ carts, globalCart, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ carts, globalCart, addToCart, removeFromCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );

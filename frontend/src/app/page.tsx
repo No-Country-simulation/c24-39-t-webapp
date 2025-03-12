@@ -1,28 +1,8 @@
-import {
-  Avatar,
-  Button,
-  Dropdown,
-  DropdownDivider,
-  DropdownHeader,
-  DropdownItem,
-  Navbar,
-  NavbarBrand,
-  NavbarCollapse,
-  NavbarLink,
-  NavbarToggle,
-} from "flowbite-react";
 import "tailwindcss";
-import { auth } from "../../auth";
-import LogoutButton from "@/components/logout-button";
-import { Role } from "@/utils/constants";
 import Image from "next/image";
-import Cart from "@/app/cart/cart";
-
-/////////>>>>>
 import RestaurantCard from "@/components/restaurant-card"; // COMPONENTE AGREGADO PARA HACER FUNCIONAR LA PÁGINA
 import { api } from "@/server/service"; // API AGREGADA PARA HACER FUNCIONAR LA PÁGINA
-// import { Chocolate_Classical_Sans } from "next/font/google";
-/////////>>>>>
+
 
 //import Head from "next/head";
 
@@ -38,46 +18,6 @@ export default async function Home() {
     { id: 5, name: "Fast Food", image: "/images/fastfood.jpg" },
     { id: 6, name: "Panadería", image: "/images/panaderia.jpg" },
   ];
-
-  /*const restaurants = [
-    {
-      id: 1,
-      name: "Pasta Bella",
-      category: "Italiana",
-      image:
-        "https://ixbnnrlngacirjuxztxa.supabase.co/storage/v1/object/public/fotos-c24-39-t-webapp/imagenes-logos/Pizzeria_Italiana_logo.webp",
-    },
-    {
-      id: 2,
-      name: "Sushi World",
-      category: "Japonesa",
-      image:
-        "https://ixbnnrlngacirjuxztxa.supabase.co/storage/v1/object/public/fotos-c24-39-t-webapp/imagenes-logos/Sushi_Samurai_logo.webp",
-    },
-    {
-      id: 3,
-      name: "Taco Loco",
-      category: "Mexicana",
-      image:
-        "https://ixbnnrlngacirjuxztxa.supabase.co/storage/v1/object/public/fotos-c24-39-t-webapp/imagenes-logos/Sabor_Mexicano_logo.webp",
-    },
-    {
-      id: 4,
-      name: "Green Bites",
-      category: "Vegetariana",
-      image:
-        "https://ixbnnrlngacirjuxztxa.supabase.co/storage/v1/object/public/fotos-c24-39-t-webapp/imagenes-logos/Delicias_Veganas_logo.webp",
-    },
-    {
-      id: 5,
-      name: "Burger House",
-      category: "Fast Food",
-      image:
-        "https://ixbnnrlngacirjuxztxa.supabase.co/storage/v1/object/public/fotos-c24-39-t-webapp/imagenes-logos/Hamburgueseria_El_Sabor_logo.webp",
-    },
-  ];
-
-  */
 
   return (
     <>

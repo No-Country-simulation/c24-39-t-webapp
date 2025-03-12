@@ -8,7 +8,7 @@ type CartContextType = {
   carts: Record<string, CartItem[]>;
   globalCart: CartItem[];
   addToCart: (restaurantId: string, product: CartItem) => void;
-  removeFromCart: (restaurantId: string, product: Number) => void;
+  removeFromCart: (restaurantId: string, product: number) => void;
   clearCart: () => void;
 };
 
@@ -67,7 +67,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const removeFromCart = (restaurantId: string, product: Number) => {
+  const removeFromCart = (restaurantId: string, product: number) => {
     setCarts((prevCarts) => {
       const restaurantCart = prevCarts[restaurantId] || [];
       const updatedRestaurantCart = restaurantCart

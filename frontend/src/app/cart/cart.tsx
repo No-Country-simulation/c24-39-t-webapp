@@ -1,10 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import imageShoppingCart from "../../../public/shopping-cart.png";
 import Image from "next/image";
-import { Product } from "@/utils/types";
 import { useCart } from "@/context/CartContext";
 import { CartItem } from "@/utils/types";
 

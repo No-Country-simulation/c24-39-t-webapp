@@ -5,8 +5,9 @@ import { NavbarBrand, Avatar, Dropdown, DropdownDivider, DropdownHeader, Dropdow
 import Cart from "@/app/cart/cart";
 import { Role } from "@/utils/constants";
 import LogoutButton from "@/components/logout-button";
+import { Session } from "next-auth";
 
-export default function NavBarWrapper({ session }: { session: any }) {
+export default function NavBarWrapper({ session }: { session: Session | null }) {
   const pathname = usePathname();
 
   if (pathname === "/login") return null;

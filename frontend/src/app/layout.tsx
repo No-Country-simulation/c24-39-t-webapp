@@ -2,6 +2,8 @@ import { ThemeModeScript } from "flowbite-react";
 import type { Metadata } from "next";
 import { Lobster } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/components/nav-bar";
+import { headers } from "next/headers";
 
 const lobster = Lobster({
   variable: "--lobster",
@@ -9,13 +11,12 @@ const lobster = Lobster({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "Foody - Haz tu pedido!",
   description: "Foody es una app para hacer tus pedidos de tus restaurantes favoritos!",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,9 +26,8 @@ export default function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <body
-        className={` ${lobster.variable} antialiased`}
-      >
+      <body className={` ${lobster.variable} antialiased`}>
+        <NavBar />
         {children}
       </body>
     </html>

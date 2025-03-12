@@ -131,32 +131,36 @@ export default async function Home() {
         </NavbarCollapse>
       </Navbar>
       <main className="w-full flex flex-col min-h-screen pt-20 bg-gradient-to-r from-orange-900 via-orange-700 to-orange-600">
-        <span className="text-center text-3xl text-cream font-lobster mt-5 mb-4">Restaurantes</span>
-        <div className="overflow-x-auto flex gap-3">
+        <span className="text-center text-3xl text-cream font-lobster mt-12">Restaurantes</span>
+        <div className="justify-center overflow-x-auto flex gap-3 mt-12">
           {restaurants.map((restaurant) => (
             <div key={restaurant.rst_id} className="flex-none w-sm bg-cream p-2 rounded-lg shadow-md">
               <RestaurantCard restaurant={restaurant} />
             </div>
           ))}
         </div>
-        <span className="justify-start text-3xl text-cream font-lobster mt-10 mb-3 p-4">Explora Categorías</span>
-        <div className="overflow-x-auto flex gap-3 pb-2">
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              className="flex-none p-4 px-2 py-2 bg-black text-cream text-lg rounded-lg"
-            // aca colocar una funcion en onclick para el filtrado por categorias
-            >
-              <Image
-                src={category.image}
-                alt={category.name}
-                width={250}
-                height={150}
-                className="rounded-lg h-32"
-              />
-              <span>{category.name}</span>
-            </button>
-          ))}
+        <div className="flex flex-col justify-center w-full m-auto"> {/* Quitamos max-w-4xl, añadimos px-4 */}
+        <span className="text-3xl text-cream font-lobster mb-3 m-auto mb-12">
+          Explora Categorías
+        </span>
+        <div className="w-full flex justify-center gap-3 pb-2">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className="flex-none p-4 px-2 py-2 bg-black text-cream text-lg rounded-lg"
+              // Aquí puedes agregar una función onClick para filtrar por categorías
+              >
+                <Image
+                  src={category.image}
+                  alt={category.name}
+                  width={250}
+                  height={150}
+                  className="rounded-lg h-32"
+                />
+                <span>{category.name}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </main>
       <footer className="bg-cream w-full text-black text-center p-4">

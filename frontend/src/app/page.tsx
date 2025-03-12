@@ -83,7 +83,7 @@ export default async function Home() {
 
   return (
     <>
-      <Navbar fluid rounded className="bg-cream">
+      <Navbar fluid rounded className="bg-cream fixed top-0 w-full z-50">
         <NavbarBrand href="/">
           <span className="self-center text-logo text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">Foody</span>
         </NavbarBrand>
@@ -130,37 +130,33 @@ export default async function Home() {
           <NavbarLink href="#">Ayuda</NavbarLink>
         </NavbarCollapse>
       </Navbar>
-      <main className="w-full flex flex-col min-h-screen bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500">
-        <span className="text-3xl text-cream z-10 font-lobster text-center mt-10 mb-3">Restaurantes</span>
-        <div className="overflow-x-auto">
-          <div className="flex gap-3">
-            {restaurants.map((restaurant) => (
-              <div key={restaurant.rst_id} className="flex-none w-64 bg-cream p-2 border rounded-lg shadow-md">
-                <RestaurantCard restaurant={restaurant} />
-              </div>
-            ))}
-          </div>
+      <main className="w-full flex flex-col min-h-screen pt-20 bg-gradient-to-r from-orange-900 via-orange-700 to-orange-600">
+        <span className="text-center text-3xl text-cream font-lobster mt-5 mb-4">Restaurantes</span>
+        <div className="overflow-x-auto flex gap-3">
+          {restaurants.map((restaurant) => (
+            <div key={restaurant.rst_id} className="flex-none w-sm bg-cream p-2 rounded-lg shadow-md">
+              <RestaurantCard restaurant={restaurant} />
+            </div>
+          ))}
         </div>
-        <span className="text-3xl text-cream mt-10 font-lobster text-center mb-3">Explora Categorías</span>
-        <div className="overflow-x-auto">
-          <div className="flex gap-3 pb-2">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                className="flex-none p-4 px-2 py-2 bg-black text-cream text-lg rounded-lg"
-              // aca colocar una funcion en onclick para el filtrado por categorias
-              >
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  width={250}
-                  height={150}
-                  className="rounded-lg h-32"
-                />
-                <span>{category.name}</span>
-              </button>
-            ))}
-          </div>
+        <span className="justify-start text-3xl text-cream font-lobster mt-10 mb-3 p-4">Explora Categorías</span>
+        <div className="overflow-x-auto flex gap-3 pb-2">
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              className="flex-none p-4 px-2 py-2 bg-black text-cream text-lg rounded-lg"
+            // aca colocar una funcion en onclick para el filtrado por categorias
+            >
+              <Image
+                src={category.image}
+                alt={category.name}
+                width={250}
+                height={150}
+                className="rounded-lg h-32"
+              />
+              <span>{category.name}</span>
+            </button>
+          ))}
         </div>
       </main>
       <footer className="bg-cream w-full text-black text-center p-4">

@@ -23,7 +23,7 @@ export default async function cartList() {
 
   return (
     <>
-      <Navbar fluid rounded className="bg-cream">
+      <Navbar fluid rounded className="bg-cream fixed top-0 w-full z-50">
         <NavbarBrand href="/">
           <span className="self-center text-logo text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">Foody</span>
         </NavbarBrand>
@@ -58,7 +58,7 @@ export default async function cartList() {
                 <DropdownItem>Dashboard</DropdownItem>
                 <DropdownItem>Configuración</DropdownItem>
                 <DropdownDivider />
-                <DropdownItem as={LogoutButton}>Cerrar Sesión</DropdownItem>
+                <DropdownItem as={LogoutButton}></DropdownItem>
               </Dropdown>
             )
           }
@@ -71,7 +71,7 @@ export default async function cartList() {
           <NavbarLink href="#">Ayuda</NavbarLink>
         </NavbarCollapse>
       </Navbar>
-      <main className="w-full flex flex-col min-h-screen bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500">
+      <main className="w-full flex flex-col min-h-screen pt-20 bg-gradient-to-r from-orange-900 via-orange-700 to-orange-600">
         <h2 className="text-3xl text-cream z-10 font-lobster text-center mt-10 mb-3">
           Lista de artículos
         </h2>

@@ -9,14 +9,14 @@ export default function RestaurantCard({
   restaurant: Restaurant;
 }) {
   return (
-    <Card key={restaurant.rst_id} className="shadow-lg bg-primary hover:bg-primary/90 transition-colors">
+    <Card key={restaurant.rst_id} className="shadow-lg bg-element hover:bg-primary transition-colors">
       <Link className="" href={`/restaurante/${restaurant.rst_id}`}>
       <Image
         src={restaurant.logo}
-        width={300}
-        height={200}
+        width={250}
+        height={250}
         alt={restaurant.name}
-        className="rounded-t-lg  rounded-full"
+        className="rounded-t-lg rounded-full"
       />
       <div className="p-3">
         <h2 className="text-pretty text-xl text-white font-semibold text-center">

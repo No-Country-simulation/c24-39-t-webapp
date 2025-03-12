@@ -26,7 +26,6 @@ export default function Cart() {
                 <span className="absolute -top-1 -right-0 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
                     {cartCounter}
                 </span>
-                <p>MOCOS</p>
             </div>
     );
 }

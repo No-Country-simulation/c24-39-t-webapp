@@ -4,11 +4,17 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import imageShoppingCart from "../../../public/shopping-cart.png";
 import Image from "next/image";
+import { Product } from "@/utils/types";
+import { useCart } from "@/context/CartContext";
+import { CartItem } from "@/utils/types";
 
 export default function Cart() {
     const router = useRouter();
+    const { globalCart } = useCart();
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [cartCounter, setCartCounter] = useState("0");
+    // const [cartCounter, setCartCounter] = useState("0");
+    // Calcula el total de ítems en el carrito global
+    const cartCounter = globalCart.reduce((total: number, item: CartItem) => total + item.quantity, 0);
 
     const handleClick = () => {
         router.push("/cart");
@@ -23,3 +29,7 @@ export default function Cart() {
             </div>
     );
 }
+// function useCart(): { globalCart: any; } {
+//     throw new Error("Function not implemented.");
+// }
+

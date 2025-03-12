@@ -1,5 +1,5 @@
 import { URL_BACKEND } from "@/utils/constants"
-import { ListOfRestaurants, MenuProduct, Restaurant } from "@/utils/types"
+import { ListOfRestaurants, MenuProduct, OrderRequest, OrderResponse, Restaurant } from "@/utils/types"
 
 export const api = {
 	restaurant: {
@@ -39,5 +39,29 @@ export const api = {
 				throw error
 			}
 		}
-	}
-}
+	},
+
+	order: {
+		create: async (orderRequest: OrderRequest, accessToken: string): Promise<OrderResponse> => {
+		  try {
+			const res = await fetch(`${URL_BACKEND}/orders`, {
+			  method: "POST",
+			  headers: {
+				"Content-Type": "application/json",
+				Authorization: `Bearer ${accessToken}`,
+			  },
+			  body: JSON.stringify(orderRequest),
+			});
+			if (!res.ok) {
+			  const errorData = await res.json();
+			  throw new Error(`Error ${res.status}: ${errorData.message || "Error al crear el pedido"}`);
+			}
+			const data = await res.json();
+			return data; // Ahora devuelve el OrderResponse completo
+		  } catch (error) {
+			console.error("Error creando el pedido:", error);
+			throw error;
+		  }
+		},
+	  },
+	};

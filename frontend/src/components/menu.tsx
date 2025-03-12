@@ -8,32 +8,39 @@ import { Dropdown } from "flowbite-react";
 import MenuItem from "./menu-item";
 import ProductModal from "./product-modal";
 import { toast, ToastContainer } from "react-toastify";
+import { useCart } from "@/context/CartContext";
+import { useParams } from "next/navigation";
 
 type MenuProps = {
   menu: MenuProduct[];
 };
 
 export default function Menu({ menu }: MenuProps) {
-  const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
+  // const [cart, setCart] = useState<{ id: number; name: string; price: number; quantity: number }[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); // Estado para el producto seleccionado
+  const { carts, addToCart, removeFromCart } = useCart();
+  // const restaurantId = 1; // Define restaurantId with a valid value
+  const params = useParams();
+  const restaurantId = params?.id ? params.id : null;
+  const cart = carts[restaurantId as string] || []; // Carrito específico del restaurante
   const [isModalOpen, setIsModalOpen] = useState(false); // Estado para controlar el modal
   const [isLoading, setIsLoading] = useState(false);
   const [toastConfig, setToastConfig] = useState<{ type: "success" | "info"; message: string } | null>(null); // Estado estructurado
 
   // ✅ Cargar carrito desde localStorage
-  useEffect(() => {
-    console.log("Carrito 1 en localStorage:", cart);
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-    setIsLoading(false);
-  }, []);
+  // useEffect(() => {
+  //   console.log("Carrito 1 en localStorage:", cart);
+  //   const storedCart = localStorage.getItem("cart");
+  //   if (storedCart) {
+  //     setCart(JSON.parse(storedCart));
+  //   }
+  //   setIsLoading(false);
+  // }, []);
 
   // ✅ Guardar carrito en localStorage cuando cambia
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  }, [cart]);
+  // useEffect(() => {
+  //   localStorage.setItem("cart", JSON.stringify(cart));
+  // }, [cart]);
 
   // ✅ Mostrar toast según el tipo
   useEffect(() => {
@@ -49,9 +56,10 @@ export default function Menu({ menu }: MenuProps) {
 
 
   // ✅ Agregar producto al carrito
-  const addToCart = (product: Product) => {
-    setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.prd_id);
+  // const addToCart = (product: Product) => {
+  //   setCart((prevCart) => {
+    const handleAddToCart = (product: Product) => {
+      const existingProduct = cart.find((item) => item.id === product.prd_id);
       const isNewProduct = !existingProduct;
 
       setToastConfig({
@@ -61,30 +69,22 @@ export default function Menu({ menu }: MenuProps) {
           : `Otra unidad de "${product.name}" añadida.`
       });
 
-      if (existingProduct) {
-        return prevCart.map((item) =>
-          item.id === product.prd_id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [...prevCart, {
+      addToCart(restaurantId as string, {
         id: product.prd_id,
         name: product.name,
         price: product.price,
         quantity: 1
-      }];
-    });
-  };
+      });
+    };
+  
 
   // ✅ Quitar producto del carrito
-  const removeFromCart = (product: Product) => {
-    setCart((prevCart) => {
-      const updatedCart = prevCart
-        .map((item) =>
-          item.id === product.prd_id ? { ...item, quantity: item.quantity - 1 } : item
-        )
-        .filter((item) => item.quantity > 0);
+  const handleRemoveFromCart = (product: Product) => {
+    // setCart((prevCart) => {
+      const prevCart = cart;
+      removeFromCart(restaurantId as string, product.prd_id);
+    
+      const updatedCart = carts[restaurantId as string] || []; // Obtiene el carrito actualizado después de la modificación
 
       if (updatedCart.length < prevCart.length) {
         setToastConfig({
@@ -98,11 +98,9 @@ export default function Menu({ menu }: MenuProps) {
         });
       }
       return updatedCart;
-    });
   };
   // ✅ Abrir modal con el producto seleccionado
   const openModal = (product: Product) => {
-    console.log("Abriendo modal para:", product.prd_id);
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
@@ -166,8 +164,8 @@ export default function Menu({ menu }: MenuProps) {
                         key={`${item.categoryId}_${product.prd_id}`} // Clave compuesta
                         product={product}
                         cart={cart}
-                        addToCart={addToCart}
-                        removeFromCart={removeFromCart}
+                        handleAddToCart={handleAddToCart}
+                        handleRemoveFromCart={handleRemoveFromCart}
                         openModal={openModal} // Pasamos la función para abrir el modal
                       />
                     ))}
@@ -183,8 +181,8 @@ export default function Menu({ menu }: MenuProps) {
           product={selectedProduct}
           isOpen={isModalOpen}
           onClose={closeModal}
-          addToCart={addToCart}
-          removeFromCart={removeFromCart}
+          handleAddToCart={handleAddToCart}
+          handleRemoveFromCart={handleRemoveFromCart}
         />
       )}
       {/* Toast Container */}

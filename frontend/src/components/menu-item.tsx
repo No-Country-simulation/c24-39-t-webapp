@@ -7,16 +7,16 @@ import Image from "next/image";
 
 type Props = {
   product: Product;
-  addToCart: (product: Product) => void;
-  removeFromCart: (product: Product) => void;
+  handleAddToCart: (product: Product) => void;
+  handleRemoveFromCart: (product: Product) => void;
   cart: { id: number; name: string; price: number; quantity: number }[];
   openModal: (product: Product) => void;
 };
 
 const MenuItem = memo(({
   product,
-  addToCart,
-  removeFromCart,
+  handleAddToCart,
+  handleRemoveFromCart,
   cart,
   openModal,
 }: Props) => {
@@ -44,7 +44,7 @@ const MenuItem = memo(({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            removeFromCart(product);
+            handleRemoveFromCart(product);
           }}
           className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition"
         >
@@ -57,7 +57,7 @@ const MenuItem = memo(({
         <button
           onClick={(e) => {
             e.stopPropagation();
-            addToCart(product);
+            handleAddToCart(product);
           }}
           className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-700 transition"
         >

@@ -2,6 +2,7 @@ import { ThemeModeScript } from "flowbite-react";
 import type { Metadata } from "next";
 import { Lobster } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext";
 
 const lobster = Lobster({
   variable: "--lobster",
@@ -28,7 +29,7 @@ export default function RootLayout({
       <body
         className={` ${lobster.variable} antialiased`}
       >
-        {children}
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );

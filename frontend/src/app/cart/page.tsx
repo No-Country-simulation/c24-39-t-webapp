@@ -15,6 +15,7 @@ import { auth } from "../../../auth";
 import LogoutButton from "@/components/logout-button";
 import { Role } from "@/utils/constants";
 import Cart from "@/app/cart/cart";
+import CartList from "@/components/cart-list";
 
 export default async function cartList() {
 
@@ -72,8 +73,9 @@ export default async function cartList() {
       </Navbar>
       <main className="w-full flex flex-col min-h-screen bg-gradient-to-r from-orange-900 via-orange-600 to-orange-500">
         <h2 className="text-3xl text-cream z-10 font-lobster text-center mt-10 mb-3">
-          Listar artículos
+          Lista de artículos
         </h2>
+        <CartList />
       </main>
       <footer className="bg-cream w-full text-black text-center p-4">
         &copy; 2025 Foody. Todos los derechos reservados.

@@ -10,16 +10,16 @@ type ProductModalProps = {
   product: Product;
   isOpen: boolean;
   onClose: () => void;
-  addToCart: (product: Product) => void;
-  removeFromCart: (product: Product) => void;
+  handleAddToCart: (product: Product) => void;
+  handleRemoveFromCart: (product: Product) => void;
 };
 
 export default function ProductModal({
   product,
   isOpen,
   onClose,
-  addToCart,
-  removeFromCart
+  handleAddToCart,
+  handleRemoveFromCart
 }: ProductModalProps) {
   return (
     <Modal show={isOpen} onClose={onClose} >
@@ -49,13 +49,13 @@ export default function ProductModal({
           Cerrar
         </button>
         <button
-          onClick={() => addToCart(product)}
+          onClick={() => handleAddToCart(product)}
           className="flex items-end bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700 transition"
         >
           Agregar
         </button>
         <button
-          onClick={() => removeFromCart(product)}
+          onClick={() => handleRemoveFromCart(product)}
           className="flex items-end bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition"
         >
           Eliminar

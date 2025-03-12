@@ -10,6 +10,7 @@ import ProductModal from "./product-modal";
 import { toast, ToastContainer } from "react-toastify";
 import { useCart } from "@/context/CartContext";
 import { useParams, useRouter } from "next/navigation";
+// import { set } from "zod";
 
 type MenuProps = {
   menu: MenuProduct[];
@@ -44,6 +45,7 @@ export default function Menu({ menu }: MenuProps) {
   // const addToCart = (product: Product) => {
   //   setCart((prevCart) => {
     const handleAddToCart = (product: Product) => {
+      setIsLoading(true);
       const existingProduct = cart.find((item) => item.id === product.prd_id);
       const isNewProduct = !existingProduct;
 
@@ -60,12 +62,13 @@ export default function Menu({ menu }: MenuProps) {
         price: product.price,
         quantity: 1
       });
+      setIsLoading(false);
     };
   
 
   // ✅ Quitar producto del carrito
   const handleRemoveFromCart = (product: Product) => {
-    // setCart((prevCart) => {
+      setIsLoading(true);
       const prevCart = cart;
       removeFromCart(restaurantId as string, product.prd_id);
     
@@ -82,6 +85,7 @@ export default function Menu({ menu }: MenuProps) {
           message: `Se redujo la cantidad de ${product.name} a ${updatedCart.length - 1}.` // Más detalle
         });
       }
+      setIsLoading(false);
       return updatedCart;
   };
   // ✅ Abrir modal con el producto seleccionado

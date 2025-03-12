@@ -4,7 +4,6 @@
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
-import { api } from "../server/service";
 import { OrderResponse } from "@/utils/types";
 // frontend\src\server\service.ts
 interface CustomUser {

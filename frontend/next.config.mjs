@@ -1,6 +1,6 @@
-import type { NextConfig } from "next";
+// import  { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   images: {
 	remotePatterns:[
 	  {hostname: "ixbnnrlngacirjuxztxa.supabase.co",

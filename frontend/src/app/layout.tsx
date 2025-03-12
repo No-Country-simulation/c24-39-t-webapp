@@ -27,12 +27,11 @@ export default async function RootLayout({
       <head>
         <ThemeModeScript />
       </head>
-      <CartProvider>
-    <NavBar />
-    {children}
-  </CartProvider>
-        className={` ${lobster.variable} antialiased`}
-        
+      <body className={`${lobster.variable} antialiased`}>
+        <CartProvider>
+          <NavBar />
+          {children}
+        </CartProvider>
       </body>
     </html>
   );

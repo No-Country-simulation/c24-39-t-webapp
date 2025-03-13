@@ -21,9 +21,12 @@ export default async function Home() {
     <>
       <main className="w-full flex flex-col min-h-screen pt-20 bg-gradient-to-r from-orange-900 via-orange-700 to-orange-600">
         <span className="text-center text-3xl text-cream font-lobster mt-12">Restaurantes</span>
-        <div className="justify-center overflow-x-auto flex gap-3 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12 px-4">
           {restaurants.map((restaurant) => (
-            <div key={restaurant.rst_id} className="flex-none w-sm bg-cream p-2 rounded-lg shadow-md">
+            <div
+              key={restaurant.rst_id}
+              className="w-[420px] flex-col justify-center m-auto  bg-cream p-2 rounded-lg shadow-md "
+            >
               <RestaurantCard restaurant={restaurant} />
             </div>
           ))}
@@ -31,7 +34,7 @@ export default async function Home() {
         <div className="flex flex-col justify-center w-full m-auto">
           {" "}
           {/* Quitamos max-w-4xl, añadimos px-4 */}
-          <span className="text-3xl text-cream font-lobster m-auto mb-12">Explora Categorías</span>
+          <span className="text-3xl pt-10 text-cream font-lobster m-auto mb-12">Explora Categorías</span>
           <div className="w-full flex justify-center gap-3 pb-2">
             {categories.map((category) => (
               <button

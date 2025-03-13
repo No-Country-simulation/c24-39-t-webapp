@@ -40,53 +40,49 @@ export default function Menu({ menu }: MenuProps) {
     }
   }, [toastConfig]);
 
-
   // ✅ Agregar producto al carrito
   // const addToCart = (product: Product) => {
   //   setCart((prevCart) => {
-    const handleAddToCart = (product: Product) => {
-      setIsLoading(true);
-      const existingProduct = cart.find((item) => item.id === product.prd_id);
-      const isNewProduct = !existingProduct;
+  const handleAddToCart = (product: Product) => {
+    setIsLoading(true);
+    const existingProduct = cart.find((item) => item.id === product.prd_id);
+    const isNewProduct = !existingProduct;
 
-      setToastConfig({
-        type: "success",
-        message: isNewProduct
-          ? `"${product.name}" añadido al carrito.`
-          : `Otra unidad de "${product.name}" añadida.`
-      });
+    setToastConfig({
+      type: "success",
+      message: isNewProduct ? `"${product.name}" añadido al carrito.` : `Otra unidad de "${product.name}" añadida.`,
+    });
 
-      addToCart(restaurantId as string, {
-        id: product.prd_id,
-        name: product.name,
-        price: product.price,
-        quantity: 1
-      });
-      setIsLoading(false);
-    };
-  
+    addToCart(restaurantId as string, {
+      id: product.prd_id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    });
+    setIsLoading(false);
+  };
 
   // ✅ Quitar producto del carrito
   const handleRemoveFromCart = (product: Product) => {
-      setIsLoading(true);
-      const prevCart = cart;
-      removeFromCart(restaurantId as string, product.prd_id);
-    
-      const updatedCart = carts[restaurantId as string] || []; // Obtiene el carrito actualizado después de la modificación
+    setIsLoading(true);
+    const prevCart = cart;
+    removeFromCart(restaurantId as string, product.prd_id);
 
-      if (updatedCart.length < prevCart.length) {
-        setToastConfig({
-          type: "info",
-          message: `Se eliminó ${product.name} del carrito.`
-        });
-      } else if (updatedCart && updatedCart.length > 1) {
-        setToastConfig({
-          type: "info",
-          message: `Se redujo la cantidad de ${product.name} a ${updatedCart.length - 1}.` // Más detalle
-        });
-      }
-      setIsLoading(false);
-      return updatedCart;
+    const updatedCart = carts[restaurantId as string] || []; // Obtiene el carrito actualizado después de la modificación
+
+    if (updatedCart.length < prevCart.length) {
+      setToastConfig({
+        type: "info",
+        message: `Se eliminó ${product.name} del carrito.`,
+      });
+    } else if (updatedCart && updatedCart.length > 1) {
+      setToastConfig({
+        type: "info",
+        message: `Se redujo la cantidad de ${product.name} a ${updatedCart.length - 1}.`, // Más detalle
+      });
+    }
+    setIsLoading(false);
+    return updatedCart;
   };
   // ✅ Abrir modal con el producto seleccionado
   const openModal = (product: Product) => {
@@ -119,9 +115,7 @@ export default function Menu({ menu }: MenuProps) {
             <Dropdown.Item disabled>Tu carrito está vacío</Dropdown.Item>
           )}
           <Dropdown.Divider />
-          <Dropdown.Item className="text-center font-bold cursor-pointer">
-            Finalizar compra
-          </Dropdown.Item>
+          <Dropdown.Item className="text-center font-bold cursor-pointer">Finalizar compra</Dropdown.Item>
         </Dropdown>
       </div>
 
@@ -130,8 +124,7 @@ export default function Menu({ menu }: MenuProps) {
         {menu.map((item, index) => {
           // Filtra productos duplicados
           const uniqueProducts = item.products.filter(
-            (product, index, self) =>
-              index === self.findIndex((p) => p.prd_id === product.prd_id)
+            (product, index, self) => index === self.findIndex((p) => p.prd_id === product.prd_id)
           );
           console.log("Productos únicos:", uniqueProducts);
           if (isLoading) return <div key="loading">Cargando...</div>;
@@ -165,11 +158,11 @@ export default function Menu({ menu }: MenuProps) {
         })}
       </Accordion>
       <div className="flex justify-end">
-      <button
+        <button
           onClick={() => router.push("/cart")}
-          className="flex items-end bg-green-500 text-white px-3 py-1 rounded hover:bg-green-700 transition"
+          className="flex items-end bg-green-500 text-white m-4 px-3 py-1 rounded hover:bg-green-700 transition"
         >
-        Finalizar compra
+          Finalizar compra
         </button>
       </div>
       {selectedProduct && (

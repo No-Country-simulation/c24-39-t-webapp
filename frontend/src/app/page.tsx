@@ -3,11 +3,9 @@ import Image from "next/image";
 import RestaurantCard from "@/components/restaurant-card"; // COMPONENTE AGREGADO PARA HACER FUNCIONAR LA PÁGINA
 import { api } from "@/server/service"; // API AGREGADA PARA HACER FUNCIONAR LA PÁGINA
 
-
 //import Head from "next/head";
 
 export default async function Home() {
- 
   const restaurants = await api.restaurant.all();
 
   const categories = [
@@ -30,24 +28,18 @@ export default async function Home() {
             </div>
           ))}
         </div>
-        <div className="flex flex-col justify-center w-full m-auto"> {/* Quitamos max-w-4xl, añadimos px-4 */}
-        <span className="text-3xl text-cream font-lobster mb-3 m-auto mb-12">
-          Explora Categorías
-        </span>
-        <div className="w-full flex justify-center gap-3 pb-2">
+        <div className="flex flex-col justify-center w-full m-auto">
+          {" "}
+          {/* Quitamos max-w-4xl, añadimos px-4 */}
+          <span className="text-3xl text-cream font-lobster m-auto mb-12">Explora Categorías</span>
+          <div className="w-full flex justify-center gap-3 pb-2">
             {categories.map((category) => (
               <button
                 key={category.id}
                 className="flex-none p-4 px-2 py-2 bg-black text-cream text-lg rounded-lg"
-              // Aquí puedes agregar una función onClick para filtrar por categorías
+                // Aquí puedes agregar una función onClick para filtrar por categorías
               >
-                <Image
-                  src={category.image}
-                  alt={category.name}
-                  width={250}
-                  height={150}
-                  className="rounded-lg h-32"
-                />
+                <Image src={category.image} alt={category.name} width={250} height={150} className="rounded-lg h-32" />
                 <span>{category.name}</span>
               </button>
             ))}

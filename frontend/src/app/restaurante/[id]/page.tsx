@@ -1,7 +1,6 @@
 import Menu from "@/components/menu";
 import { api } from "@/server/service";
-import Link from "next/link";
-import { HiArrowLeft } from "react-icons/hi";
+
 import Image from "next/image";
 
 type Props = {

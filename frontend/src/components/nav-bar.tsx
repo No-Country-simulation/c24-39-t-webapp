@@ -6,9 +6,9 @@ import NavBarWrapper from "./NavBarWrapper";
 export default async function NavBar() {
   const session = await auth();
   return (
-    <Navbar fluid rounded className="bg-cream fixed top-0 w-full z-50">
+    <Navbar fluid rounded className="bg-primary fixed  top-0 w-full z-50">
       <NavbarBrand href="/">
-        <span className="self-center text-logo text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">
+        <span className="self-center text-yellow-50 text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">
           Foody
         </span>
       </NavbarBrand>
@@ -22,9 +22,15 @@ export default async function NavBar() {
       <NavBarWrapper session={session} />
 
       <NavbarCollapse>
-        <NavbarLink href="#">¿Qué es foody?</NavbarLink>
-        <NavbarLink href="#">Conviértete en Anfitrión</NavbarLink>
-        <NavbarLink href="#">Ayuda</NavbarLink>
+        <NavbarLink className="text-white" href="#">
+          ¿Qué es foody?
+        </NavbarLink>
+        <NavbarLink className="text-white " href="#">
+          Conviértete en Anfitrión
+        </NavbarLink>
+        <NavbarLink className="text-white" href="#">
+          Ayuda
+        </NavbarLink>
       </NavbarCollapse>
     </Navbar>
   );

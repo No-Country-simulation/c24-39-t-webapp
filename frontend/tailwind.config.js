@@ -15,15 +15,13 @@ module.exports = {
         primary: "#f97316",
         secondary: "#f3f4f6",
         cream: "#fafae9",
-        logo: "#ffba05",
+        logo: "#ffba07",
         element: "#000000",
       },
       fontFamily: {
-        "lobster": ["Lobster", "sans-serif"],
+        lobster: ["Lobster", "sans-serif"],
       },
     },
   },
-    plugins: [
-      flowbite.plugin(),
-    ],
+  plugins: [flowbite.plugin()],
 };

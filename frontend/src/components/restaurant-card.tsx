@@ -7,7 +7,7 @@ export default function RestaurantCard({ restaurant }: { restaurant: Restaurant 
   return (
     <Card
       key={restaurant.rst_id}
-      className="shadow-lg h-[450px] bg-element hover:bg-primary transition-colors flex flex-col items-center"
+      className="shadow-lg h-[450px] bg-orange-400 hover:bg-primary transition-colors flex flex-col items-center"
     >
       <Link href={`/restaurante/${restaurant.rst_id}`} className="flex flex-col items-center">
         <Image
@@ -18,8 +18,8 @@ export default function RestaurantCard({ restaurant }: { restaurant: Restaurant 
           className="rounded-t-lg rounded-full"
         />
         <div className="p-3 text-center">
-          <h2 className="text-pretty text-xl text-white font-semibold">{restaurant.name}</h2>
-          <p className="text-gray-300 text-sm">{restaurant.description}</p>
+          <h2 className="text-pretty text-2xl text-white font-semibold">{restaurant.name}</h2>
+          <p className="text-gray-300 text-xl">{restaurant.description}</p>
         </div>
       </Link>
     </Card>

@@ -6,14 +6,14 @@ import NavBarWrapper from "./NavBarWrapper";
 export default async function NavBar() {
   const session = await auth();
   return (
-    <Navbar fluid rounded className="bg-primary fixed  top-0 w-full z-50">
+    <Navbar fluid rounded className="bg-gray-800 fixed top-0 w-full z-50">
       <NavbarBrand href="/">
         <span className="self-center text-yellow-50 text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">
           Foody
         </span>
       </NavbarBrand>
       <div className={`${!session?.user ? "flex" : "hidden"} md:order-2`}>
-        <Button href="/login" className="bg-element">
+        <Button href="/login" className="bg-primary">
           Inicia Sesión
         </Button>
         <NavbarToggle />
@@ -22,15 +22,9 @@ export default async function NavBar() {
       <NavBarWrapper session={session} />
 
       <NavbarCollapse>
-        <NavbarLink className="text-white" href="#">
-          ¿Qué es foody?
-        </NavbarLink>
-        <NavbarLink className="text-white " href="#">
-          Conviértete en Anfitrión
-        </NavbarLink>
-        <NavbarLink className="text-white" href="#">
-          Ayuda
-        </NavbarLink>
+        <NavbarLink href="#" className="text-cream">¿Qué es foody?</NavbarLink>
+        <NavbarLink href="#" className="text-cream">Conviértete en Anfitrión</NavbarLink>
+        <NavbarLink href="#" className="text-cream">Ayuda</NavbarLink>
       </NavbarCollapse>
     </Navbar>
   );

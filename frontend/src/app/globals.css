@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-/*@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Prata&display=swap");
-*/
+@import url("https://fonts.googleapis.com/css2?family=Lobster&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Prata&display=swap");
+
 
 @font-face {
   font-family: "Lobster";
@@ -13,7 +13,7 @@
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 

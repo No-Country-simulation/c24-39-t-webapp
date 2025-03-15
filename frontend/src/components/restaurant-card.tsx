@@ -1,27 +1,22 @@
 import { Restaurant } from "@/utils/types";
 import { Card } from "flowbite-react";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
+
   return (
     <Card
-      key={restaurant.rst_id}
-      className="shadow-lg h-[450px] bg-orange-400 hover:bg-primary transition-colors flex flex-col items-center"
+      className="max-w-sm bg-primary hover:bg-gray-800 p-0"
+      horizontal={true}
+      renderImage={() => <Image width={300} height={300} src={restaurant.logo} alt={restaurant.name} />}
+      href={`/restaurante/${restaurant.rst_id}`}
     >
-      <Link href={`/restaurante/${restaurant.rst_id}`} className="flex flex-col items-center">
-        <Image
-          src={restaurant.logo}
-          width={250}
-          height={250}
-          alt={restaurant.name}
-          className="rounded-t-lg rounded-full"
-        />
-        <div className="p-3 text-center">
-          <h2 className="text-pretty text-2xl text-white font-semibold">{restaurant.name}</h2>
-          <p className="text-gray-300 text-xl">{restaurant.description}</p>
-        </div>
-      </Link>
+      {/*
+      <h6 className="text-lg font-bold tracking-tighter text-cream md:font-base dark:text-white">
+      {restaurant.name}
+      </h6>
+    */}
+      <p className="text-base tracking-tighter text-cream dark:text-white">{restaurant.description}</p>
     </Card>
   );
 }

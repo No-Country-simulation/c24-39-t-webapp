@@ -1,9 +1,11 @@
 import { ThemeModeScript } from "flowbite-react";
 import type { Metadata } from "next";
-import { Lobster } from "next/font/google";
+import { Lobster, Montserrat } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/nav-bar";
 import { CartProvider } from "@/context/CartContext";
+import "tailwindcss";
+
 
 const lobster = Lobster({
   variable: "--lobster",
@@ -24,7 +26,8 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <head>
-        <ThemeModeScript />
+      <link rel="icon" href="/favicon.png" />
+      <ThemeModeScript />
       </head>
       <body className={`${lobster.variable} antialiased`}>
         <CartProvider>

@@ -8,7 +8,7 @@ export default async function NavBar() {
   return (
     <Navbar fluid rounded className="bg-gray-800 fixed top-0 w-full z-50">
       <NavbarBrand href="/">
-        <span className="self-center text-yellow-50 text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">
+        <span className="self-center text-logo text-5xl font-lobster font-bold whitespace-nowrap dark:text-white">
           Foody
         </span>
       </NavbarBrand>

@@ -22,14 +22,8 @@ export default async function Page({ params }: Props) {
     <main className="min-h-screen w-full md:w-[760px] text-black pt-16 mx-auto flex flex-col align-center shadow-lg relative">
       {restaurant && (
         <>
-<<<<<<< HEAD
-          <div className="w-full mt-10 flex mb-2 justify-center items-center">
-            <Image
-              className="object-cover w-[50%] md:w-[30%] rounded-lg"
-=======
           <div>
             <Image
->>>>>>> dd703ae (Guardando cambios antes de hacer pull --rebase)
               src={restaurant.logo}
               alt={`Logo de ${restaurant.name}`}
               width={300}

@@ -13,6 +13,12 @@ const lobster = Lobster({
   subsets: ["latin"],
 });
 
+const montserrat = Montserrat({
+  variable: "--montserrat",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Foody - Haz tu pedido!",
   description: "Foody es una app para hacer tus pedidos de tus restaurantes favoritos!",
@@ -29,7 +35,7 @@ export default async function RootLayout({
       <link rel="icon" href="/favicon.png" />
       <ThemeModeScript />
       </head>
-      <body className={`${lobster.variable} antialiased`}>
+      <body className={`${lobster.variable} ${montserrat.variable} antialiased`}>
         <CartProvider>
           <NavBar />
           {children}

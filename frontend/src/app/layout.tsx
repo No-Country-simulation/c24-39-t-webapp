@@ -6,7 +6,6 @@ import NavBar from "@/components/nav-bar";
 import { CartProvider } from "@/context/CartContext";
 import "tailwindcss";
 
-
 const lobster = Lobster({
   variable: "--lobster",
   weight: "400",
@@ -35,7 +34,7 @@ export default async function RootLayout({
       <link rel="icon" href="/favicon.png" />
       <ThemeModeScript />
       </head>
-      <body className={`${lobster.variable} ${montserrat.variable} antialiased`}>
+      <body className={`${lobster.variable} ${montserrat.variable} antialiased flex flex-col min-h-screen`}>
         <CartProvider>
           <NavBar />
           {children}
